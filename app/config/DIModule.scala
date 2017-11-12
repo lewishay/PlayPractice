@@ -13,7 +13,7 @@ import com.google.inject.AbstractModule
  * configuration file.
  */
 class DIModule extends AbstractModule {
-  override def configure() = {
+  override def configure(): Unit = {
 
   }
 }
