@@ -15,9 +15,8 @@ libraryDependencies ++= Seq(
   ehcache,
   ws,
   specs2 % Test,
-  guice
+  guice,
+  "org.scalactic" %% "scalactic" % "3.0.4",
+  "org.scalatest" %% "scalatest" % "3.0.4" % "test"
 )
-
-unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
-
       
