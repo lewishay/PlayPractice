@@ -6,7 +6,7 @@ import play.api.mvc._
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
 
-abstract class ControllerBaseSpec extends WordSpecLike with Matchers with OptionValues {
+trait ControllerBaseSpec extends WordSpecLike with Matchers with OptionValues {
 
   implicit val defaultTimeout: Duration = 5 seconds
 
