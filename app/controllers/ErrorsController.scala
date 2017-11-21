@@ -1,8 +1,10 @@
 package controllers
 
-import play.api.mvc.{Action, AnyContent}
+import javax.inject.Inject
 
-class ErrorsController extends BaseController {
+import play.api.mvc._
+
+class ErrorsController @Inject()(cc: ControllerComponents) extends AbstractController(cc)  {
 
   def unauthorised: Action[AnyContent] = Action {
     Ok(views.html.unauthorised())
