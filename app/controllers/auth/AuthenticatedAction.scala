@@ -34,7 +34,7 @@ object AuthenticatedAction extends AuthenticatedBuilder(
   bodyParser,
   onUnauthorized = { _ =>
     Unauthorized(views.html.unauthorised())
-      .withHeaders("WWW-Authenticate" -> """Basic realm="Secured"""")
+      .withHeaders("WWW-Authenticate" -> """Basic realm="Login"""")
   }
 )
 

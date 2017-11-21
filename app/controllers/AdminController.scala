@@ -24,6 +24,6 @@ import play.api.mvc._
 class AdminController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
 
   def admin: Action[AnyContent] = AuthenticatedAction {
-    Ok(views.html.secret())
+    Ok(views.html.admin())
   }
 }
