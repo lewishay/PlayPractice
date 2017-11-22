@@ -21,17 +21,17 @@ import java.util.Base64
 import AuthenticationHelpers._
 import akka.util.ByteString
 import play.api.libs.streams.Accumulator
-import play.api.mvc.{AnyContent, BodyParser, RequestHeader, Result}
+import play.api.mvc._
 import play.api.mvc.Results.Unauthorized
 import play.api.mvc.Security.AuthenticatedBuilder
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object AuthenticatedAction extends AuthenticatedBuilder(
-  _.headers.get("Authorization")
+  userinfo = _.headers.get("Authorization")
     .flatMap(parseAuthHeader)
     .flatMap(validateUser),
-  bodyParser,
+  defaultParser = bodyParser,
   onUnauthorized = { _ =>
     Unauthorized(views.html.unauthorised())
       .withHeaders("WWW-Authenticate" -> """Basic realm="Login"""")
@@ -40,25 +40,25 @@ object AuthenticatedAction extends AuthenticatedBuilder(
 
 object AuthenticationHelpers {
   val validCredentials = Set(
-    Credentials(User("admin"), Password("cactus"))
+    Credentials("admin", "cactus")
   )
 
   def authHeaderValue(credentials: Credentials): String =
-    "Basic " + Base64.getEncoder.encodeToString(s"${credentials.user.value}:${credentials.password.value}".getBytes)
+    "Basic " + Base64.getEncoder.encodeToString(s"${credentials.username}:${credentials.password}".getBytes)
 
   def parseAuthHeader(authHeader: String): Option[Credentials] =
     authHeader.split("""\s""") match {
       case Array("Basic", userAndPass) =>
         new String(Base64.getDecoder.decode(userAndPass), "UTF-8").split(":") match {
-          case Array(user, password) => Some(Credentials(User(user), Password(password)))
+          case Array(user, password) => Some(Credentials(user, password))
           case _                     => None
         }
       case _ => None
     }
 
-  def validateUser(c: Credentials): Option[User] =
+  def validateUser(c: Credentials): Option[String] =
     if (validCredentials.contains(c))
-      Some(c.user)
+      Some(c.username)
     else
       None
 
@@ -67,6 +67,4 @@ object AuthenticationHelpers {
   }
 }
 
-case class Credentials(user: User, password: Password)
-case class User(value: String) extends AnyVal
-case class Password(value: String) extends AnyVal
+case class Credentials(username: String, password: String)
