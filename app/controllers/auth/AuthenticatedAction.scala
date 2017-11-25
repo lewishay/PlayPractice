@@ -33,7 +33,7 @@ object AuthenticatedAction extends AuthenticatedBuilder(
     .flatMap(validateUser),
   defaultParser = bodyParser,
   onUnauthorized = { _ =>
-    Unauthorized(views.html.unauthorised())
+    Unauthorized(views.html.errors.unauthorised())
       .withHeaders("WWW-Authenticate" -> """Basic realm="Login"""")
   }
 )
