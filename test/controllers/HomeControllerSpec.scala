@@ -11,7 +11,7 @@ class HomeControllerSpec extends ControllerBaseSpec {
 
   "Calling the index action" should {
 
-    val result: Future[Result] = new HomeController(cc).index(FakeRequest())
+    val result: Future[Result] = new HomeController(cc).home(FakeRequest())
 
     "return 200" in {
       status(result) shouldBe Status.OK
