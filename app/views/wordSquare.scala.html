@@ -1,0 +1,22 @@
+@import games.WordSquare
+
+@main("Word square") {
+  <section id="wordSquare">
+    <div class="container">
+      <h1 id="pageTitle" class="text-center">Word square</h1>
+      <hr class="star-primary">
+      <div class="row">
+        <div class="col-lg-6">
+          <form>
+          <p>Enter a word:</p><input id="wordBox" type="text">
+          </form>
+        </div>
+        <div class="col-lg-6">
+          @for(elem <- WordSquare.generateSquare("hello")) {
+            <p>@elem</p>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+}
