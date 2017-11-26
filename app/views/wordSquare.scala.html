@@ -1,5 +1,7 @@
 @import games.WordSquare
 
+@(word: String)
+
 @main("Word square") {
   <section id="wordSquare">
     <div class="container">
@@ -8,12 +10,14 @@
       <div class="row">
         <div class="col-lg-6">
           <form>
-          <p>Enter a word:</p><input id="wordBox" type="text">
+            <p>Enter a word:</p>
+            <input id="wordBox" type="text">
+            <input type="button" value="Submit">
           </form>
         </div>
         <div class="col-lg-6">
-          @for(elem <- WordSquare.generateSquare("hello")) {
-            <p>@elem</p>
+          @for(elem <- WordSquare.generateSquare(word)) {
+            <p class="wordSquareOutput">@elem</p>
           }
         </div>
       </div>

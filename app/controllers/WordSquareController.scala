@@ -23,6 +23,6 @@ import play.api.mvc._
 class WordSquareController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
 
   def wordSquare: Action[AnyContent] = Action {
-    Ok(views.html.wordSquare())
+    Ok(views.html.wordSquare("example"))
   }
 }

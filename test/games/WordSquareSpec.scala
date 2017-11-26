@@ -24,9 +24,11 @@ class WordSquareSpec extends WordSpecLike with Matchers {
 
     "generate a valid word square" in {
 
-      val expectedResult = s"HELLO\nE   L\nL   L\nL   E\nOLLEH"
+      val expectedResult = Array(" H E L L O ", " E       L ", " L       L ", " L       E ", " O L L E H ")
 
       val result = WordSquare.generateSquare("hello")
+
+      result shouldBe expectedResult
     }
   }
 }
