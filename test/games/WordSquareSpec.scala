@@ -22,7 +22,7 @@ class WordSquareSpec extends WordSpecLike with Matchers {
 
   "Calling the generateSquare function" should {
 
-    "generate a valid word square from a single word with no spaces" in {
+    "generate a valid word323 square from a single word with no spaces" in {
 
       val result = WordSquare.generateSquare("hello")
 
