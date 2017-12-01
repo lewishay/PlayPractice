@@ -13,7 +13,7 @@ object WordSquare {
         case _ =>
           (s.charAt(n) + (" " * (s.length - 2)) + s.charAt(s.length - 1 - n)).map(x => x + " ").mkString.substring(0, (s.length * 2) - 1) + "^" + recFunc(s, n+1)
       }
-      recFunc(s.toUpperCase, 0).split('^')
+      recFunc(s.toUpperCase.replace(" ", " "), 0).split('^')
     }
   }
 }

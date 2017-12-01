@@ -8,13 +8,13 @@
       <h1 id="pageTitle" class="text-center">Word square</h1>
       <hr class="star-primary">
       <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-6" align="center" style="position: absolute; margin: auto;">
           @helper.form(routes.WordSquareController.wordSquare) {
             @helper.inputText(wordForm("Word"))
             <button type="submit">Make square!</button>
           }
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6" name="square">
           @for(elem <- WordSquare.generateSquare(word)) {
             <p class="wordSquareOutput">@elem</p>
           }
