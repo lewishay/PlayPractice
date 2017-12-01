@@ -9,7 +9,7 @@ case class Word(word: String)
 object Word {
   val wordForm = Form(
     mapping(
-      "Word" -> of[String]
+      "Enter word:" -> of[String]
     )(Word.apply)(Word.unapply)
   )
 }

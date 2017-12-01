@@ -16,7 +16,8 @@ libraryDependencies ++= Seq(
   "org.jsoup" % "jsoup" % "1.10.3" % "test",
   "com.typesafe.play" %% "play-test" % PlayVersion.current % "test",
   "org.scalatest" %% "scalatest" % "3.0.1" % "test",
-  "org.scalamock" %% "scalamock-scalatest-support" % "3.6.0" % "test"
+  "org.scalamock" %% "scalamock-scalatest-support" % "3.6.0" % "test",
+  "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.0" % "test"
 )
 
 // This stops the "re-run with feature" warnings
