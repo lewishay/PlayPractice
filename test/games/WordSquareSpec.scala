@@ -31,7 +31,7 @@ class WordSquareSpec extends WordSpecLike with Matchers {
       result shouldBe expectedResult
     }
 
-    "generate a valid word square from a sentence with multiple spaces" in {3
+    "generate a valid word square from a sentence with multiple spaces" in {
 
       val result = WordSquare.generateSquare("how are you")
 

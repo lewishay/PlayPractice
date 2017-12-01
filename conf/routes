@@ -7,8 +7,6 @@
 GET     /                           controllers.HomeController.home
 GET     /admin                      controllers.AdminController.admin
 GET     /word-square                controllers.WordSquareController.exampleWordSquare
-
-
 POST    /word-square                controllers.WordSquareController.wordSquare
 
 # Map static resources from the /public folder to the /assets URL path
