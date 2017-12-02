@@ -1,4 +1,23 @@
-.wordSquareOutput {
+.word-square-output {
   font-family: 'DejaVu Sans Mono', monospace;
   margin-bottom: -0.2rem;
+}
+
+.below-square {
+  font-size: 2rem;
+  text-align: center;
+  color: #2C3E50;
+}
+
+.big-form {
+  font-size: 1.3rem;
+}
+
+.big-form label {
+  font-size: 1.6rem;
+}
+
+.big-form button {
+  background-color: #18BC9C;
+  color: #FFFFFF;
 }

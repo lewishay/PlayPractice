@@ -5,18 +5,16 @@
 @main("Word square") {
   <section>
     <div class="container">
-      <h1 id="pageTitle" class="text-center">Word square</h1>
-      <hr class="star-primary">
       <div class="row">
-        <div class="col-lg-6" align="center" style="position: absolute; margin: auto;">
-          @helper.form(routes.WordSquareController.wordSquare) {
+        <div class="col-lg-6" align="center">
+          @helper.form(routes.WordSquareController.wordSquare, 'class -> "big-form") {
             @helper.inputText(wordForm("Enter word:"))
             <button type="submit">Make square!</button>
           }
         </div>
         <div class="col-lg-6">
           @for(elem <- WordSquare.generateSquare(word)) {
-            <p class="wordSquareOutput">@elem</p>
+            <p class="word-square-output">@elem</p>
           }
         </div>
       </div>

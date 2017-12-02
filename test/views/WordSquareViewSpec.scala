@@ -24,8 +24,8 @@ class WordSquareViewSpec extends ViewBaseSpec {
 
   object Selectors {
     val title = "h1"
-    val formLabel = "label"
-    val formButton = "button"
+    val formLabel = ".big-form > dl > dt > label"
+    val formButton = ".big-form > button"
   }
 
   lazy val view = views.html.wordSquare("example", Word.wordForm)
