@@ -26,7 +26,11 @@ class WordSquareSpec extends WordSpecLike with Matchers {
 
       val result = WordSquare.generateSquare("hello")
 
-      val expectedResult = Array("H E L L O", "E       L", "L       L", "L       E", "O L L E H")
+      val expectedResult = Array("H E L L O",
+                                "E       L",
+                                "L       L",
+                                "L       E",
+                                "O L L E H")
 
       result shouldBe expectedResult
     }
@@ -46,6 +50,19 @@ class WordSquareSpec extends WordSpecLike with Matchers {
                                 "Y                   W",
                                 "O                   O",
                                 "U O Y   E R A   W O H")
+
+      result shouldBe expectedResult
+    }
+
+    "generate the word 'BLANK' when no word is entered" in {
+
+      val result = WordSquare.generateSquare("")
+
+      val expectedResult = Array("B L A N K",
+                                "L       N",
+                                "A       A",
+                                "N       L",
+                                "K N A L B")
 
       result shouldBe expectedResult
     }

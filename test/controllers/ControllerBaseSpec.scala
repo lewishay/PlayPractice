@@ -12,7 +12,7 @@ trait ControllerBaseSpec extends WordSpecLike with Matchers with OptionValues wi
 
   val cc: ControllerComponents = Helpers.stubControllerComponents()
 
-  implicit val defaultTimeout: Duration = 5 seconds
+  implicit val defaultTimeout: Duration = Duration(5, "seconds")
 
   def status(of: Result): Int = of.header.status
 
