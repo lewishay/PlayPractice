@@ -54,6 +54,11 @@ class WordSquareControllerSpec extends ControllerBaseSpec {
       "return 400" in {
         status(result) shouldBe Status.BAD_REQUEST
       }
+
+      "return HTML" in {
+        contentType(result) shouldBe Some("text/html")
+        charset(result) shouldBe Some("utf-8")
+      }
     }
   }
 }

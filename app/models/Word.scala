@@ -11,14 +11,7 @@ case class Word(word: String)
 object Word {
   val wordForm = Form(
     mapping(
-      "Enter word:" -> text // .verifying()
+      "Enter word:" -> text.verifying("Word must not contain special characters.", word => word.matches("^[a-zA-Z0-9]*$"))
     )(Word.apply)(Word.unapply)
   )
-
-  def noSpecialChars(word: String) = {
-    val regex: Regex = "^[a-zA-Z0-9]$".r
-//    word match {
-      //TODO finish regex
-//    }
-  }
 }
