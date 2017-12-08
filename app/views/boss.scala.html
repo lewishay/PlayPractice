@@ -7,17 +7,19 @@
 <section>
   <div class="container">
     <div class="row">
-      <div align="center">
-        <p>@boss.name</p>
-        <p>@boss.description</p>
-        <p>@boss.health</p>
-        <p>@boss.level</p>
-        <p>@boss.zone.name</p>
-        <p>@boss.zone.description</p>
+      <div class="col-lg-6" align="center">
         @helper.form(routes.BossController.getBoss, 'class -> "big-form") {
           @helper.inputText(bossForm("Enter boss ID:"))
           <button type="submit">Get boss!</button>
         }
+      </div>
+      <div class="col-lg-6">
+        <p><b>Name:</b> @boss.name</p>
+        <p><b>Description:</b> @boss.description</p>
+        <p><b>Health:</b> @boss.health</p>
+        <p><b>Level:</b> @boss.level</p>
+        <p><b>Zone name:</b> @boss.zone.name</p>
+        <p><b>Zone description:</b> @boss.zone.description</p>
       </div>
     </div>
   </div>
