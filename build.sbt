@@ -12,6 +12,7 @@ scalaVersion := "2.11.11"
 
 libraryDependencies ++= Seq(
   ws,
+  ehcache,
   guice,
   "org.jsoup" % "jsoup" % "1.10.3" % "test",
   "com.typesafe.play" %% "play-test" % PlayVersion.current % "test",
