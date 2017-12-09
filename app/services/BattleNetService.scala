@@ -4,7 +4,7 @@ import javax.inject.Inject
 
 import connectors.BattleNetConnector
 import models.{Boss, Zone}
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future}
@@ -13,13 +13,17 @@ class BattleNetService @Inject()(connector: BattleNetConnector) {
 
   def getBoss(bossID: Int)(implicit ec: ExecutionContext): Future[Boss] = {
     connector.getBoss(bossID).map { result =>
-      val rawBoss = Json.parse(result.body)
+      val rawBoss: JsValue = Json.parse(result.body)
+      val description: String = (rawBoss \ "description").asOpt[String] match {
+        case Some(x) => x
+        case _ => "Not found!"
+      }
       Boss(
-        (rawBoss \ "name").get.toString,
-        (rawBoss \ "description").get.toString,
-        (rawBoss \ "health").get.toString,
-        (rawBoss \ "level").get.toString,
-        Await.result(getZone((rawBoss \ "zoneId").get.toString.toInt), Duration(5, "seconds"))
+        (rawBoss \ "name").as[String],
+        description,
+        (rawBoss \ "health").as[Int],
+        (rawBoss \ "level").as[Int],
+        Await.result(getZone((rawBoss \ "zoneId").as[Int]), Duration(10, "seconds"))
       )
     }
   }
@@ -28,8 +32,8 @@ class BattleNetService @Inject()(connector: BattleNetConnector) {
     connector.getZone(zoneID).map { result =>
       val rawZone = Json.parse(result.body)
       Zone(
-        (rawZone \ "name").get.toString,
-        (rawZone \ "description").get.toString
+        (rawZone \ "name").as[String],
+        (rawZone \ "location" \ "name").as[String]
       )
     }
   }

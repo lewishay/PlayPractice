@@ -10,8 +10,8 @@ class BattleNetConnector @Inject()(ws: WSClient) {
 
   val apiKey: String = "9f88h2qzeu82vxxscpr54wuyy89cdzsa"
 
-  def bossUrl(bossID: String): String = s"https://us.api.battle.net/wow/boss/$bossID?locale=en_US&apikey=$apiKey"
-  def zoneUrl(zoneID: String): String = s"https://us.api.battle.net/wow/zone/$zoneID?locale=en_US&apikey=$apiKey"
+  def bossUrl(bossID: String): String = s"https://eu.api.battle.net/wow/boss/$bossID?locale=en_GBS&apikey=$apiKey"
+  def zoneUrl(zoneID: String): String = s"https://eu.api.battle.net/wow/zone/$zoneID?locale=en_GB&apikey=$apiKey"
 
   def getBoss(bossID: Int)(implicit ec: ExecutionContext): Future[WSResponse] = {
     val request: WSRequest = ws.url(bossUrl(bossID.toString))

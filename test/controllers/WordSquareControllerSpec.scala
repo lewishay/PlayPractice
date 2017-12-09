@@ -29,7 +29,7 @@ class WordSquareControllerSpec extends ControllerBaseSpec {
 
       val result: Future[Result] = new WordSquareController(cc).wordSquare(
         FakeRequest().withFormUrlEncodedBody(
-          ("Enter word:", "TEST")
+          ("word", "TEST")
         )
       )
 
@@ -47,7 +47,7 @@ class WordSquareControllerSpec extends ControllerBaseSpec {
 
       val result: Future[Result] = new WordSquareController(cc).wordSquare(
         FakeRequest().withFormUrlEncodedBody(
-          ("Enter word:", "££!££$$%^%$$")
+          ("word", "££!££$$%^%$$")
         )
       )
 

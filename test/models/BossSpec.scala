@@ -23,15 +23,15 @@ class BossSpec  extends WordSpecLike with Matchers {
 
   "A Boss" should {
 
-    val exampleBoss = Boss("Example", "Example", "Example", "Example", Zone("Example", "Example"))
+    val exampleBoss = Boss("Example", "Example", 0, 0, Zone("Example", "Example"))
 
     val exampleString =
       """{
         |"name":"Example",
         |"description":"Example",
-        |"health":"Example",
-        |"level":"Example",
-        |"zone":{"name":"Example","description":"Example"}
+        |"health":0,
+        |"level":0,
+        |"zone":{"name":"Example","location":"Example"}
         |}"""
         .stripMargin.replace("\n", "")
 

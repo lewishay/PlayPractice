@@ -1,6 +1,6 @@
 @import games.WordSquare
 
-@(word: String, wordForm: Form[Word])(implicit messages: Messages)
+@(word: String, wordForm: Form[Word] = Word.wordForm)(implicit messages: Messages)
 
 @main("Word square") {
   <section>
@@ -8,7 +8,7 @@
       <div class="row">
         <div class="col-lg-6" align="center">
           @helper.form(routes.WordSquareController.wordSquare, 'class -> "big-form") {
-            @helper.inputText(wordForm("Enter word:"))
+            @helper.inputText(wordForm("word"), '_label -> "Enter word:")
             <button type="submit">Make square!</button>
           }
         </div>

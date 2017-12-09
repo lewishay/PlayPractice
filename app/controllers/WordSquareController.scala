@@ -25,7 +25,7 @@ import play.api.mvc._
 class WordSquareController @Inject()(cc: ControllerComponents) extends AbstractController(cc) with I18nSupport {
 
   def exampleWordSquare: Action[AnyContent] = Action { implicit request =>
-    Ok(views.html.wordSquare("example", Word.wordForm))
+    Ok(views.html.wordSquare("example"))
   }
 
   def wordSquare: Action[AnyContent] = Action { implicit request =>
@@ -33,7 +33,7 @@ class WordSquareController @Inject()(cc: ControllerComponents) extends AbstractC
     formResult.fold({ formWithErrors =>
       BadRequest(views.html.wordSquare("error", formWithErrors))
     }, { result =>
-      Ok(views.html.wordSquare(result.word, Word.wordForm))
+      Ok(views.html.wordSquare(result.word))
     })
   }
 }

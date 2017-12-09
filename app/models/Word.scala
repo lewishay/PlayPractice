@@ -8,7 +8,7 @@ case class Word(word: String)
 object Word {
   val wordForm = Form(
     mapping(
-      "Enter word:" -> text.verifying("Word must not contain special characters.", word => word.matches("^[a-zA-Z0-9]*$"))
+      "word" -> text.verifying("Word must not contain special characters.", word => word.matches("^[a-zA-Z0-9 ]*$"))
     )(Word.apply)(Word.unapply)
   )
 }
