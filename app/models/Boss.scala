@@ -9,8 +9,8 @@ case class Boss(name: String, description: String, health: Int, level: Int, zone
 object Boss {
   implicit val format: Format[Boss] = Json.format[Boss]
 
-  val validBosses = Seq(("52409", "Ragnaros"), ("15727", "C'Thun"), ("15990", "Kel'Thuzad"),
-    ("76877", "Gruul"), ("22917", "Illidan"), ("33288", "Yogg-Saron"), ("36597", "The Lich King"))
+  val validBosses = Seq(("52409", "Ragnaros"), ("43324", "Cho'gall"), ("5709", "Shade of Eranikus"),
+    ("36597", "The Lich King"), ("76877", "Gruul"), ("28923", "Loken"), ("33288", "Yogg-Saron"))
 
   val blankBoss = Boss("Example", "Example", 0, 0, Zone("Example", "Example"))
 }
@@ -18,7 +18,7 @@ object Boss {
 case class BossForm(id: Int)
 
 object BossForm {
-  val bossForm = Form(
+  val bossForm: Form[BossForm] = Form(
     mapping(
       "bossID:" -> number
     )(BossForm.apply)(BossForm.unapply)
