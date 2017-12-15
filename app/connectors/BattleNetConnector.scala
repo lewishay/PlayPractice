@@ -13,13 +13,21 @@ class BattleNetConnector @Inject()(ws: WSClient) {
   def bossUrl(bossID: String): String = s"https://eu.api.battle.net/wow/boss/$bossID?locale=en_GBS&apikey=$apiKey"
   def zoneUrl(zoneID: String): String = s"https://eu.api.battle.net/wow/zone/$zoneID?locale=en_GB&apikey=$apiKey"
 
-  def getBoss(bossID: Int)(implicit ec: ExecutionContext): Future[WSResponse] = {
+  def getBoss(bossID: Int)(implicit ec: ExecutionContext): Future[String] = {
     val request: WSRequest = ws.url(bossUrl(bossID.toString))
-    request.get()
+    request.get().map { response =>
+      response.body
+    }.recover {
+      case _ => "Request failed!"
+    }
   }
 
-  def getZone(zoneID: Int)(implicit ec: ExecutionContext): Future[WSResponse] = {
+  def getZone(zoneID: Int)(implicit ec: ExecutionContext): Future[String] = {
     val request: WSRequest = ws.url(zoneUrl(zoneID.toString))
-    request.get()
+    request.get().map { response =>
+      response.body
+    }.recover {
+      case _ => "Request failed!"
+    }
   }
 }

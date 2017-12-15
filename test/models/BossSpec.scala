@@ -16,14 +16,13 @@
 
 package models
 
+import common.Common
 import org.scalatest.{Matchers, WordSpecLike}
 import play.api.libs.json.Json
 
 class BossSpec  extends WordSpecLike with Matchers {
 
   "A Boss" should {
-
-    val exampleBoss = Boss("Example", "Example", 0, 0, Zone("Example", "Example"))
 
     val exampleString =
       """{
@@ -36,13 +35,13 @@ class BossSpec  extends WordSpecLike with Matchers {
         .stripMargin.replace("\n", "")
 
     "parse from JSON" in {
-      val result = Json.toJson(exampleBoss).toString
+      val result = Json.toJson(Common.exampleBoss).toString
       result shouldEqual exampleString
     }
 
     "be parsed from appropriate JSON" in {
       val result = Json.parse(exampleString).as[Boss]
-      result shouldEqual exampleBoss
+      result shouldEqual Common.exampleBoss
     }
   }
 }

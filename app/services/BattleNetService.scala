@@ -13,7 +13,7 @@ class BattleNetService @Inject()(connector: BattleNetConnector) {
 
   def getBoss(bossID: Int)(implicit ec: ExecutionContext): Future[Boss] = {
     connector.getBoss(bossID).map { result =>
-      val rawBoss: JsValue = Json.parse(result.body)
+      val rawBoss: JsValue = Json.parse(result)
       val description: String = (rawBoss \ "description").asOpt[String] match {
         case Some(x) => x
         case _ => "Not found!"
@@ -30,7 +30,7 @@ class BattleNetService @Inject()(connector: BattleNetConnector) {
 
   def getZone(zoneID: Int)(implicit ec: ExecutionContext): Future[Zone] = {
     connector.getZone(zoneID).map { result =>
-      val rawZone = Json.parse(result.body)
+      val rawZone = Json.parse(result)
       Zone(
         (rawZone \ "name").as[String],
         (rawZone \ "location" \ "name").as[String]
