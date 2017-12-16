@@ -23,8 +23,10 @@ class BattleNetService @Inject()(connector: BattleNetConnector) {
         description,
         (rawBoss \ "health").as[Int],
         (rawBoss \ "level").as[Int],
-        Await.result(getZone((rawBoss \ "zoneId").as[Int]), Duration(10, "seconds"))
+        Await.result(getZone((rawBoss \ "zoneId").as[Int]), Duration(5, "seconds"))
       )
+    }.recoverWith {
+      case _ => Future.failed(new Exception("Request failed!"))
     }
   }
 
@@ -35,6 +37,8 @@ class BattleNetService @Inject()(connector: BattleNetConnector) {
         (rawZone \ "name").as[String],
         (rawZone \ "location" \ "name").as[String]
       )
+    }.recoverWith {
+      case _ => Future.failed(new Exception("Request failed!"))
     }
   }
 }

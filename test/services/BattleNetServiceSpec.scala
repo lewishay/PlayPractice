@@ -5,41 +5,71 @@ import connectors.BattleNetConnector
 import controllers.ControllerBaseSpec
 import models.Boss
 
-import scala.concurrent.ExecutionContext.Implicits._
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class BattleNetServiceSpec extends ControllerBaseSpec {
 
   private trait Test {
     val mockConnector: BattleNetConnector = mock[BattleNetConnector]
-    val response: String
+    implicit val ec: ExecutionContext = ExecutionContext.global
+    val requestFailed = new Exception("Request failed!")
+    val successfulRequest: Boolean
+
+    val bossReturnString: String =
+      """{
+        |"name":"Example",
+        |"description":"Example",
+        |"health":0,
+        |"level":0,
+        |"zoneId":0
+        |}"""
+        .stripMargin.replace("\n", "")
+
+    val zoneReturnString: String =
+      """{
+        |"name":"Example",
+        |"location":{"name":"Example"}
+        |}"""
+        .stripMargin.replace("\n", "")
+
+    def setup(): Any = {
+      if(successfulRequest) {
+        (mockConnector.getBoss(_: Int)(_: ExecutionContext))
+          .expects(*, *)
+          .returns(Future.successful(bossReturnString))
+
+        (mockConnector.getZone(_: Int)(_: ExecutionContext))
+          .expects(*, *)
+          .returns(Future.successful(zoneReturnString))
+      } else {
+        (mockConnector.getBoss(_: Int)(_: ExecutionContext))
+          .expects(*, *)
+          .returns(Future.failed(requestFailed))
+      }
+    }
 
     lazy val service: BattleNetService = {
-      (mockConnector.getBoss(_: Int))
-        .expects(77)
-        .returns(Future.successful(response))
-
+      setup()
       new BattleNetService(mockConnector)
     }
   }
 
   "Calling getBoss()" when {
 
-    "a boss is found" should {
+    "a request is successful" should {
 
       "return a boss" in new Test {
-        override val response: String = Common.exampleBoss.toString
-        val result: Future[Boss] = service.getBoss(77)
-        result shouldBe Some(Common.exampleBoss)
+        override val successfulRequest = true
+        val result: Boss = await(service.getBoss(1234))
+        result shouldBe Common.exampleBoss
       }
     }
 
-    "a boss is not found" should {
+    "a request is not successful" should {
 
-      "return ?" in new Test {
-        override val response: String = "Request failed!"
-        val result: Future[Boss] = service.getBoss(88)
-        result shouldBe "Request failed!"
+      "return an exception" in new Test {
+        override val successfulRequest = false
+        intercept[Exception](await(service.getBoss(1234)))
       }
     }
   }

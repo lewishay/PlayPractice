@@ -17,8 +17,8 @@ class BattleNetConnector @Inject()(ws: WSClient) {
     val request: WSRequest = ws.url(bossUrl(bossID.toString))
     request.get().map { response =>
       response.body
-    }.recover {
-      case _ => "Request failed!"
+    }.recoverWith {
+      case _ => Future.failed(new Exception("Request failed!"))
     }
   }
 
@@ -26,8 +26,8 @@ class BattleNetConnector @Inject()(ws: WSClient) {
     val request: WSRequest = ws.url(zoneUrl(zoneID.toString))
     request.get().map { response =>
       response.body
-    }.recover {
-      case _ => "Request failed!"
+    }.recoverWith {
+      case _ => Future.failed(new Exception("Request failed!"))
     }
   }
 }
