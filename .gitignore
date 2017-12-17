@@ -1,7 +1,8 @@
+lib_managed/
 logs
 project/project
 project/target
-target
+target/
 tmp
 .history
 dist

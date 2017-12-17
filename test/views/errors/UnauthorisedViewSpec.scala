@@ -14,7 +14,7 @@ class UnauthorisedViewSpec extends ViewBaseSpec {
   lazy val view = views.html.errors.unauthorised()
   lazy implicit val document: Document = Jsoup.parse(view.body)
 
-  "The Home page" should {
+  "The Unauthorised page" should {
 
     "have the correct title" in {
       elementText(Selectors.title) shouldBe "Unauthorised"
