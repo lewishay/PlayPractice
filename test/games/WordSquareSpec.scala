@@ -24,7 +24,7 @@ class WordSquareSpec extends WordSpecLike with Matchers {
 
     "generate a valid word square from a single word with no spaces" in {
 
-      val result = WordSquare.generateSquare("hello")
+      val result = WordSquare.generateSquare("heLLo")
 
       val expectedResult = Array("H E L L O",
                                 "E       L",
@@ -37,7 +37,7 @@ class WordSquareSpec extends WordSpecLike with Matchers {
 
     "generate a valid word square from a sentence with multiple spaces" in {
 
-      val result = WordSquare.generateSquare("how are you")
+      val result = WordSquare.generateSquare("hoW arE yOu")
 
       val expectedResult = Array("H O W   A R E   Y O U",
                                 "O                   O",

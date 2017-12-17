@@ -1,7 +1,5 @@
 package models
 
-import play.api.data.Form
-import play.api.data.Forms._
 import play.api.libs.json.{Format, Json}
 
 case class Boss(name: String, description: String, health: Int, level: Int, zone: Zone)
@@ -15,12 +13,4 @@ object Boss {
   val blankBoss = Boss("Example", "Example", 0, 0, Zone("Example", "Example"))
 }
 
-case class BossForm(id: Int)
 
-object BossForm {
-  val bossForm: Form[BossForm] = Form(
-    mapping(
-      "bossID:" -> number
-    )(BossForm.apply)(BossForm.unapply)
-  )
-}

@@ -1,6 +1,7 @@
+@import forms.WordForm
 @import games.WordSquare
 
-@(word: String, wordForm: Form[Word] = Word.wordForm)(implicit messages: Messages)
+@(word: String, wordForm: Form[WordForm] = WordForm.wordForm)(implicit messages: Messages)
 
 @main("Word square") {
   <section>

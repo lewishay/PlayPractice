@@ -2,7 +2,8 @@ package controllers
 
 import javax.inject.Inject
 
-import models.{Boss, BossForm, Zone}
+import forms.BossForm
+import models.Boss
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import services.BattleNetService
