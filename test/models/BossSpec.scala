@@ -4,7 +4,7 @@ import common.Common
 import org.scalatest.{Matchers, WordSpecLike}
 import play.api.libs.json.Json
 
-class BossSpec  extends WordSpecLike with Matchers {
+class BossSpec extends WordSpecLike with Matchers {
 
   val exampleString: String =
     """{
