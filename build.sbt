@@ -30,28 +30,28 @@ def oneForkedJvmPerTest(tests: Seq[TestDefinition]): Seq[Group] = tests map {
     )
 }
 
-//lazy val coverageSettings: Seq[Setting[_]] = {
-//  import scoverage.ScoverageKeys
-//
-//  val excludedPackages = Seq(
-//    "<empty>",
-//    "Reverse.*",
-//    "app.*",
-//    "config.*",
-//  )
-//
-//  Seq(
-//    ScoverageKeys.coverageExcludedPackages := excludedPackages.mkString(";"),
-//    ScoverageKeys.coverageMinimum := 90,
-//    ScoverageKeys.coverageFailOnMinimum := false,
-//    ScoverageKeys.coverageHighlighting := true
-//  )
-//}
+lazy val coverageSettings: Seq[Setting[_]] = {
+  import scoverage.ScoverageKeys
+
+  val excludedPackages = Seq(
+    "<empty>",
+    "Reverse.*",
+    "app.*",
+    "config.*"
+  )
+
+  Seq(
+    ScoverageKeys.coverageExcludedPackages := excludedPackages.mkString(";"),
+    ScoverageKeys.coverageMinimum := 90,
+    ScoverageKeys.coverageFailOnMinimum := false,
+    ScoverageKeys.coverageHighlighting := true
+  )
+}
 
 lazy val project: Project = Project(appName, file("."))
   .enablePlugins(Seq(PlayScala) ++ plugins: _*)
   .settings(playSettings: _*)
-//  .settings(coverageSettings: _*)
+  .settings(coverageSettings: _*)
   .settings(
     scalaVersion := "2.11.11",
     libraryDependencies ++= appDependencies,
