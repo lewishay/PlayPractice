@@ -9,16 +9,16 @@ lazy val playSettings: Seq[Setting[_]] = Seq.empty
 val compile: Seq[ModuleID] = Seq(
   ws,
   ehcache,
-  guice,
-  "org.jsoup" % "jsoup" % "1.10.3" % "test"
+  guice
 )
 
 def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
+  "com.github.tomakehurst" % "wiremock" % "2.6.0" % "test",
   "com.typesafe.play" %% "play-test" % PlayVersion.current % "test",
+  "org.jsoup" % "jsoup" % "1.10.3" % "test",
   "org.scalatest" %% "scalatest" % "3.0.1" % "test",
   "org.scalamock" %% "scalamock-scalatest-support" % "3.6.0" % "test",
-  "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.0" % "test",
-  "com.github.tomakehurst" % "wiremock" % "2.6.0" % "test"
+  "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.0" % "test"
 )
 
 def oneForkedJvmPerTest(tests: Seq[TestDefinition]): Seq[Group] = tests map {
@@ -37,7 +37,7 @@ lazy val coverageSettings: Seq[Setting[_]] = {
     "<empty>",
     "Reverse.*",
     "app.*",
-    "config.*"
+    "router.*"
   )
 
   Seq(

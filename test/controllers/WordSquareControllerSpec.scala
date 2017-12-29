@@ -2,7 +2,6 @@ package controllers
 
 import play.api.http.Status
 import play.api.mvc.Result
-import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
 import scala.concurrent.Future
@@ -11,7 +10,7 @@ class WordSquareControllerSpec extends ControllerBaseSpec {
 
   "Calling the exampleWordSquare action" should {
 
-    val result: Future[Result] = new WordSquareController(cc).exampleWordSquare(FakeRequest())
+    val result: Future[Result] = new WordSquareController(cc).exampleWordSquare(fakeRequest)
 
     "return 200" in {
       status(result) shouldBe Status.OK
@@ -28,7 +27,7 @@ class WordSquareControllerSpec extends ControllerBaseSpec {
     "there are no errors in the form" should {
 
       val result: Future[Result] = new WordSquareController(cc).wordSquare(
-        FakeRequest().withFormUrlEncodedBody(
+        fakeRequest.withFormUrlEncodedBody(
           ("word", "TEST")
         )
       )
@@ -46,7 +45,7 @@ class WordSquareControllerSpec extends ControllerBaseSpec {
     "there are errors in the form" should {
 
       val result: Future[Result] = new WordSquareController(cc).wordSquare(
-        FakeRequest().withFormUrlEncodedBody(
+        fakeRequest.withFormUrlEncodedBody(
           ("word", "££!££$$%^%$$")
         )
       )

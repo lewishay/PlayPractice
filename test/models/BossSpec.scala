@@ -14,13 +14,14 @@ class BossSpec extends WordSpecLike with Matchers {
       |"level":0,
       |"zone":{"name":"Example","location":"Example"}
       |}"""
-      .stripMargin.replace("\n", "")
+      .stripMargin
 
   "A Boss" should {
 
     "parse from JSON" in {
-      val result = Json.toJson(Common.exampleBoss).toString
-      result shouldEqual exampleString
+      val result = Json.toJson(Common.exampleBoss)
+      val expectedResult = Json.parse(exampleString)
+      result shouldEqual expectedResult
     }
 
     "be parsed from appropriate JSON" in {

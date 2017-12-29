@@ -11,8 +11,9 @@ class ZoneSpec extends WordSpecLike with Matchers {
   "A Zone" should {
 
     "parse from JSON" in {
-      val result = Json.toJson(Common.exampleZone).toString
-      result shouldEqual exampleString
+      val result = Json.toJson(Common.exampleZone)
+      val expectedResult = Json.parse(exampleString)
+      result shouldEqual expectedResult
     }
 
     "be parsed from appropriate JSON" in {

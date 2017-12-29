@@ -2,7 +2,6 @@ package controllers
 
 import play.api.http.Status
 import play.api.mvc.Result
-import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.BattleNetService
 
@@ -15,7 +14,7 @@ class BossControllerSpec extends ControllerBaseSpec {
 
   "Calling the blankBoss action" should {
 
-    val result: Future[Result] = new BossController(cc, mockService, ec).blankBoss(FakeRequest())
+    val result: Future[Result] = new BossController(cc, mockService, ec).blankBoss(fakeRequest)
 
     "return 200" in {
       status(result) shouldBe Status.OK
