@@ -37,4 +37,25 @@ class AuthenticationHelpersSpec extends ControllerBaseSpec {
       }
     }
   }
+
+  "Validating a user" when {
+
+    "the user is an admin" should {
+
+      "return the admin's username" in {
+        val creds: Credentials = Credentials("admin", "cactus")
+        val result: Option[String] = AuthenticationHelpers.validateUser(creds)
+        result.get shouldBe creds.username
+      }
+    }
+
+    "the user is not an admin" should {
+
+      "return None" in {
+        val creds: Credentials = Credentials("pete", "zahut")
+        val result: Option[String] = AuthenticationHelpers.validateUser(creds)
+        result shouldBe None
+      }
+    }
+  }
 }
