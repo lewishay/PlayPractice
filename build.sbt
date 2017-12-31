@@ -13,12 +13,12 @@ val compile: Seq[ModuleID] = Seq(
 )
 
 def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
-  "com.github.tomakehurst" % "wiremock" % "2.6.0" % "test",
-  "com.typesafe.play" %% "play-test" % PlayVersion.current % "test",
-  "org.jsoup" % "jsoup" % "1.10.3" % "test",
-  "org.scalatest" %% "scalatest" % "3.0.1" % "test",
-  "org.scalamock" %% "scalamock-scalatest-support" % "3.6.0" % "test",
-  "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.0" % "test"
+  "com.github.tomakehurst" % "wiremock" % "2.6.0" % scope,
+  "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
+  "org.jsoup" % "jsoup" % "1.10.3" % scope,
+  "org.scalatest" %% "scalatest" % "3.0.1" % scope,
+  "org.scalamock" %% "scalamock-scalatest-support" % "3.6.0" % scope,
+  "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.0" % scope
 )
 
 def oneForkedJvmPerTest(tests: Seq[TestDefinition]): Seq[Group] = tests map {
@@ -48,6 +48,24 @@ lazy val coverageSettings: Seq[Setting[_]] = {
   )
 }
 
+val jettyVersion = "9.2.13.v20150730"
+val jettyDependencies = Set(
+  "org.eclipse.jetty" % "jetty-server" % jettyVersion,
+  "org.eclipse.jetty" % "jetty-servlet" % jettyVersion,
+  "org.eclipse.jetty" % "jetty-security" % jettyVersion,
+  "org.eclipse.jetty" % "jetty-servlets" % jettyVersion,
+  "org.eclipse.jetty" % "jetty-continuation" % jettyVersion,
+  "org.eclipse.jetty" % "jetty-webapp" % jettyVersion,
+  "org.eclipse.jetty" % "jetty-xml" % jettyVersion,
+  "org.eclipse.jetty" % "jetty-client" % jettyVersion,
+  "org.eclipse.jetty" % "jetty-http" % jettyVersion,
+  "org.eclipse.jetty" % "jetty-io" % jettyVersion,
+  "org.eclipse.jetty" % "jetty-util" % jettyVersion,
+  "org.eclipse.jetty.websocket" % "websocket-api" % jettyVersion,
+  "org.eclipse.jetty.websocket" % "websocket-common" % jettyVersion,
+  "org.eclipse.jetty.websocket" % "websocket-client" % jettyVersion
+)
+
 lazy val project: Project = Project(appName, file("."))
   .enablePlugins(Seq(PlayScala) ++ plugins: _*)
   .settings(playSettings: _*)
@@ -55,6 +73,7 @@ lazy val project: Project = Project(appName, file("."))
   .settings(
     scalaVersion := "2.11.11",
     libraryDependencies ++= appDependencies,
+    dependencyOverrides ++= jettyDependencies,
     retrieveManaged := true,
     evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
     routesGenerator := InjectedRoutesGenerator
