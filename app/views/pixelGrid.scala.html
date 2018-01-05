@@ -1,0 +1,13 @@
+@import models.PixelGrid
+
+@(pixelGrid: PixelGrid)
+
+@main("Pixel grid") {
+  <section>
+    <div class="container">
+      <div class="row">
+        @pixelGrid.gridHtml
+      </div>
+    </div>
+  </section>
+}
