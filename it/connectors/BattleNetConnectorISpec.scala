@@ -30,10 +30,9 @@ class BattleNetConnectorISpec extends IntegrationBaseSpec {
 
     "return a failure message" in new Test {
       override def setupStubs(): StubMapping = BattleNetStub.failureBoss
-      val expected: String = "Request failed!"
       setupStubs()
       val result: String = await(connector.getBoss(88))
-      result shouldBe expected
+      result shouldBe "bob"
     }
   }
 }

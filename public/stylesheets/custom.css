@@ -23,3 +23,9 @@
   background-color: #18BC9C;
   color: #FFFFFF;
 }
+
+table.fixed {
+  table-layout: fixed;
+  width: 368px;
+  height: 368px;
+}
