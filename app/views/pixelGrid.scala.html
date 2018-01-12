@@ -6,7 +6,12 @@
   <section>
     <div class="container">
       <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-6" align="center">
+          <form class="big-form" method="post" action="@controllers.routes.PixelGridController.changeGrid">
+            <button type="submit">Transform!</button>
+          </form>
+        </div>
+        <div class="col-lg-6">
           @pixelGrid.gridHtml
         </div>
       </div>

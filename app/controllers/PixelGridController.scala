@@ -11,4 +11,8 @@ class PixelGridController  @Inject()(cc: ControllerComponents) extends AbstractC
   def blankGrid: Action[AnyContent] = Action {
     Ok(views.html.pixelGrid(checkedGrid))
   }
+
+  def changeGrid: Action[AnyContent] = Action {
+    Ok(views.html.pixelGrid(scalaClass))
+  }
 }
