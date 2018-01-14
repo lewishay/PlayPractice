@@ -8,11 +8,11 @@ import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponent
 
 class PixelGridController  @Inject()(cc: ControllerComponents) extends AbstractController(cc) with I18nSupport {
 
-  def blankGrid: Action[AnyContent] = Action {
+  def checkGrid: Action[AnyContent] = Action {
     Ok(views.html.pixelGrid(checkedGrid))
   }
 
-  def changeGrid: Action[AnyContent] = Action {
+  def scalaGrid: Action[AnyContent] = Action {
     Ok(views.html.pixelGrid(scalaClass))
   }
 }

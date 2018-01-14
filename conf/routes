@@ -10,8 +10,8 @@ GET     /word-square                controllers.WordSquareController.exampleWord
 POST    /word-square                controllers.WordSquareController.wordSquare
 GET     /boss                       controllers.BossController.blankBoss
 POST    /boss                       controllers.BossController.getBoss
-GET     /pixel-grid                 controllers.PixelGridController.blankGrid
-POST    /pixel-grid                 controllers.PixelGridController.changeGrid
+GET     /pixel-grid                 controllers.PixelGridController.checkGrid
+POST    /pixel-grid                 controllers.PixelGridController.scalaGrid
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

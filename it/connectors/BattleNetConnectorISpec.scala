@@ -31,8 +31,29 @@ class BattleNetConnectorISpec extends IntegrationBaseSpec {
     "return a failure message" in new Test {
       override def setupStubs(): StubMapping = BattleNetStub.failureBoss
       setupStubs()
-      val result: String = await(connector.getBoss(88))
-      result shouldBe "bob"
+      intercept[Exception](await(connector.getBoss(88)))
     }
   }
+
+  "Calling getZone with a valid Zone ID" should {
+
+    "return a Zone" in new Test {
+      override def setupStubs(): StubMapping = BattleNetStub.successfulZone
+      val expected: String = Common.exampleZone.toString
+      setupStubs()
+      val result: String = await(connector.getZone(77))
+      result shouldBe expected
+    }
+  }
+
+  "Calling getBoss with an invalid Zone ID" should {
+
+    "return a failure message" in new Test {
+      override def setupStubs(): StubMapping = BattleNetStub.failureZone
+      setupStubs()
+      intercept[Exception](await(connector.getZone(88)))
+    }
+  }
+
+  //TODO - Fix the two tests above which should return exceptions
 }
