@@ -9,51 +9,40 @@ import scala.concurrent.ExecutionContext
 
 class BattleNetConnectorISpec extends IntegrationBaseSpec {
 
-  private trait Test {
-    def setupStubs(): StubMapping
-    implicit val ec: ExecutionContext = ExecutionContext.global
-    val connector: BattleNetConnector = app.injector.instanceOf[BattleNetConnector]
-  }
+  implicit val ec: ExecutionContext = ExecutionContext.global
+  val connector: BattleNetConnector = app.injector.instanceOf[BattleNetConnector]
 
-  "Calling getBoss with a valid Boss ID" should {
+  "Calling getBoss with a valid URL" should {
 
-    "return a Boss" in new Test {
-      override def setupStubs(): StubMapping = BattleNetStub.successfulBoss
-      val expected: String = Common.exampleBoss.toString
+    "return a Boss" in {
+      def setupStubs(): StubMapping = BattleNetStub.successfulBoss
       setupStubs()
       val result: String = await(connector.getBoss(77))
-      result shouldBe expected
+      result shouldBe Common.exampleBoss.toString
     }
   }
 
-  "Calling getBoss with an invalid Boss ID" should {
+  "Calling getBoss with an invalid URL" should {
 
-    "return a failure message" in new Test {
-      override def setupStubs(): StubMapping = BattleNetStub.failureBoss
-      setupStubs()
-      intercept[Exception](await(connector.getBoss(88)))
+    "return an exception" in {
+      intercept[Exception](await(connector.getBoss(77, overrideUrl = true)))
     }
   }
 
-  "Calling getZone with a valid Zone ID" should {
+  "Calling getZone with a valid URL" should {
 
-    "return a Zone" in new Test {
-      override def setupStubs(): StubMapping = BattleNetStub.successfulZone
-      val expected: String = Common.exampleZone.toString
+    "return a Zone" in {
+      def setupStubs(): StubMapping = BattleNetStub.successfulZone
       setupStubs()
       val result: String = await(connector.getZone(77))
-      result shouldBe expected
+      result shouldBe Common.exampleZone.toString
     }
   }
 
-  "Calling getBoss with an invalid Zone ID" should {
+  "Calling getZone with an invalid URL" should {
 
-    "return a failure message" in new Test {
-      override def setupStubs(): StubMapping = BattleNetStub.failureZone
-      setupStubs()
-      intercept[Exception](await(connector.getZone(88)))
+    "return an exception" in {
+      intercept[Exception](await(connector.getZone(77, overrideUrl = true)))
     }
   }
-
-  //TODO - Fix the two tests above which should return exceptions
 }
