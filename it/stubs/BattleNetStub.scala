@@ -17,4 +17,12 @@ object BattleNetStub extends WireMockMethods {
   def successfulZone: StubMapping = {
     when(method = GET, uri = zoneUri).thenReturn(status = OK, body = Common.exampleZone.toString)
   }
+
+  def failureBoss: StubMapping = {
+    when(method = GET, uri = bossUri).thenReturn(status = FORBIDDEN)
+  }
+
+  def failureZone: StubMapping = {
+    when(method = GET, uri = zoneUri).thenReturn(status = FORBIDDEN)
+  }
 }

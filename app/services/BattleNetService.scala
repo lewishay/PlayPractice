@@ -2,6 +2,7 @@ package services
 
 import javax.inject.Inject
 
+import common.Common
 import connectors.BattleNetConnector
 import models.{Boss, Zone}
 import play.api.libs.json.{JsValue, Json}
@@ -12,31 +13,35 @@ import scala.concurrent.{Await, ExecutionContext, Future}
 class BattleNetService @Inject()(connector: BattleNetConnector) {
 
   def getBoss(bossID: Int)(implicit ec: ExecutionContext): Future[Boss] = {
-    connector.getBoss(bossID).map { result =>
-      val rawBoss: JsValue = Json.parse(result)
-      val description: String = (rawBoss \ "description").asOpt[String] match {
-        case Some(x) => x
-        case _ => "Not found!"
-      }
-      Boss(
-        (rawBoss \ "name").as[String],
-        description,
-        (rawBoss \ "health").as[Int],
-        (rawBoss \ "level").as[Int],
-        Await.result(getZone((rawBoss \ "zoneId").as[Int]), Duration(5, "seconds"))
-      )
+    connector.getBoss(bossID).map {
+      case result if result == "Request failed!" => Common.blankBoss
+      case result =>
+        val rawBoss: JsValue = Json.parse(result)
+        val description: String = (rawBoss \ "description").asOpt[String] match {
+          case Some(x) => x
+          case _ => "Not found!"
+        }
+        Boss(
+          (rawBoss \ "name").as[String],
+          description,
+          (rawBoss \ "health").as[Int],
+          (rawBoss \ "level").as[Int],
+          Await.result(getZone((rawBoss \ "zoneId").as[Int]), Duration(5, "seconds"))
+        )
     }.recoverWith {
       case _ => Future.failed(new Exception("Request failed!"))
     }
   }
 
   def getZone(zoneID: Int)(implicit ec: ExecutionContext): Future[Zone] = {
-    connector.getZone(zoneID).map { result =>
-      val rawZone = Json.parse(result)
-      Zone(
-        (rawZone \ "name").as[String],
-        (rawZone \ "location" \ "name").as[String]
-      )
+    connector.getZone(zoneID).map {
+      case result if result == "Request failed!" => Common.exampleZone
+      case result =>
+        val rawZone = Json.parse(result)
+        Zone(
+          (rawZone \ "name").as[String],
+          (rawZone \ "location" \ "name").as[String]
+        )
     }.recoverWith {
       case _ => Future.failed(new Exception("Request failed!"))
     }

@@ -34,16 +34,16 @@ class BattleNetServiceSpec extends ControllerBaseSpec {
 
     def setup(): Any = {
       if(successfulRequest) {
-        (mockConnector.getBoss(_: Int, _: Boolean)(_: ExecutionContext))
-          .expects(*, *, *)
+        (mockConnector.getBoss(_: Int)(_: ExecutionContext))
+          .expects(*, *)
           .returns(Future.successful(bossReturnString))
 
-        (mockConnector.getZone(_: Int, _: Boolean)(_: ExecutionContext))
-          .expects(*, *, *)
+        (mockConnector.getZone(_: Int)(_: ExecutionContext))
+          .expects(*, *)
           .returns(Future.successful(zoneReturnString))
       } else {
-        (mockConnector.getBoss(_: Int, _: Boolean)(_: ExecutionContext))
-          .expects(*, *, *)
+        (mockConnector.getBoss(_: Int)(_: ExecutionContext))
+          .expects(*, *)
           .returns(Future.failed(requestFailed))
       }
     }

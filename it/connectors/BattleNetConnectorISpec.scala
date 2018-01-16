@@ -12,7 +12,7 @@ class BattleNetConnectorISpec extends IntegrationBaseSpec {
   implicit val ec: ExecutionContext = ExecutionContext.global
   val connector: BattleNetConnector = app.injector.instanceOf[BattleNetConnector]
 
-  "Calling getBoss with a valid URL" should {
+  "Calling getBoss with a valid Boss ID" should {
 
     "return a Boss" in {
       def setupStubs(): StubMapping = BattleNetStub.successfulBoss
@@ -22,14 +22,17 @@ class BattleNetConnectorISpec extends IntegrationBaseSpec {
     }
   }
 
-  "Calling getBoss with an invalid URL" should {
+  "Calling getBoss with an invalid Boss ID" should {
 
     "return an exception" in {
-      intercept[Exception](await(connector.getBoss(77, overrideUrl = true)))
+      def setupStubs(): StubMapping = BattleNetStub.failureBoss
+      setupStubs()
+      val result: String = await(connector.getBoss(88))
+      result shouldBe "Request failed!"
     }
   }
 
-  "Calling getZone with a valid URL" should {
+  "Calling getZone with a valid Zone ID" should {
 
     "return a Zone" in {
       def setupStubs(): StubMapping = BattleNetStub.successfulZone
@@ -39,10 +42,13 @@ class BattleNetConnectorISpec extends IntegrationBaseSpec {
     }
   }
 
-  "Calling getZone with an invalid URL" should {
+  "Calling getZone with an invalid Zone ID" should {
 
     "return an exception" in {
-      intercept[Exception](await(connector.getZone(77, overrideUrl = true)))
+      def setupStubs(): StubMapping = BattleNetStub.failureZone
+      setupStubs()
+      val result: String = await(connector.getZone(88))
+      result shouldBe "Request failed!"
     }
   }
 }

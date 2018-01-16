@@ -6,4 +6,5 @@ object Common {
 
   val exampleZone: Zone = Zone("Example", "Example")
   val exampleBoss: Boss = Boss("Example", "Example", 0, 0, exampleZone)
+  val blankBoss: Boss = Boss("Example", "Example", 0, 0, Zone("Example", "Example"))
 }
