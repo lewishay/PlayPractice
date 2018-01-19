@@ -12,9 +12,9 @@ object Grids {
     )
   }
 
-  private def mapGenerator(colours: Seq[String]): PixelGrid = {
+  private def mapGenerator(name: String, colours: Seq[String]): PixelGrid = {
     val result = coordinates.zip(colours)
-    new PixelGrid(Map(result: _*))
+    new PixelGrid(name, Map(result: _*))
   }
 
   def checkedGrid: PixelGrid = {
@@ -22,7 +22,7 @@ object Grids {
       case (a, b) => Seq(a, b)
     }
     val twoRows: Seq[String] = row ++ row.reverse
-    mapGenerator(Seq.fill(256)(twoRows).flatten)
+    mapGenerator("Checked grid", Seq.fill(256)(twoRows).flatten)
   }
 
   def scalaClass: PixelGrid = {
@@ -34,7 +34,9 @@ object Grids {
     val rowFive = Seq("#ffffff", "#ffffff", "#86BEE3", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#000000", "#000000", "#000000", "#000000", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#86BEE3", "#ffffff", "#ffffff")
     val rowSix = Seq("#ffffff", "#86BEE3", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#000000", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#86BEE3", "#ffffff")
     val rowSeven = Seq("#ffffff", "#7AB9DF", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#000000", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#7AB9DF", "#ffffff")
-    mapGenerator(Seq(blankRow, rowOne, rowTwo, rowThree, rowFour, rowFive, rowSix, rowSeven, rowSeven,
-      rowSix, rowFive, rowFour, rowThree, rowTwo, rowOne, blankRow).flatten)
+    mapGenerator("Scala class",
+      Seq(blankRow, rowOne, rowTwo, rowThree, rowFour, rowFive, rowSix, rowSeven, rowSeven,
+      rowSix, rowFive, rowFour, rowThree, rowTwo, rowOne, blankRow).flatten
+    )
   }
 }

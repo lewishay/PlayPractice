@@ -1,18 +1,22 @@
 @import models.PixelGrid
 
-@(pixelGrid: PixelGrid)
+@(grids: Seq[PixelGrid], gridName: String)
 
 @main("Pixel grid") {
   <section>
     <div class="container">
       <div class="row">
-        <div class="col-lg-6" align="center">
-          <form class="big-form" method="post" action="@controllers.routes.PixelGridController.scalaGrid">
-            <button type="submit">Transform!</button>
-          </form>
-        </div>
+        @grids.map { grid =>
+          <div class="col-lg-6" align="center">
+            <form class="big-form" method="post" action="@controllers.routes.PixelGridController.loadGrid("Scala class")">
+              <button type="submit">@grid.name</button>
+            </form>
+          </div>
+        }
         <div class="col-lg-6">
-          @pixelGrid.gridHtml
+          @grids.collectFirst {
+            case grid if grid.name == gridName => grid.gridHtml
+          }.getOrElse("ERROR LOADING GRID")
         </div>
       </div>
     </div>
