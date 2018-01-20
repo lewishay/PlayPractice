@@ -2,7 +2,7 @@ package models
 
 import play.twirl.api.Html
 
-class PixelGrid(name: String, grid: Map[(Int, Int), String]) {
+case class PixelGrid(name: String, grid: Map[(Int, Int), String]) {
 
   val gridHtml: Html = Html(
     s"""

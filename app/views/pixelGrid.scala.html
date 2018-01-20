@@ -6,17 +6,20 @@
   <section>
     <div class="container">
       <div class="row">
-        @grids.map { grid =>
-          <div class="col-lg-6" align="center">
-            <form class="big-form" method="post" action="@controllers.routes.PixelGridController.loadGrid("Scala class")">
+        <div class="col-lg-6" align="center">
+          @grids.map { grid =>
+            <form class="big-form" method="post" action="@controllers.routes.PixelGridController.loadGrid(grid.name)">
               <button type="submit">@grid.name</button>
             </form>
-          </div>
-        }
+            <br>
+          }
+        </div>
         <div class="col-lg-6">
-          @grids.collectFirst {
-            case grid if grid.name == gridName => grid.gridHtml
-          }.getOrElse("ERROR LOADING GRID")
+          @if(grids.exists(grid => grid.name == gridName)) {
+            @grids.filter(grid => grid.name == gridName).head.gridHtml
+          } else {
+            Error generating grid
+          }
         </div>
       </div>
     </div>

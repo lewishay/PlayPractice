@@ -14,7 +14,7 @@ object Grids {
 
   private def mapGenerator(name: String, colours: Seq[String]): PixelGrid = {
     val result = coordinates.zip(colours)
-    new PixelGrid(name, Map(result: _*))
+    PixelGrid(name, Map(result: _*))
   }
 
   def checkedGrid: PixelGrid = {
@@ -38,5 +38,47 @@ object Grids {
       Seq(blankRow, rowOne, rowTwo, rowThree, rowFour, rowFive, rowSix, rowSeven, rowSeven,
       rowSix, rowFive, rowFour, rowThree, rowTwo, rowOne, blankRow).flatten
     )
+  }
+
+  def oneUpMushroom: PixelGrid = {
+    mapGenerator("1-up mushroom", Seq(
+      Seq("#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"),
+      Seq("#ffffff", "#ffffff", "#ffffff", "#000000", "#000000", "#45e054", "#45e054", "#45e054", "#45e054", "#ffffff", "#ffffff", "#000000", "#000000", "#ffffff", "#ffffff", "#ffffff"),
+      Seq("#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff", "#45e054", "#45e054", "#45e054", "#45e054", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff"),
+      Seq("#ffffff", "#000000", "#ffffff", "#ffffff", "#45e054", "#45e054", "#45e054", "#45e054", "#45e054", "#45e054", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#000000", "#ffffff"),
+      Seq("#ffffff", "#000000", "#ffffff", "#45e054", "#45e054", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#45e054", "#45e054", "#ffffff", "#ffffff", "#ffffff", "#000000", "#ffffff"),
+      Seq("#000000", "#45e054", "#45e054", "#45e054", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#45e054", "#45e054", "#45e054", "#45e054", "#45e054", "#000000"),
+      Seq("#000000", "#45e054", "#45e054", "#45e054", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#45e054", "#45e054", "#ffffff", "#ffffff", "#45e054", "#000000"),
+      Seq("#000000", "#ffffff", "#45e054", "#45e054", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#45e054", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#000000"),
+      Seq("#000000", "#ffffff", "#ffffff", "#45e054", "#45e054", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#45e054", "#45e054", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#000000"),
+      Seq("#000000", "#ffffff", "#ffffff", "#45e054", "#45e054", "#45e054", "#45e054", "#45e054", "#45e054", "#45e054", "#45e054", "#45e054", "#ffffff", "#ffffff", "#45e054", "#000000"),
+      Seq("#000000", "#ffffff", "#45e054", "#45e054", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#45e054", "#45e054", "#45e054", "#000000"),
+      Seq("#ffffff", "#000000", "#000000", "#000000", "#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff", "#000000", "#000000", "#000000", "#ffffff"),
+      Seq("#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff"),
+      Seq("#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff"),
+      Seq("#ffffff", "#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff", "#ffffff"),
+      Seq("#ffffff", "#ffffff", "#ffffff", "#ffffff", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#ffffff", "#ffffff", "#ffffff", "#ffffff")
+    ).flatten)
+  }
+
+  def corruption: PixelGrid = {
+    mapGenerator("Corruption", Seq(
+      Seq("#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"),
+      Seq("#ffffff", "#ffffff", "#ffffff", "#000000", "#000000", "#45e054", "#45e054", "#45e054", "#45e054", "#ffffff", "#ffffff", "#000000", "#000000", "#ffffff", "#ffffff", "#ffffff"),
+      Seq("#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff", "#45e054", "#45e054", "#45e054", "#45e054", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff"),
+      Seq("#fcfbef", "#141200", "#fcfbef", "#141200", "#fcfbef", "#141200", "#fcfbef", "#141200", "#fcfbef", "#141200", "#fcfbef", "#141200", "#fcfbef", "#141200", "#fcfbef", "#141200"),
+      Seq("#ffffff", "#ffffff", "#7AB9DF", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#7AB9DF", "#ffffff", "#ffffff"),
+      Seq("#ffffff", "#ffffff", "#86BEE3", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#000000", "#000000", "#000000", "#000000", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#86BEE3", "#ffffff", "#ffffff"),
+      Seq("#ffffff", "#86BEE3", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#000000", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#86BEE3", "#ffffff"),
+      Seq("#000000", "#ffffff", "#45e054", "#45e054", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#45e054", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#000000"),
+      Seq("#000000", "#ffffff", "#ffffff", "#45e054", "#45e054", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#45e054", "#45e054", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#000000"),
+      Seq("#000000", "#ffffff", "#ffffff", "#45e054", "#45e054", "#45e054", "#45e054", "#45e054", "#45e054", "#45e054", "#45e054", "#45e054", "#ffffff", "#ffffff", "#45e054", "#000000"),
+      Seq("#ffffff", "#ffffff", "#86BEE3", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#000000", "#000000", "#000000", "#000000", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#86BEE3", "#ffffff", "#ffffff"),
+      Seq("#ffffff", "#ffffff", "#7AB9DF", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#A3D6F2", "#7AB9DF", "#ffffff", "#ffffff"),
+      Seq("#fcfbef", "#141200", "#fcfbef", "#141200", "#fcfbef", "#141200", "#fcfbef", "#141200", "#fcfbef", "#141200", "#fcfbef", "#141200", "#fcfbef", "#141200", "#fcfbef", "#141200"),
+      Seq("#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#86BEE3", "#7AB9DF", "#7AB9DF", "#86BEE3", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"),
+      Seq("#ffffff", "#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#000000", "#ffffff", "#ffffff", "#ffffff"),
+      Seq("#ffffff", "#ffffff", "#ffffff", "#ffffff", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#ffffff", "#ffffff", "#ffffff", "#ffffff")
+    ).flatten)
   }
 }

@@ -10,8 +10,8 @@ class PixelGridControllerSpec extends ControllerBaseSpec {
 
   val controller: PixelGridController = new PixelGridController(cc)
 
-  "Calling the checkGrid action" should {
-    val result: Future[Result] = controller.checkGrid(fakeRequest)
+  "Calling the defaultGrid action" should {
+    val result: Future[Result] = controller.defaultGrid(fakeRequest)
 
     "return 200" in {
       status(result) shouldBe Status.OK
@@ -23,8 +23,8 @@ class PixelGridControllerSpec extends ControllerBaseSpec {
     }
   }
 
-  "Calling the scalaGrid action" should {
-    val result: Future[Result] = controller.scalaGrid(fakeRequest)
+  "Calling the loadGrid action" should {
+    val result: Future[Result] = controller.loadGrid("Some grid")(fakeRequest)
 
     "return 200" in {
       status(result) shouldBe Status.OK

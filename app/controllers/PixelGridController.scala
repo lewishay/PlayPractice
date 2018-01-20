@@ -13,7 +13,7 @@ class PixelGridController  @Inject()(cc: ControllerComponents) extends AbstractC
     Ok(views.html.pixelGrid(Common.gridList, "Checked grid"))
   }
 
-  def loadGrid(gridName: String = "Checked grid"): Action[AnyContent] = Action { implicit request =>
-    Ok(views.html.pixelGrid(Seq(checkedGrid, scalaClass), gridName))
+  def loadGrid(gridName: String): Action[AnyContent] = Action { implicit request =>
+    Ok(views.html.pixelGrid(Common.gridList, gridName))
   }
 }
