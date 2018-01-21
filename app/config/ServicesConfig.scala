@@ -15,11 +15,11 @@ trait ServicesConfig {
     getConfString(s"protocol", throw new RuntimeException(s"Could not find config protocol"))
   }
 
-  def getConfString(confKey: String, defString: => String): String = {
+  private def getConfString(confKey: String, defString: => String): String = {
     runModeConfiguration.get[String](s"$rootServices.$confKey")
   }
 
-  def getConfInt(confKey: String, defInt: => Int): Int = {
+  private def getConfInt(confKey: String, defInt: => Int): Int = {
     runModeConfiguration.get[Int](s"$rootServices.$confKey")
   }
 }

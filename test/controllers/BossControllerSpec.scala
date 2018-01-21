@@ -1,8 +1,8 @@
 package controllers
 
 import common.Common
+import models.Boss
 import play.api.http.Status
-import play.api.mvc.Result
 import play.api.test.Helpers._
 import services.BattleNetService
 
@@ -10,61 +10,89 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class BossControllerSpec extends ControllerBaseSpec {
 
-  val uncalledService: BattleNetService = mock[BattleNetService]
-  val calledService: BattleNetService = mock[BattleNetService]
+  private trait Test {
+    val ec: ExecutionContext = ExecutionContext.global
+    val service: BattleNetService = mock[BattleNetService]
+    val serviceCall: Boolean = true
+    val serviceReturn: Future[Boss] = Future.successful(Common.exampleBoss)
 
-  (calledService.getBoss(_: Int)(_: ExecutionContext))
-    .expects(*, *)
-    .returns(Future.successful(Common.exampleBoss))
+    def setup(serviceIsCalled: Boolean, futureReturn: Future[Boss]): Any = {
+      if(serviceIsCalled) {
+        (service.getBoss(_: Int)(_: ExecutionContext))
+          .expects(*, *)
+          .returns(futureReturn)
+      }
+    }
 
-  val ec: ExecutionContext = ExecutionContext.global
+    def controller: BossController = {
+      setup(serviceCall, serviceReturn)
+      new BossController(cc, service, ec)
+    }
+  }
+
 
   "Calling the blankBoss action" should {
 
-    val result: Future[Result] = new BossController(cc, uncalledService, ec).blankBoss(fakeRequest)
-
-    "return 200" in {
+    "return 200" in new Test {
+      override val serviceCall = false
+      val result = controller.blankBoss(fakeRequest)
       status(result) shouldBe Status.OK
     }
 
-    "return HTML" in {
+    "return HTML" in new Test {
+      override val serviceCall = false
+      val result = controller.blankBoss(fakeRequest)
       contentType(result) shouldBe Some("text/html")
       charset(result) shouldBe Some("utf-8")
     }
   }
 
-  "Calling the getBoss action" when {
+  "Calling the getBoss action with no errors in the form" when {
 
-    "there are no errors in the form" should {
+    "the service returns a Boss" should {
 
-      val result: Future[Result] = new BossController(cc, calledService, ec).getBoss(
-        fakeRequest.withFormUrlEncodedBody("bossID" -> "77")
-      )
-
-      "return 200" in {
+      "return 200" in new Test {
+        val result = controller.getBoss(fakeRequest.withFormUrlEncodedBody("bossID" -> "77"))
         status(result) shouldBe Status.OK
       }
 
-      "return HTML" in {
+      "return HTML" in new Test {
+        val result = controller.getBoss(fakeRequest.withFormUrlEncodedBody("bossID" -> "77"))
         contentType(result) shouldBe Some("text/html")
         charset(result) shouldBe Some("utf-8")
       }
     }
 
-    "there are errors in the form" should {
+    "the service returns an exception" should {
 
-      val result: Future[Result] = new BossController(cc, uncalledService, ec).getBoss(
-        fakeRequest.withFormUrlEncodedBody("bossID" -> "text")
-      )
-
-      "return 400" in {
+      "return 400" in new Test {
+        override val serviceReturn: Future[Boss] = Future.failed(new Exception("Request failed!"))
+        val result = controller.getBoss(fakeRequest.withFormUrlEncodedBody("bossID" -> "77"))
         status(result) shouldBe Status.BAD_REQUEST
       }
 
-      "return HTML" in {
+      "return HTML" in new Test {
+        override val serviceReturn: Future[Boss] = Future.failed(new Exception("Request failed!"))
+        val result = controller.getBoss(fakeRequest.withFormUrlEncodedBody("bossID" -> "77"))
         contentType(result) shouldBe Some("text/html")
         charset(result) shouldBe Some("utf-8")
       }
+    }
+  }
+
+  "Calling the getBoss action when there are errors in the form" should {
+
+    "return 400" in new Test {
+      override val serviceCall: Boolean = false
+      val result = controller.getBoss(fakeRequest.withFormUrlEncodedBody("bossID" -> "text"))
+      status(result) shouldBe Status.BAD_REQUEST
+    }
+
+    "return HTML" in new Test {
+      override val serviceCall: Boolean = false
+      val result = controller.getBoss(fakeRequest.withFormUrlEncodedBody("bossID" -> "text"))
+      contentType(result) shouldBe Some("text/html")
+      charset(result) shouldBe Some("utf-8")
     }
   }
 }

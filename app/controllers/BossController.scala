@@ -26,7 +26,7 @@ class BossController @Inject()(cc: ControllerComponents, battleNetService: Battl
       Await.result(battleNetService.getBoss(result.id).map { boss =>
         Ok(views.html.boss(boss))
       }.recoverWith {
-        case _ => Future.successful(Forbidden(views.html.boss(Common.exampleBoss)))
+        case _ => Future.successful(BadRequest(views.html.boss(Common.exampleBoss)))
       }, Duration(10, "seconds"))
     })
   }
