@@ -14,7 +14,7 @@ class BattleNetService @Inject()(connector: BattleNetConnector) {
 
   def getBoss(bossID: Int)(implicit ec: ExecutionContext): Future[Boss] = {
     connector.getBoss(bossID).map {
-      case result if result == "Request failed!" => Common.blankBoss
+      case result if result == "Request failed!" => Common.exampleBoss
       case result =>
         val rawBoss: JsValue = Json.parse(result)
         val description: String = (rawBoss \ "description").asOpt[String] match {

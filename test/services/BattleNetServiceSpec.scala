@@ -3,37 +3,40 @@ package services
 import common.Common
 import connectors.BattleNetConnector
 import controllers.ControllerBaseSpec
-import models.Boss
+import models.{Boss, Zone}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class BattleNetServiceSpec extends ControllerBaseSpec {
 
-  private trait Test {
-    val mockConnector: BattleNetConnector = mock[BattleNetConnector]
-    implicit val ec: ExecutionContext = ExecutionContext.global
-    val requestFailed = new Exception("Request failed!")
-    val successfulRequest: Boolean
+  val mockConnector: BattleNetConnector = mock[BattleNetConnector]
+  implicit val ec: ExecutionContext = ExecutionContext.global
+  val service: BattleNetService = new BattleNetService(mockConnector)
 
-    val bossReturnString: String =
-      """{
-        |"name":"Example",
-        |"description":"Example",
-        |"health":0,
-        |"level":0,
-        |"zoneId":0
-        |}"""
-        .stripMargin.replace("\n", "")
+  "Calling getBoss()" when {
 
-    val zoneReturnString: String =
-      """{
-        |"name":"Example",
-        |"location":{"name":"Example"}
-        |}"""
-        .stripMargin.replace("\n", "")
+    "the connector returns a successful response body" should {
 
-    def setup(): Any = {
-      if(successfulRequest) {
+      val bossReturnString: String =
+        """{
+          |"name":"Fuck",
+          |"description":"Fucking hell",
+          |"health":999,
+          |"level":9,
+          |"zoneId":9
+          |}"""
+          .stripMargin.replace("\n", "")
+
+      val zoneReturnString: String =
+        """{
+          |"name":"Fuck",
+          |"location":{"name":"Fuckland"}
+          |}"""
+          .stripMargin.replace("\n", "")
+
+      val successBoss: Boss = Boss("Fuck", "Fucking hell", 999, 9, Zone("Fuck", "Fuckland"))
+
+      "return a boss" in {
         (mockConnector.getBoss(_: Int)(_: ExecutionContext))
           .expects(*, *)
           .returns(Future.successful(bossReturnString))
@@ -41,34 +44,33 @@ class BattleNetServiceSpec extends ControllerBaseSpec {
         (mockConnector.getZone(_: Int)(_: ExecutionContext))
           .expects(*, *)
           .returns(Future.successful(zoneReturnString))
-      } else {
-        (mockConnector.getBoss(_: Int)(_: ExecutionContext))
-          .expects(*, *)
-          .returns(Future.failed(requestFailed))
+
+        val result: Boss = await(service.getBoss(1234))
+        result shouldBe successBoss
       }
     }
 
-    lazy val service: BattleNetService = {
-      setup()
-      new BattleNetService(mockConnector)
-    }
-  }
+    "the connector returns an unsuccessful response body" should {
 
-  "Calling getBoss()" when {
+      "return the empty default boss" in {
+        (mockConnector.getBoss(_: Int)(_: ExecutionContext))
+          .expects(*, *)
+          .returns(Future.successful("Request failed!"))
 
-    "a request is successful" should {
-
-      "return a boss" in new Test {
-        override val successfulRequest = true
         val result: Boss = await(service.getBoss(1234))
         result shouldBe Common.exampleBoss
       }
     }
 
-    "a request is not successful" should {
+    "the connector fails to return a response" should {
 
-      "return an exception" in new Test {
-        override val successfulRequest = false
+      "return an exception" in {
+        val requestFailed = new Exception("Request failed!")
+
+        (mockConnector.getBoss(_: Int)(_: ExecutionContext))
+          .expects(*, *)
+          .returns(Future.failed(requestFailed))
+
         intercept[Exception](await(service.getBoss(1234)))
       }
     }

@@ -19,6 +19,7 @@ trait IntegrationBaseSpec extends WordSpecLike with Matchers with OptionValues w
   lazy val client: WSClient = app.injector.instanceOf[WSClient]
 
   def servicesConfig: Map[String, String] = Map(
+    "services.protocol" -> "http",
     "services.battle-net.url" -> mockUrl
   )
 

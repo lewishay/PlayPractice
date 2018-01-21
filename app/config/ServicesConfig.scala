@@ -7,15 +7,12 @@ trait ServicesConfig {
   protected def runModeConfiguration: Configuration
   protected lazy val rootServices = "services"
 
-//  def baseUrl(serviceName: String): String = {
-//    val host = getConfString(s"$serviceName.host", throw new RuntimeException(s"Could not find config $serviceName.host"))
-//    val port = getConfInt(s"$serviceName.port", throw new RuntimeException(s"Could not find config $serviceName.port"))
-//    s"$host:$port"
-//  }
-
   def baseUrl(serviceName: String): String = {
-    val url = getConfString(s"$serviceName.url", throw new RuntimeException(s"Could not find config $serviceName.url"))
-    url
+    getConfString(s"$serviceName.url", throw new RuntimeException(s"Could not find config $serviceName.url"))
+  }
+
+  def secureProtocol: String = {
+    getConfString(s"protocol", throw new RuntimeException(s"Could not find config protocol"))
   }
 
   def getConfString(confKey: String, defString: => String): String = {

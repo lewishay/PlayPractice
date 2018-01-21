@@ -15,18 +15,18 @@ class BossController @Inject()(cc: ControllerComponents, battleNetService: Battl
   extends AbstractController(cc) with I18nSupport {
 
   def blankBoss: Action[AnyContent] = Action { implicit request =>
-    Ok(views.html.boss(Common.blankBoss))
+    Ok(views.html.boss(Common.exampleBoss))
   }
 
   def getBoss: Action[AnyContent] = Action { implicit request =>
     val formResult = BossForm.bossForm.bindFromRequest
     formResult.fold({ formWithErrors =>
-      BadRequest(views.html.boss(Common.blankBoss, formWithErrors))
+      BadRequest(views.html.boss(Common.exampleBoss, formWithErrors))
     }, { result =>
       Await.result(battleNetService.getBoss(result.id).map { boss =>
         Ok(views.html.boss(boss))
       }.recoverWith {
-        case _ => Future.successful(Forbidden(views.html.boss(Common.blankBoss)))
+        case _ => Future.successful(Forbidden(views.html.boss(Common.exampleBoss)))
       }, Duration(10, "seconds"))
     })
   }

@@ -7,9 +7,14 @@ class BattleNetConnectorSpec extends ControllerBaseSpec {
 
   "BattleNetConnector" should {
 
-//    "generate the correct url" in {
-//      val connector = new BattleNetConnector(mock[WSClient], mockAppConfig)
-//      connector.bossUrl("77") shouldEqual s"https:///wow/boss/77?locale=en_GBS&apikey=${connector.apiKey}"
-//    }
+    val connector = new BattleNetConnector(mock[WSClient], mockAppConfig)
+
+    "generate the correct Boss url" in {
+      connector.bossUrl("77") shouldBe s":///wow/boss/77?locale=en_GBS&apikey=${connector.apiKey}"
+    }
+
+    "generate the correct Zone url" in {
+      connector.zoneUrl("77") shouldBe s":///wow/zone/77?locale=en_GB&apikey=${connector.apiKey}"
+    }
   }
 }
