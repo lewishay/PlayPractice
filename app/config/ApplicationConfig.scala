@@ -13,5 +13,5 @@ trait AppConfig extends ServicesConfig {
 class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration) extends AppConfig {
 
   override val protocol: String = secureProtocol
-  override val battleNetService: String =  baseUrl("battle-net")
+  override val battleNetService: String = baseUrl("battle-net")
 }

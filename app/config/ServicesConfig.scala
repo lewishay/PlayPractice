@@ -18,8 +18,4 @@ trait ServicesConfig {
   private def getConfString(confKey: String, defString: => String): String = {
     runModeConfiguration.get[String](s"$rootServices.$confKey")
   }
-
-  private def getConfInt(confKey: String, defInt: => Int): Int = {
-    runModeConfiguration.get[Int](s"$rootServices.$confKey")
-  }
 }

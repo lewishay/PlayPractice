@@ -4,7 +4,7 @@ import models.PixelGrid
 
 object Grids {
 
-  private val coordinates: IndexedSeq[(Int, Int)] = {
+  val coordinates: IndexedSeq[(Int, Int)] = {
     (0 to 15).flatMap(
       x => (0 to 15).map(
         y => (x, y)

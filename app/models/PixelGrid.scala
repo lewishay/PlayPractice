@@ -5,11 +5,7 @@ import play.twirl.api.Html
 case class PixelGrid(name: String, grid: Map[(Int, Int), String]) {
 
   val gridHtml: Html = Html(
-    s"""
-      |<table class="fixed" align="center">
-      |$generateTable
-      |</table>
-    """.stripMargin
+    s"""<table class="fixed" align="center">$generateTable</table>""".stripMargin
   )
 
   private def generateTableRow(rowNumber: Int): String = {
@@ -31,14 +27,13 @@ case class PixelGrid(name: String, grid: Map[(Int, Int), String]) {
       |  <th bgcolor="${grid.get(rowNumber, 13).get}"></th>
       |  <th bgcolor="${grid.get(rowNumber, 14).get}"></th>
       |  <th bgcolor="${grid.get(rowNumber, 15).get}"></th>
-      |</tr>
-    """.stripMargin
+      |</tr>""".stripMargin
   }
 
   private def generateTable: String = {
     def recFunc(n: Int): String = n match {
       case 16 => ""
-      case _ => generateTableRow(n) + "\n" + recFunc(n + 1)
+      case _ => generateTableRow(n) + recFunc(n + 1)
     }
     recFunc(0)
   }
