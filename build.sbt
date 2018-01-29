@@ -37,7 +37,8 @@ lazy val coverageSettings: Seq[Setting[_]] = {
     "<empty>",
     "Reverse.*",
     "app.*",
-    "router.*"
+    "router.*",
+    "views.html.*"
   )
 
   Seq(
