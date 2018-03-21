@@ -3,17 +3,21 @@ package connectors
 import javax.inject.Inject
 
 import config.AppConfig
-import play.api.libs.ws.{WSClient, WSRequest, WSResponse}
+import play.api.libs.ws.{WSClient, WSRequest}
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
-class GithubConnector @Inject()(repoOwner: String, repo: String, branch: String, ws: WSClient, appConfig: AppConfig) {
+class GithubConnector @Inject()(ws: WSClient, appConfig: AppConfig) {
 
-  private[connectors] def getUrl =
+  private[connectors] def getUrl(repoOwner: String, repo: String, branch: String) =
     s"${appConfig.protocol}://${appConfig.battleNetService}/$repoOwner/$repo/commits/$branch.atom"
 
-  def getCommits: Future[WSResponse] = {
-    val request: WSRequest = ws.url(getUrl)
-    request.get()
+  def getCommits(repoOwner: String, repo: String, branch: String)(implicit ec: ExecutionContext): Future[String] = {
+    val request: WSRequest = ws.url(getUrl(repoOwner, repo, branch))
+    request.get().map { req =>
+      req.body
+    }.recoverWith {
+      case _ => Future.failed(new Exception("The call to the API failed."))
+    }
   }
 }

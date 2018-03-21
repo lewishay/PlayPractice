@@ -7,10 +7,10 @@ class GithubConnectorSpec extends ControllerBaseSpec {
 
   "GithubConnector" should {
 
-    val connector = new GithubConnector("myUser", "myRepo", "myBranch", mock[WSClient], mockAppConfig)
+    val connector = new GithubConnector(mock[WSClient], mockAppConfig)
 
     "generate the correct url" in {
-      connector.getUrl shouldBe ":///myUser/myRepo/commits/myBranch.atom"
+      connector.getUrl("myUser", "myRepo", "myBranch") shouldBe ":///myUser/myRepo/commits/myBranch.atom"
     }
   }
 }
