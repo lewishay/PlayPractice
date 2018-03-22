@@ -16,8 +16,6 @@ class GithubConnector @Inject()(ws: WSClient, appConfig: AppConfig) {
     val request: WSRequest = ws.url(getUrl(repoOwner, repo, branch))
     request.get().map { req =>
       req.body
-    }.recoverWith {
-      case _ => Future.failed(new Exception("The call to the API failed."))
     }
   }
 }

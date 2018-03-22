@@ -1,0 +1,20 @@
+@(model: models.viewModels.GithubViewModel)
+
+@main("Github Commits") {
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        @model.repo1 match {
+          case Some(commitLog) => {
+            //logic
+          }
+          case None => {
+            <p>There was a problem retrieving this commit log.</p>
+          }
+        }
+      </div>
+    </div>
+  </div>
+</section>
+}

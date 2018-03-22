@@ -73,6 +73,7 @@ class GithubServiceSpec extends ControllerBaseSpec {
     """.stripMargin.split("\n").map(_.trim).mkString
 
   "Calling getCommits()" when {
+
     "the connector returns a successful response" should {
 
       "return a list of users, dates and commits" in {
@@ -80,19 +81,40 @@ class GithubServiceSpec extends ControllerBaseSpec {
           .expects(*, *, *, *)
           .returns(Future.successful(response))
 
-        val expected = List(("User: user1", "Date: 2018-03-21", "Commit: Fixed the broken tests"),
-                              ("User: user2", "Date: 2018-03-21", "Commit: Created some cool tests"))
+        val expected = Some(List(("User: user1", "Date: 2018-03-21", "Commit: Fixed the broken tests"),
+                              ("User: user2", "Date: 2018-03-21", "Commit: Created some cool tests")))
         val result = await(service.getCommits("myOwner", "myRepo", "myBranch"))
 
         result shouldBe expected
       }
     }
 
+    "the connector returns a response with no commits" should {
+
+      "return an empty list" in {
+        (mockConnector.getCommits(_: String, _: String, _: String)(_: ExecutionContext))
+          .expects(*, *, *, *)
+          .returns(Future.successful("Blah"))
+
+        val result = await(service.getCommits("myOwner", "myRepo", "myBranch"))
+
+        result shouldBe None
+      }
+    }
+
     "the connector returns a failure response" should {
 
+      "return an empty list" in {
+        (mockConnector.getCommits(_: String, _: String, _: String)(_: ExecutionContext))
+          .expects(*, *, *, *)
+          .returns(Future.failed(new Exception("Something went wrong")))
+
+        val result = await(service.getCommits("myOwner", "myRepo", "myBranch"))
+
+        result shouldBe None
+      }
     }
   }
-
 
   "Calling rawCommits()" when {
 

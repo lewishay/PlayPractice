@@ -10,10 +10,12 @@ import scala.util.matching.Regex
 class GithubService @Inject()(connector: GithubConnector) {
 
   def getCommits(repoOwner: String, repo: String, branch: String)
-                (implicit ec: ExecutionContext): Future[List[(String, String, String)]] = {
+                (implicit ec: ExecutionContext): Future[Option[List[(String, String, String)]]] = {
     connector.getCommits(repoOwner, repo, branch).map { result =>
-      val raw = rawCommits(result.split("\n").toList)
-      if(raw.nonEmpty) cleanCommits(raw) else List(("", "", ""))
+      val raw = rawCommits(result.split("\n").map(_.trim).toList)
+      if(raw.nonEmpty) Some(cleanCommits(raw)) else None
+    }.recoverWith {
+      case _ => Future.successful(None)
     }
   }
 
