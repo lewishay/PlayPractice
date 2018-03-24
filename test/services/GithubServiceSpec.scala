@@ -1,58 +1,20 @@
 package services
 
+import java.io.ByteArrayInputStream
+
+import common.Common
 import connectors.GithubConnector
 import controllers.ControllerBaseSpec
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.io.BufferedSource
+import scala.util.{Failure, Success}
 
 class GithubServiceSpec extends ControllerBaseSpec {
 
   val mockConnector: GithubConnector = mock[GithubConnector]
-  implicit val ec: ExecutionContext = ExecutionContext.global
   val service: GithubService = new GithubService(mockConnector)
-
-  val response: String =
-    """<?xml version="1.0" encoding="UTF-8"?>
-      |<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
-      |  <id>tag:github.com,2008:/myOwner/myRepo/commits/myBranch</id>
-      |  <link type="text/html" rel="alternate" href="https://github.com/myOwner/myRepo/commits/myBranch.atom"/>
-      |  <link type="application/atom+xml" rel="self" href="https://github.com/myOwner/myRepo/commits/myBranch.atom"/>
-      |  <title>Recent Commits to myRepo:myBranch</title>
-      |  <updated>2018-03-21T15:34:23Z</updated>
-      |  <entry>
-      |    <id>tag:github.com,2008:Grit::Commit/8a9d4ef1144009d9387f60a37a47ee26b35b85a0</id>
-      |    <link type="text/html" rel="alternate" href=""/>
-      |    <title>
-      |        Fixed the broken tests
-      |    </title>
-      |    <updated>2018-03-21T15:34:23Z</updated>
-      |    <media:thumbnail height="30" width="30" url=""/>
-      |    <author>
-      |      <name>user1</name>
-      |      <uri>https://github.com/user1</uri>
-      |    </author>
-      |    <content type="html">
-      |      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Fixed the broken tests&lt;/pre&gt;
-      |    </content>
-      |  </entry>
-      |  <entry>
-      |    <id>tag:github.com,2008:Grit::Commit/e2dc3b2a264f1f99da9f54f99e31f813495e24a0</id>
-      |    <link type="text/html" rel="alternate" href=""/>
-      |    <title>
-      |        Created some cool tests
-      |    </title>
-      |    <updated>2018-03-21T14:39:03Z</updated>
-      |    <media:thumbnail height="30" width="30" url=""/>
-      |    <author>
-      |      <name>user2</name>
-      |      <uri>https://github.com/user2</uri>
-      |    </author>
-      |    <content type="html">
-      |      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Created some cool tests&lt;/pre&gt;
-      |    </content>
-      |  </entry>
-    """.stripMargin
-
+  val xmlResponse: BufferedSource = new BufferedSource(new ByteArrayInputStream(Common.exampleXml.getBytes()))
+  val emptyResponse: BufferedSource = new BufferedSource(new ByteArrayInputStream("".getBytes()))
   val oneCommit: String =
     """<entry>
       |    <id>tag:github.com,2008:Grit::Commit/8a9d4ef1144009d9387f60a37a47ee26b35b85a0</id>
@@ -77,13 +39,13 @@ class GithubServiceSpec extends ControllerBaseSpec {
     "the connector returns a successful response" should {
 
       "return a list of users, dates and commits" in {
-        (mockConnector.getCommits(_: String, _: String, _: String)(_: ExecutionContext))
-          .expects(*, *, *, *)
-          .returns(Future.successful(response))
+        (mockConnector.getCommits(_: String, _: String, _: String))
+          .expects(*, *, *)
+          .returns(Success(xmlResponse))
 
         val expected = Some(List(("User: user1", "Date: 2018-03-21", "Commit: Fixed the broken tests"),
                               ("User: user2", "Date: 2018-03-21", "Commit: Created some cool tests")))
-        val result = await(service.getCommits("myOwner", "myRepo", "myBranch"))
+        val result = service.getCommits("myOwner", "myRepo", "myBranch")
 
         result shouldBe expected
       }
@@ -92,11 +54,11 @@ class GithubServiceSpec extends ControllerBaseSpec {
     "the connector returns a response with no commits" should {
 
       "return an empty list" in {
-        (mockConnector.getCommits(_: String, _: String, _: String)(_: ExecutionContext))
-          .expects(*, *, *, *)
-          .returns(Future.successful("Blah"))
+        (mockConnector.getCommits(_: String, _: String, _: String))
+          .expects(*, *, *)
+          .returns(Success(emptyResponse))
 
-        val result = await(service.getCommits("myOwner", "myRepo", "myBranch"))
+        val result = service.getCommits("myOwner", "myRepo", "myBranch")
 
         result shouldBe None
       }
@@ -105,11 +67,11 @@ class GithubServiceSpec extends ControllerBaseSpec {
     "the connector returns a failure response" should {
 
       "return an empty list" in {
-        (mockConnector.getCommits(_: String, _: String, _: String)(_: ExecutionContext))
-          .expects(*, *, *, *)
-          .returns(Future.failed(new Exception("Something went wrong")))
+        (mockConnector.getCommits(_: String, _: String, _: String))
+          .expects(*, *, *)
+          .returns(Failure(new java.io.FileNotFoundException))
 
-        val result = await(service.getCommits("myOwner", "myRepo", "myBranch"))
+        val result = service.getCommits("myOwner", "myRepo", "myBranch")
 
         result shouldBe None
       }
@@ -120,7 +82,7 @@ class GithubServiceSpec extends ControllerBaseSpec {
 
     "the input contains commit entries" should {
 
-      val result = service.rawCommits(response.split("\n").map(_.trim).toList)
+      val result = service.rawCommits(Common.exampleXml.split("\n").map(_.trim).toList)
 
       "create a list of two commit entries from the raw Github XML response" in {
         result.length shouldBe 2

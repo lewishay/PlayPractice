@@ -1,0 +1,12 @@
+@(commitLog: Option[List[(String, String, String)]])
+
+<div class="col-lg-3">
+  @commitLog match {
+    case Some(commitLog) => {
+      <p>Cool beans</p>
+    }
+    case None => {
+      <p>There was a problem retrieving this commit log.</p>
+    }
+  }
+</div>

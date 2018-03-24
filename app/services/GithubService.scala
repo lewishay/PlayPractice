@@ -4,18 +4,18 @@ import javax.inject.Inject
 
 import connectors.GithubConnector
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Success
 import scala.util.matching.Regex
 
 class GithubService @Inject()(connector: GithubConnector) {
 
-  def getCommits(repoOwner: String, repo: String, branch: String)
-                (implicit ec: ExecutionContext): Future[Option[List[(String, String, String)]]] = {
-    connector.getCommits(repoOwner, repo, branch).map { result =>
-      val raw = rawCommits(result.split("\n").map(_.trim).toList)
-      if(raw.nonEmpty) Some(cleanCommits(raw)) else None
-    }.recoverWith {
-      case _ => Future.successful(None)
+  def getCommits(repoOwner: String, repo: String, branch: String): Option[List[(String, String, String)]] = {
+    connector.getCommits(repoOwner, repo, branch) match {
+      case Success(rawXml) =>
+        val log = rawXml.getLines.map(_.trim).toList
+        val commitLog = rawCommits(log)
+        if(commitLog.nonEmpty) Some(cleanCommits(commitLog)) else None
+      case _ => None
     }
   }
 

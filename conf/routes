@@ -12,6 +12,7 @@ GET     /boss                       controllers.BossController.blankBoss
 POST    /boss                       controllers.BossController.getBoss
 GET     /pixel-grid                 controllers.PixelGridController.defaultGrid
 POST    /pixel-grid                 controllers.PixelGridController.loadGrid(gridName: String)
+GET     /github                     controllers.GithubController.commitsPage
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

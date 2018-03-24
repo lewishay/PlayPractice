@@ -4,16 +4,10 @@
 <section>
   <div class="container">
     <div class="row">
-      <div class="col-lg-3">
-        @model.repo1 match {
-          case Some(commitLog) => {
-            //logic
-          }
-          case None => {
-            <p>There was a problem retrieving this commit log.</p>
-          }
-        }
-      </div>
+      @views.html.templates.commitLog(model.repo1)
+      @views.html.templates.commitLog(model.repo2)
+      @views.html.templates.commitLog(model.repo3)
+      @views.html.templates.commitLog(model.repo4)
     </div>
   </div>
 </section>
