@@ -29,3 +29,13 @@ table.fixed {
   width: 320px;
   height: 320px;
 }
+
+.commit-heading {
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding-top: 14px;
+}
+
+.commit-text {
+  font-size: 0.9rem;
+}

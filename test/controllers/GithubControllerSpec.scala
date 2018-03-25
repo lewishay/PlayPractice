@@ -1,5 +1,6 @@
 package controllers
 
+import models.CommitLog
 import play.api.http.Status
 import play.api.test.Helpers._
 import services.GithubService
@@ -12,7 +13,7 @@ class GithubControllerSpec extends ControllerBaseSpec {
     for (_ <- 1 to 4) {
       (service.getCommits(_: String, _: String, _: String))
         .expects(*, *, *)
-        .returns(Some(List(("", "", ""))))
+        .returns(Some(CommitLog("", "", List(("", "", "", "")))))
     }
   }
 

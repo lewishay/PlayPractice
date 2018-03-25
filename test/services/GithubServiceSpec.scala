@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream
 import common.Common
 import connectors.GithubConnector
 import controllers.ControllerBaseSpec
+import models.CommitLog
 
 import scala.io.BufferedSource
 import scala.util.{Failure, Success}
@@ -43,8 +44,12 @@ class GithubServiceSpec extends ControllerBaseSpec {
           .expects(*, *, *)
           .returns(Success(xmlResponse))
 
-        val expected = Some(List(("User: user1", "Date: 2018-03-21", "Commit: Fixed the broken tests"),
-                              ("User: user2", "Date: 2018-03-21", "Commit: Created some cool tests")))
+        val expected = Some(CommitLog("myRepo", "myBranch",
+          List(
+            ("https://github.com/user1.png", "user1", "2018-03-21, 15:34", "Fixed the broken tests"),
+            ("https://github.com/user2.png", "user2", "2018-03-21, 14:39", "Created some cool tests")
+          )
+        ))
         val result = service.getCommits("myOwner", "myRepo", "myBranch")
 
         result shouldBe expected
@@ -110,8 +115,28 @@ class GithubServiceSpec extends ControllerBaseSpec {
   "Calling cleanCommits()" should {
 
     "return a list of usernames, dates, and commit messages" in {
-      val expected = List(("User: user1", "Date: 2018-03-21", "Commit: Fixed the broken tests"))
+      val expected = List(("https://github.com/user1.png", "user1", "2018-03-21, 15:34", "Fixed the broken tests"))
       val result = service.cleanCommits(List(oneCommit))
+
+      result shouldBe expected
+    }
+  }
+
+  "Calling regexHelper()" should {
+
+    "return a string which is matched in the given regex" in {
+      val expected = "User1"
+      val result = service.regexHelper("""<name>(.*)</name>""".r, """<name>User1</name>""")
+
+      result shouldBe expected
+    }
+  }
+
+  "Calling dateTimeFormat()" should {
+
+    "return a specifically formatted date from a longform timecode" in {
+      val expected = "2018-01-01, 12:00"
+      val result = service.dateTimeFormat("2018-01-01T12:00:00Z")
 
       result shouldBe expected
     }

@@ -1,9 +1,25 @@
-@(commitLog: Option[List[(String, String, String)]])
+@import models.CommitLog
 
-<div class="col-lg-3">
+@(commitLog: Option[CommitLog])
+
+<div class="col-lg-3 below-square">
   @commitLog match {
-    case Some(commitLog) => {
-      <p>Cool beans</p>
+    case Some(listOfCommits) => {
+      <h2 class="commit-heading">@listOfCommits.repo</h2>
+      <hr>
+      <ol class="list-unstyled">
+        @for(commit <- listOfCommits.commits) {
+          <li>
+            <p class="commit-text">
+              <span><img src="@commit._1" height="25" width="25"></span>
+              <span>@commit._2</span>
+              <span class="float-right">@commit._3</span>
+            </p>
+            <p class="commit-text">@commit._4</p>
+          </li>
+          <hr>
+        }
+      </ol>
     }
     case None => {
       <p>There was a problem retrieving this commit log.</p>

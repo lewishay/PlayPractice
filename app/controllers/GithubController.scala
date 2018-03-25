@@ -11,12 +11,12 @@ class GithubController @Inject()(cc: ControllerComponents, githubService: Github
   extends AbstractController(cc) with I18nSupport {
 
   def commitsPage: Action[AnyContent] = Action { implicit request =>
-    val repo1 = githubService.getCommits("hmrc", "manage-vat-subscription-frontend", "master")
-    val repo2 = githubService.getCommits("hmrc", "view-vat-returns-frontend", "master")
-    val repo3 = githubService.getCommits("hmrc", "vat-summary-frontend", "master")
-    val repo4 = githubService.getCommits("hmrc", "deregister-vat-frontend", "master")
+    val commitLog1 = githubService.getCommits("hmrc", "manage-vat-subscription-frontend", "master")
+    val commitLog2 = githubService.getCommits("hmrc", "view-vat-returns-frontend", "master")
+    val commitLog3 = githubService.getCommits("hmrc", "vat-summary-frontend", "master")
+    val commitLog4 = githubService.getCommits("hmrc", "deregister-vat-frontend", "master")
 
-    val viewModel = GithubViewModel(repo1, repo2, repo3, repo4)
+    val viewModel = GithubViewModel(commitLog1, commitLog2, commitLog3, commitLog4)
 
     Ok(views.html.githubCommits(viewModel))
   }
