@@ -3,12 +3,19 @@
   margin-bottom: -0.2rem;
 }
 
-.below-square {
+.box-below {
   font-size: 1.7rem;
   text-align: center;
   color: #2C3E50;
   border-style: ridge;
   border-color: #18BC9C;
+}
+
+.side-text {
+  margin-top: auto;
+  margin-bottom: auto;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .big-form {

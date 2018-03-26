@@ -2,7 +2,7 @@
 
 @(commitLog: Option[CommitLog])
 
-<div class="col-lg-3 below-square">
+<div class="col-lg-3 box-below">
   @commitLog match {
     case Some(listOfCommits) => {
       <h2 class="commit-heading">@listOfCommits.repo</h2>
