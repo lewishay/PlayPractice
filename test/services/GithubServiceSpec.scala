@@ -8,7 +8,6 @@ import controllers.ControllerBaseSpec
 import models.CommitLog
 
 import scala.io.BufferedSource
-import scala.util.{Failure, Success}
 
 class GithubServiceSpec extends ControllerBaseSpec {
 
@@ -42,7 +41,7 @@ class GithubServiceSpec extends ControllerBaseSpec {
       "return a list of users, dates and commits" in {
         (mockConnector.getCommits(_: String, _: String, _: String))
           .expects(*, *, *)
-          .returns(Success(xmlResponse))
+          .returns(xmlResponse)
 
         val expected = Some(CommitLog("myRepo", "myBranch",
           List(
@@ -56,25 +55,12 @@ class GithubServiceSpec extends ControllerBaseSpec {
       }
     }
 
-    "the connector returns a response with no commits" should {
+    "the connector returns an empty response" should {
 
       "return an empty list" in {
         (mockConnector.getCommits(_: String, _: String, _: String))
           .expects(*, *, *)
-          .returns(Success(emptyResponse))
-
-        val result = service.getCommits("myOwner", "myRepo", "myBranch")
-
-        result shouldBe None
-      }
-    }
-
-    "the connector returns a failure response" should {
-
-      "return an empty list" in {
-        (mockConnector.getCommits(_: String, _: String, _: String))
-          .expects(*, *, *)
-          .returns(Failure(new java.io.FileNotFoundException))
+          .returns(emptyResponse)
 
         val result = service.getCommits("myOwner", "myRepo", "myBranch")
 

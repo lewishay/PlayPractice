@@ -5,21 +5,19 @@ import javax.inject.Inject
 import connectors.GithubConnector
 import models.CommitLog
 
-import scala.util.Success
 import scala.util.matching.Regex
 
 class GithubService @Inject()(connector: GithubConnector) {
 
   def getCommits(repoOwner: String, repo: String, branch: String): Option[CommitLog] = {
-    connector.getCommits(repoOwner, repo, branch) match {
-      case Success(rawXml) =>
-        val log = rawXml.getLines.map(_.trim).toList
-        val commitLog = rawCommits(log)
-        if(commitLog.nonEmpty) {
-          Some(CommitLog(repo, branch, cleanCommits(commitLog)))
-        } else None
-      case _ => None
-    }
+    val connectorResult = connector.getCommits(repoOwner, repo, branch)
+    if(connectorResult.nonEmpty) {
+      val log = connectorResult.getLines.map(_.trim).toList
+      val commitLog = rawCommits(log)
+      if (commitLog.nonEmpty) {
+        Some(CommitLog(repo, branch, cleanCommits(commitLog)))
+      } else None
+    } else None
   }
 
   private[services] def rawCommits(list: List[String], newList: List[String] = List()): List[String] = list.headOption match {
