@@ -47,3 +47,8 @@ table.fixed {
 .commit-text {
   font-size: 0.9rem;
 }
+
+.hangman-heading {
+  font-family: 'DejaVu Sans Mono', monospace;
+  font-size: 1.2rem;
+}
