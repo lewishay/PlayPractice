@@ -10,7 +10,7 @@ import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponent
 class HangmanController @Inject()(cc: ControllerComponents) extends AbstractController(cc) with I18nSupport {
 
   def hangman: Action[AnyContent] = Action { implicit request =>
-    if(!Hangman.playing) {
+    if(!Hangman.gameStarted) {
       Hangman.newGame()
       makeGuess
     }

@@ -48,7 +48,11 @@ table.fixed {
   font-size: 0.9rem;
 }
 
-.hangman-heading {
+.hangman-text {
+  font-size: 1.2rem;
+}
+
+.hangman-image {
   font-family: 'DejaVu Sans Mono', monospace;
   font-size: 1.2rem;
 }
