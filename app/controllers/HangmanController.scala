@@ -14,7 +14,7 @@ class HangmanController @Inject()(cc: ControllerComponents) extends AbstractCont
       Hangman.newGame()
       makeGuess
     }
-    Ok(views.html.hangman(GuessForm.makeGuessForm))
+    Ok(views.html.hangman())
   }
 
   def makeGuess: Action[AnyContent] = Action { implicit request =>

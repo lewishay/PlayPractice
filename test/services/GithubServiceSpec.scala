@@ -14,6 +14,7 @@ class GithubServiceSpec extends ControllerBaseSpec {
   val mockConnector: GithubConnector = mock[GithubConnector]
   val service: GithubService = new GithubService(mockConnector)
   val xmlResponse: BufferedSource = new BufferedSource(new ByteArrayInputStream(Common.exampleXml.getBytes()))
+  val noCommitResponse: BufferedSource = new BufferedSource(new ByteArrayInputStream("no commits here lol".getBytes()))
   val emptyResponse: BufferedSource = new BufferedSource(new ByteArrayInputStream("".getBytes()))
   val oneCommit: String =
     """<entry>
@@ -50,9 +51,17 @@ class GithubServiceSpec extends ControllerBaseSpec {
           )
         ))
         val result = service.getCommits("myOwner", "myRepo", "myBranch")
-
         result shouldBe expected
       }
+    }
+
+    "the connector returns a successful response with no commit logs" in {
+      (mockConnector.getCommits(_: String, _: String, _: String))
+        .expects(*, *, *)
+        .returns(noCommitResponse)
+
+      val result = service.getCommits("myOwner", "myRepo", "myBranch")
+      result shouldBe None
     }
 
     "the connector returns an empty response" should {
@@ -63,7 +72,6 @@ class GithubServiceSpec extends ControllerBaseSpec {
           .returns(emptyResponse)
 
         val result = service.getCommits("myOwner", "myRepo", "myBranch")
-
         result shouldBe None
       }
     }

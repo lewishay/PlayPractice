@@ -1,7 +1,7 @@
 @import forms.GuessForm
 @import games.hangman.Hangman
 
-@(form: Form[GuessForm])(implicit messages: Messages)
+@(form: Form[GuessForm] = GuessForm.makeGuessForm)(implicit messages: Messages)
 
 @main("Hangman") {
 <section>
