@@ -32,6 +32,10 @@
   color: #FFFFFF;
 }
 
+#guess {
+  width: 50px;
+}
+
 table.fixed {
   table-layout: fixed;
   width: 320px;
@@ -49,10 +53,13 @@ table.fixed {
 }
 
 .hangman-text {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 }
 
 .hangman-image {
-  font-family: 'DejaVu Sans Mono', monospace;
+  font-family: "Andale Mono", AndaleMono, monospace;
   font-size: 1.2rem;
+  font-weight: bold;
+  letter-spacing: 8px;
+  margin-bottom: 4px;
 }

@@ -7,18 +7,18 @@
 <section>
   <div class="container">
     <div class="row">
-      <div class="col-lg-4 col-xl-4" align="center">
+      <div class="col-lg-3 col-xl-3" align="center">
         @helper.form(routes.HangmanController.makeGuess(), 'class -> "big-form") {
-          @helper.inputText(form("guess"), '_label -> "Enter your guess:")
+          @helper.inputText(form("guess"), '_label -> "Your guess:")
           <button type="submit">Submit</button>
         }
       </div>
-      <div class="col-lg-4 col-xl-4" align="center">
+      <div class="col-lg-6 col-xl-6" align="center">
         @Hangman.messageOutput.map { line =>
           <p class="hangman-text">@line</p>
         }
       </div>
-      <div class="col-lg-4 col-xl-4" align="center">
+      <div class="col-lg-3 col-xl-3" align="center">
         @Hangman.hangingOutput.map { line =>
           <p class="hangman-image">@line</p>
         }
@@ -26,4 +26,8 @@
     </div>
   </div>
 </section>
+
+<script>
+  document.getElementById('guess').focus();
+</script>
 }

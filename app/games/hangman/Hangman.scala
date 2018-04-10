@@ -79,7 +79,7 @@ object Hangman {
   }
 
   def gameEnd(victory: Boolean, answer: String): ArrayBuffer[String] = {
-    val message = if(victory) "You win! Yes dude!" else "Game over! YOU DIED!"
-    ArrayBuffer(message, s"The word was $answer.", "Enter a letter to start a new game.")
+    val message = if(victory) "You win! Congratulations!" else "Game over! YOU DIED!"
+    ArrayBuffer(message, s"The word was: $answer", "Enter a letter to start a new game.")
   }
 }
