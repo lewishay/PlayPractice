@@ -40,11 +40,7 @@ object AuthenticationHelpers {
       case _ => None
     }
 
-  def validateUser(c: Credentials): Option[String] =
-    if (validCredentials.contains(c))
-      Some(c.username)
-    else
-      None
+  def validateUser(c: Credentials): Option[String] = if(validCredentials.contains(c)) Some(c.username) else None
 
   val bodyParser: BodyParser[AnyContent] = new BodyParser[AnyContent] {
     override def apply(v1: RequestHeader): Accumulator[ByteString, Either[Result, AnyContent]] = ???

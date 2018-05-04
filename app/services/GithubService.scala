@@ -16,8 +16,12 @@ class GithubService @Inject()(connector: GithubConnector) {
       val commitLog = rawCommits(log)
       if (commitLog.nonEmpty) {
         Some(CommitLog(repo, branch, cleanCommits(commitLog)))
-      } else None
-    } else None
+      } else {
+        None
+      }
+    } else {
+      None
+    }
   }
 
   private[services] def rawCommits(list: List[String], newList: List[String] = List()): List[String] = list.headOption match {
