@@ -1,7 +1,7 @@
 @import forms.GuessForm
-@import games.hangman.Hangman
+@import games.hangman.HangmanGameState
 
-@(form: Form[GuessForm] = GuessForm.makeGuessForm)(implicit messages: Messages)
+@(gameState: Option[HangmanGameState], form: Form[GuessForm] = GuessForm.makeGuessForm)(implicit messages: Messages)
 
 @main("Hangman") {
 <section>
@@ -13,16 +13,26 @@
           <button type="submit">Submit</button>
         }
       </div>
-      <div class="col-lg-6 col-xl-6" align="center">
-        @Hangman.messageOutput.map { line =>
-          <p class="hangman-text">@line</p>
+      @gameState match {
+        case Some(game) => {
+          <div class="col-lg-6 col-xl-6" align="center">
+            <p class="hangman-text">Turn number: @game.turnNumber</p>
+            <p class="hangman-text">Remaining guesses: @game.remainingGuesses</p>
+            <p class="hangman-text">Previous guesses: @game.previousGuesses.mkString(", ")</p>
+            <p class="hangman-text">Current status: @game.currentWordStatus.mkString(" ")</p>
+          </div>
+          <div class="col-lg-3 col-xl-3" align="center">
+          @game.hangingOutput.map { line =>
+            <p class="hangman-image">@line</p>
+          }
+          </div>
         }
-      </div>
-      <div class="col-lg-3 col-xl-3" align="center">
-        @Hangman.hangingOutput.map { line =>
-          <p class="hangman-image">@line</p>
+        case None => {
+          <div class="col-lg-6 col-xl-6" align="center">
+            <p class="hangman-text">Please enter a letter to start the game.</p>
+          </div>
         }
-      </div>
+      }
     </div>
   </div>
 </section>
