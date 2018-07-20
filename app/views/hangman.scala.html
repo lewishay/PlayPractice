@@ -1,37 +1,34 @@
 @import forms.GuessForm
 @import games.hangman.HangmanGameState
 
-@(gameState: Option[HangmanGameState], form: Form[GuessForm] = GuessForm.makeGuessForm)(implicit messages: Messages)
+@(gameState: HangmanGameState, form: Form[GuessForm] = GuessForm.makeGuessForm)(implicit messages: Messages)
 
 @main("Hangman") {
 <section>
   <div class="container">
     <div class="row">
       <div class="col-lg-3 col-xl-3" align="center">
-        @helper.form(routes.HangmanController.makeGuess(), 'class -> "big-form") {
+        @helper.form(routes.HangmanController.makeGuess(gameState), 'class -> "big-form") {
           @helper.inputText(form("guess"), '_label -> "Your guess:")
           <button type="submit">Submit</button>
         }
       </div>
-      @gameState match {
-        case Some(game) => {
-          <div class="col-lg-6 col-xl-6" align="center">
-            <p class="hangman-text">Turn number: @game.turnNumber</p>
-            <p class="hangman-text">Remaining guesses: @game.remainingGuesses</p>
-            <p class="hangman-text">Previous guesses: @game.previousGuesses.mkString(", ")</p>
-            <p class="hangman-text">Current status: @game.currentWordStatus.mkString(" ")</p>
-          </div>
-          <div class="col-lg-3 col-xl-3" align="center">
-          @game.hangingOutput.map { line =>
-            <p class="hangman-image">@line</p>
-          }
-          </div>
+      @if(gameState.turnNumber == 1) {
+        <div class="col-lg-6 col-xl-6" align="center">
+          <p class="hangman-text">Please enter a letter to start the game.</p>
+        </div>
+      } else {
+        <div class="col-lg-6 col-xl-6" align="center">
+          <p class="hangman-text">Turn number: @gameState.turnNumber</p>
+          <p class="hangman-text">Remaining guesses: @gameState.remainingGuesses</p>
+          <p class="hangman-text">Previous guesses: @gameState.previousGuesses.mkString(", ")</p>
+          <p class="hangman-text">Current status: @gameState.currentWordStatus.mkString(" ")</p>
+        </div>
+        <div class="col-lg-3 col-xl-3" align="center">
+        @gameState.hangingOutput.map { line =>
+          <p class="hangman-image">@line</p>
         }
-        case None => {
-          <div class="col-lg-6 col-xl-6" align="center">
-            <p class="hangman-text">Please enter a letter to start the game.</p>
-          </div>
-        }
+        </div>
       }
     </div>
   </div>

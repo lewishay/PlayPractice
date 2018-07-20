@@ -10,17 +10,19 @@ import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponent
 class HangmanController @Inject()(cc: ControllerComponents) extends AbstractController(cc) with I18nSupport {
 
   def hangman: Action[AnyContent] = Action { implicit request =>
-    Ok(views.html.hangman(Some(HangmanGameState(
-      "hey", 4, 5, Vector('h', 'e', 'y'), Vector('_', '_', 'n'), Vector('o'), Vector("  _______ ", "  |     | ")
-    ))))
+    Ok(views.html.hangman(Hangman.newGame))
   }
 
-  def makeGuess: Action[AnyContent] = Action { implicit request =>
+//  Some(HangmanGameState(
+//    "hey", 4, 5, Vector('h', 'e', 'y'), Vector('_', '_', 'n'), Vector('o'), Vector("  _______ ", "  |     | ")
+//  ))
+
+  def makeGuess(gameState: HangmanGameState): Action[AnyContent] = Action { implicit request =>
     val formValidationResult = GuessForm.makeGuessForm.bindFromRequest
     formValidationResult.fold({ formWithErrors =>
-      BadRequest(views.html.hangman(None, formWithErrors))
+      BadRequest(views.html.hangman(gameState, formWithErrors))
     }, { result =>
-      Hangman.makeMove(result.guess)
+      Hangman.makeMove(gameState, result.guess)
       Redirect(routes.HangmanController.hangman())
     })
   }
