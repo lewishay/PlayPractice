@@ -3,7 +3,6 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# An example controller showing a sample home page
 GET     /                           controllers.HomeController.home
 GET     /admin                      controllers.AdminController.admin
 GET     /word-square                controllers.WordSquareController.exampleWordSquare
@@ -14,7 +13,7 @@ GET     /pixel-grid                 controllers.PixelGridController.defaultGrid
 POST    /pixel-grid                 controllers.PixelGridController.loadGrid(gridName: String)
 GET     /github                     controllers.GithubController.commitsPage
 GET     /hangman                    controllers.HangmanController.hangman
-POST    /hangman                    controllers.HangmanController.makeGuess(gameState: games.hangman.HangmanGameState)
+POST    /hangman                    controllers.HangmanController.makeGuess
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

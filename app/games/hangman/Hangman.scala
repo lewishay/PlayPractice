@@ -19,6 +19,8 @@ object Hangman {
   val wordList: Vector[String] = Source.fromFile("app/games/hangman/wordlist.txt").getLines().toVector
   val rand = new Random()
 
+  var currentGame: HangmanGameState = newGame
+
   def generateWord: String = wordList(rand.nextInt(wordList.length))
 
   def newGame: HangmanGameState = {
@@ -50,8 +52,7 @@ object Hangman {
     )
   }
 
-  def gameEnd(victory: Boolean, answer: String): ArrayBuffer[String] = {
-    val message = if(victory) "You win! Congratulations!" else "Game over! YOU DIED!"
-    ArrayBuffer(message, s"The word was: $answer", "Enter a letter to start a new game.")
+  def gameEnd(victory: Boolean): String = {
+    if(victory) "You win! Congratulations!" else "Game over! YOU DIED!"
   }
 }
