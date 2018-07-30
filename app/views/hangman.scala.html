@@ -15,7 +15,7 @@
             <button class="big-form" href="@routes.HangmanController.hangman" type="submit">New game</button>
           }
           case None => {
-            @helper.form(routes.HangmanController.makeGuess, 'class -> "big-form") {
+            @helper.form(routes.HangmanController.makeGuess(model), 'class -> "big-form") {
               @helper.inputText(form("guess"), '_label -> "Your guess:")
               <button type="submit">Submit</button>
             }

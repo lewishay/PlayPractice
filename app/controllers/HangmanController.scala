@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject.Inject
 
-import games.hangman.Hangman
+import games.hangman.{Hangman, HangmanGameState}
 import forms.GuessForm
 import models.viewModels.HangmanViewModel
 import play.api.i18n.I18nSupport
@@ -15,17 +15,19 @@ class HangmanController @Inject()(cc: ControllerComponents) extends AbstractCont
     Ok(views.html.hangman(model))
   }
 
-//  Some(HangmanGameState(
-//    "hey", 4, 5, Vector('h', 'e', 'y'), Vector('_', '_', 'n'), Vector('o'), Vector("  _______ ", "  |     | ")
-//  ))
 
-  def makeGuess: Action[AnyContent] = Action { implicit request =>
+
+  def makeGuess(model: HangmanViewModel): Action[AnyContent] = Action { implicit request =>
     val formValidationResult = GuessForm.makeGuessForm.bindFromRequest
     formValidationResult.fold({ formWithErrors =>
-      BadRequest(views.html.hangman(formWithErrors))
+      BadRequest(views.html.hangman(model, formWithErrors))
     }, { result =>
-      Hangman.makeMove(gameState, result.guess)
-      Redirect(routes.HangmanController.hangman())
+//      val newState = Hangman.makeMove(model.gameState, result.guess)
+//      val gameWinPredicate = Some(newState.currentWordStatus.mkString == newState.guessWord)
+//      val newModel = HangmanViewModel(newState, gameWinPredicate)
+      Ok(views.html.hangman(HangmanViewModel(HangmanGameState(
+        "hey", 4, 5, Vector('h', 'e', 'y'), Vector('_', '_', 'n'), Vector('o'), Vector("  _______ ", "  |     | ")
+      ), None)))
     })
   }
 }

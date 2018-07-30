@@ -77,8 +77,7 @@ lazy val project: Project = Project(appName, file("."))
     dependencyOverrides ++= jettyDependencies,
     retrieveManaged := true,
     evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
-    routesGenerator := InjectedRoutesGenerator,
-    routesImport += "utils.Binders._"
+    routesGenerator := InjectedRoutesGenerator
   )
   .configs(IntegrationTest)
   .settings(inConfig(IntegrationTest)(Defaults.itSettings): _*)
