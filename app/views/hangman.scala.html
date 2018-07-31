@@ -1,28 +1,55 @@
 @import forms.GuessForm
 @import games.hangman.Hangman
+@import models.viewModels.HangmanViewModel
 
-@(form: Form[GuessForm] = GuessForm.makeGuessForm)(implicit messages: Messages)
+@(model: HangmanViewModel, form: Form[GuessForm] = GuessForm.makeGuessForm)(implicit messages: Messages)
 
 @main("Hangman") {
 <section>
   <div class="container">
     <div class="row">
+
       <div class="col-lg-3 col-xl-3" align="center">
-        @helper.form(routes.HangmanController.makeGuess(), 'class -> "big-form") {
-          @helper.inputText(form("guess"), '_label -> "Your guess:")
-          <button type="submit">Submit</button>
+        @model.gameWin match {
+          case Some(_) => {
+            <form class="big-form" action="@routes.HangmanController.hangman">
+              <button type="submit">New game</button>
+            </form>
+          }
+          case None => {
+            @helper.form(routes.HangmanController.makeGuess(model), 'class -> "big-form") {
+              @helper.inputText(form("guess"), '_label -> "Your guess:")
+              <button type="submit">Submit</button>
+            }
+          }
         }
       </div>
+
       <div class="col-lg-6 col-xl-6" align="center">
-        @Hangman.messageOutput.map { line =>
-          <p class="hangman-text">@line</p>
+        @if(model.gameState.turnNumber == 0) {
+          <p class="hangman-text">Please enter a letter to start the game.</p>
+        } else {
+          @model.gameWin match {
+            case Some(result) => {
+              <p class="hangman-text">@Hangman.gameEnd(result)</p>
+              <p class="hangman-text">The word was: @model.gameState.guessWord</p>
+            }
+            case None => {
+              <p class="hangman-text">Turn number: @model.gameState.turnNumber</p>
+              <p class="hangman-text">Remaining guesses: @model.gameState.remainingGuesses</p>
+              <p class="hangman-text">Previous guesses: @model.gameState.previousGuesses.mkString(", ")</p>
+              <p class="hangman-text">Current status: @model.gameState.currentWordStatus.mkString(" ")</p>
+            }
+          }
         }
       </div>
+
       <div class="col-lg-3 col-xl-3" align="center">
-        @Hangman.hangingOutput.map { line =>
+        @model.gameState.hangingOutput.map { line =>
           <p class="hangman-image">@line</p>
         }
       </div>
+
     </div>
   </div>
 </section>
