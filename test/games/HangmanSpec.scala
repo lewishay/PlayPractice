@@ -1,133 +1,110 @@
 package games
 
-import games.hangman.Hangman
+import games.hangman.{Hangman, HangmanGameState}
 import org.scalatest.{Matchers, WordSpecLike}
-
-import scala.collection.mutable.ArrayBuffer
 
 class HangmanSpec extends WordSpecLike with Matchers {
 
-  def setupGame(): Unit = {
-    Hangman.newGame()
-    Hangman.guessWord = "expert"
-    Hangman.remainingChars = "expert"
-    Hangman.currentStatus = ArrayBuffer('_', '_', '_', '_', '_', '_')
-  }
+  "Calling the generateWord function" should {
 
-  "Calling the newGame() function" should {
-
-    Hangman.newGame()
-
-    "set up the game's variables to their initial state" in {
-      Hangman.guessWord.length > 0 shouldBe true
-      Hangman.remainingChars shouldBe Hangman.guessWord
-      Hangman.currentStatus.distinct shouldBe ArrayBuffer('_')
-      Hangman.prevGuesses shouldBe ArrayBuffer()
-      Hangman.turnCounter shouldBe 0
-      Hangman.failCounter shouldBe 0
-      Hangman.messageOutput shouldBe ArrayBuffer("Please enter a letter to start the game.")
-      Hangman.hangingOutput shouldBe ArrayBuffer()
-      Hangman.gameStarted shouldBe true
-      Hangman.gameFinished shouldBe false
+    "generate a random word of length greater than 0" in {
+      assert(Hangman.generateWord.length > 0)
     }
   }
 
-  "Calling the makeMove() function" when {
+  "Calling the newGame function" should {
 
-    "a letter is guessed correctly" should {
+    val result = Hangman.newGame
 
-      "progress the game as expected" in {
-        setupGame()
-        Hangman.makeMove('x')
+    "initialise a new hangman game" in {
+      result.turnNumber shouldBe 0
+      result.remainingGuesses shouldBe 8
+      result.previousGuesses shouldBe Vector[Char]()
+      result.hangingOutput shouldBe Vector[String]()
+    }
+  }
 
-        Hangman.remainingChars shouldBe "e pert"
-        Hangman.prevGuesses shouldBe ArrayBuffer('x')
-        Hangman.turnCounter shouldBe 1
-        Hangman.failCounter shouldBe 0
-        Hangman.messageOutput shouldBe ArrayBuffer(
-          "Turn number: 1", "Remaining incorrect guesses: 7", "Previous guesses: x", "Correct guess.", "_ x _ _ _ _"
-        )
-        Hangman.hangingOutput shouldBe ArrayBuffer()
-        Hangman.gameFinished shouldBe false
+  "Calling the makeMove function" when {
+
+    val gameState = HangmanGameState(
+      guessWord = "water",
+      turnNumber = 3,
+      remainingGuesses = 7,
+      previousGuesses = Vector('x', 'w'),
+      currentWordStatus = Vector('w', '_', '_', '_', '_'),
+      hangingOutput = Vector("  _______ ")
+    )
+
+    "the player has guessed a letter correctly" should {
+
+      val result = Hangman.makeMove(gameState, 't')
+
+      "return the expected game state" in {
+        result.gameState.turnNumber shouldBe gameState.turnNumber + 1
+        result.gameState.remainingGuesses shouldBe gameState.remainingGuesses
+        result.gameState.previousGuesses shouldBe Vector('x', 'w', 't')
+        result.gameState.currentWordStatus shouldBe Vector('w', '_', 't', '_', '_')
+        result.gameState.hangingOutput shouldBe gameState.hangingOutput
+        result.gameWin shouldBe None
       }
     }
 
-    "a letter is guessed incorrectly" should {
+    "the player has guessed a letter incorrectly" should {
 
-      "progress the game as expected" in {
-        setupGame()
-        Hangman.makeMove('z')
+      val result = Hangman.makeMove(gameState, 'k')
+      val newHangingOutput = Vector(
+        "  _______ ",
+        "  |     | "
+      )
 
-        Hangman.remainingChars shouldBe "expert"
-        Hangman.prevGuesses shouldBe ArrayBuffer('z')
-        Hangman.turnCounter shouldBe 1
-        Hangman.failCounter shouldBe 1
-        Hangman.messageOutput shouldBe ArrayBuffer(
-          "Turn number: 1", "Remaining incorrect guesses: 7", "Previous guesses: z", "Incorrect guess.", "_ _ _ _ _ _"
-        )
-        Hangman.hangingOutput shouldBe ArrayBuffer("  _______ ")
-        Hangman.gameFinished shouldBe false
+      "return the expected game state" in {
+        result.gameState.turnNumber shouldBe gameState.turnNumber + 1
+        result.gameState.remainingGuesses shouldBe gameState.remainingGuesses - 1
+        result.gameState.previousGuesses shouldBe Vector('x', 'w', 'k')
+        result.gameState.currentWordStatus shouldBe Vector('w', '_', '_', '_', '_')
+        result.gameState.hangingOutput shouldBe newHangingOutput
+        result.gameWin shouldBe None
+      }
+    }
+  }
+
+  "Calling the gameWinCheck function" when {
+
+    "the player has no remaining guesses" should {
+
+      "return Some(false)" in {
+        Hangman.gameWinCheck(0, "", "") shouldBe Some(false)
       }
     }
 
-    "the game is won" should {
+    "the player has remaining guesses and has guessed the correct word" should {
 
-      "end the game as expected" in {
-        setupGame()
-        Hangman.makeMove('e')
-        Hangman.makeMove('x')
-        Hangman.makeMove('p')
-        Hangman.makeMove('r')
-        Hangman.makeMove('t')
-
-        Hangman.remainingChars shouldBe "      "
-        Hangman.prevGuesses shouldBe ArrayBuffer('e', 'x', 'p', 'r', 't')
-        Hangman.turnCounter shouldBe 5
-        Hangman.failCounter shouldBe 0
-        Hangman.messageOutput shouldBe ArrayBuffer(
-          "You win! Congratulations!", "The word was: expert", "Enter a letter to start a new game."
-        )
-        Hangman.hangingOutput shouldBe ArrayBuffer()
-        Hangman.gameFinished shouldBe true
+      "return Some(true)" in {
+        Hangman.gameWinCheck(1, "water", "water") shouldBe Some(true)
       }
     }
 
-    "the game is lost" should {
+    "the player has remaining guesses but has not guessed the correct word" should {
 
-      "end the game as expected" in {
-        setupGame()
-        for(_ <- 1 to 8) Hangman.makeMove('z')
+      "return None" in {
+        Hangman.gameWinCheck(1, "water", "fire") shouldBe None
+      }
+    }
+  }
 
-        Hangman.remainingChars shouldBe "expert"
-        Hangman.prevGuesses shouldBe ArrayBuffer('z', 'z', 'z', 'z', 'z', 'z', 'z', 'z')
-        Hangman.turnCounter shouldBe 8
-        Hangman.failCounter shouldBe 8
-        Hangman.messageOutput shouldBe ArrayBuffer(
-          "Game over! YOU DIED!", "The word was: expert", "Enter a letter to start a new game."
-        )
-        Hangman.hangingOutput shouldBe ArrayBuffer(
-          "  _______ ",
-          "  |     | ",
-          "  |     O ",
-          "  |    /|\\",
-          "  |    / \\",
-          "  |       ",
-          "__|___    ",
-          "|    |    "
-        )
-        Hangman.gameFinished shouldBe true
+  "Calling the gameEnd function" when {
+
+    "the player has won" should {
+
+      "return the victory message" in {
+        Hangman.gameEnd(true) shouldBe "You win! Congratulations!"
       }
     }
 
-    "a game is not being played" should {
+    "the player has lost" should {
 
-      "start a new game and make a move" in {
-        setupGame()
-        Hangman.gameFinished = true
-        Hangman.makeMove('x')
-
-        Hangman.turnCounter shouldBe 1
-        Hangman.gameFinished shouldBe false
+      "return the failure message" in {
+        Hangman.gameEnd(false) shouldBe "Game over! YOU DIED!"
       }
     }
   }

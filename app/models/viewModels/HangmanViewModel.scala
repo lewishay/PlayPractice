@@ -19,7 +19,11 @@ object HangmanViewModel {
       decode(chunks(4).split(";")).toVector,
       chunks(5).split(";").toVector
     )
-    val gameWin = Some(chunks(6).toBoolean)
+    val gameWin = chunks(6) match {
+      case "true" => Some(true)
+      case "false" => Some(false)
+      case "none" => None
+    }
     HangmanViewModel(gameState, gameWin)
   }
 
@@ -31,7 +35,7 @@ object HangmanViewModel {
       model.gameState.previousGuesses.mkString,
       encode(model.gameState.currentWordStatus.mkString),
       model.gameState.hangingOutput.mkString(";"),
-      model.gameWin.getOrElse(false)
+      model.gameWin.fold("none")(_.toString)
     ).mkString("-")
   }
 
