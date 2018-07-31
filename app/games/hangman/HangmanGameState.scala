@@ -5,5 +5,4 @@ case class HangmanGameState(guessWord: String,
                             remainingGuesses: Int,
                             previousGuesses: Vector[Char],
                             currentWordStatus: Vector[Char],
-                            remainingChars: Vector[Char],
                             hangingOutput: Vector[String])

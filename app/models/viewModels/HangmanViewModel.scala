@@ -12,29 +12,33 @@ object HangmanViewModel {
   def parseHangman(input: String): HangmanViewModel = {
     val chunks = input.split("-")
     val gameState = HangmanGameState(
-      chunks(0),
+      decode(chunks(0).split(";")),
       chunks(1).toInt,
       chunks(2).toInt,
       chunks(3).toVector,
-      chunks(4).toVector,
-      chunks(5).toVector,
-      chunks(6).split("sep").toVector
+      decode(chunks(4).split(";")).toVector,
+      chunks(5).split(";").toVector
     )
-    val gameWin = Some(chunks(7).toBoolean)
+    val gameWin = Some(chunks(6).toBoolean)
     HangmanViewModel(gameState, gameWin)
   }
 
   def serializeHangman(model: HangmanViewModel): String = {
     Vector(
-      model.gameState.guessWord,
+      encode(model.gameState.guessWord),
       model.gameState.turnNumber,
       model.gameState.remainingGuesses,
       model.gameState.previousGuesses.mkString,
-      model.gameState.currentWordStatus.mkString,
-      model.gameState.remainingChars.mkString,
-      model.gameState.hangingOutput.mkString("sep"),
+      encode(model.gameState.currentWordStatus.mkString),
+      model.gameState.hangingOutput.mkString(";"),
       model.gameWin.getOrElse(false)
     ).mkString("-")
+  }
+
+  def encode(input: String): String = input.map(_.toInt + ";").mkString
+  def decode(input: Array[String]): String = {
+    val result = input.map(_.toInt.toChar)
+    result.mkString
   }
 
   implicit def queryStringBindable: QueryStringBindable[HangmanViewModel] = new QueryStringBindable[HangmanViewModel] {

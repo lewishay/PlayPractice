@@ -12,7 +12,9 @@
       <div class="col-lg-3 col-xl-3" align="center">
         @model.gameWin match {
           case Some(_) => {
-            <button class="big-form" href="@routes.HangmanController.hangman" type="submit">New game</button>
+            <form class="big-form" action="@routes.HangmanController.hangman">
+              <button type="submit">New game</button>
+            </form>
           }
           case None => {
             @helper.form(routes.HangmanController.makeGuess(model), 'class -> "big-form") {
@@ -24,7 +26,7 @@
       </div>
 
       <div class="col-lg-6 col-xl-6" align="center">
-        @if(model.gameState.turnNumber == 1) {
+        @if(model.gameState.turnNumber == 0) {
           <p class="hangman-text">Please enter a letter to start the game.</p>
         } else {
           @model.gameWin match {
