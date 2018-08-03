@@ -21,7 +21,7 @@ import org.scalatest.{Matchers, WordSpecLike}
 
 class HangmanViewModelSpec extends WordSpecLike with Matchers {
 
-  val viewModel = HangmanViewModel(
+  def viewModel(gameWin: Option[Boolean]): HangmanViewModel = HangmanViewModel(
     HangmanGameState(
       "water",
       1,
@@ -30,21 +30,42 @@ class HangmanViewModelSpec extends WordSpecLike with Matchers {
       Vector('_', '_', '_', '_', '_'),
       Vector("  _______ ")
     ),
-    None
+    gameWin
   )
-  val gameString = "119;97;116;101;114;-1-7-x-95;95;95;95;95;-  _______ -none"
 
-  "Calling the parseHangman function" should {
+  def gameString(gameWin: Option[Boolean]): String = gameWin match {
+    case Some(result) => s"119;97;116;101;114;-1-7-x-_____-  _______ -$result"
+    case None => "119;97;116;101;114;-1-7-x-_____-  _______ -none"
+  }
 
-    "correctly parse a String to a HangmanViewModel" in {
-      HangmanViewModel.parseHangman(gameString) shouldBe viewModel
+  "Calling the parseHangman function" when {
+
+    "a game is in progress" should {
+
+      "correctly parse a String to a HangmanViewModel" in {
+        HangmanViewModel.parseHangman(gameString(None)) shouldBe viewModel(None)
+      }
+    }
+
+    "a game is won" should {
+
+      "correctly parse a String to a HangmanViewModel" in {
+        HangmanViewModel.parseHangman(gameString(Some(true))) shouldBe viewModel(Some(true))
+      }
+    }
+
+    "a game is lost" should {
+
+      "correctly parse a String to a HangmanViewModel" in {
+        HangmanViewModel.parseHangman(gameString(Some(false))) shouldBe viewModel(Some(false))
+      }
     }
   }
 
   "Calling the serializeHangman function" should {
 
     "correctly serialize a HangmanViewModel to a String" in {
-      HangmanViewModel.serializeHangman(viewModel) shouldBe gameString
+      HangmanViewModel.serializeHangman(viewModel(None)) shouldBe gameString(None)
     }
   }
 
@@ -69,7 +90,7 @@ class HangmanViewModelSpec extends WordSpecLike with Matchers {
     "the binding is successful" should {
 
       "return a Right wrapped in an Option" in {
-        HangmanViewModel.queryStringBindable.bind("", Map(gameString -> Seq())) shouldBe Some(Right(viewModel))
+        HangmanViewModel.queryStringBindable.bind("", Map(gameString(None) -> Seq())) shouldBe Some(Right(viewModel(None)))
       }
     }
 
