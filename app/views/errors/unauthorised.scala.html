@@ -1,4 +1,8 @@
-@main("Unauthorised") {
+@import config.AppConfig
+
+@()(implicit appConfig: AppConfig)
+
+@main("Unauthorised", appConfig) {
   <section>
     <div class="container">
       <h2 id="pageTitle" class="text-center">Unauthorised access</h2>

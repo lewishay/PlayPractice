@@ -1,4 +1,8 @@
-@main("Admin") {
+@import config.AppConfig
+
+@()(implicit appConfig: AppConfig)
+
+@main("Admin", appConfig) {
   <section>
     <div class="container">
       <h2 class="text-center"><u>Configure settings</u></h2>

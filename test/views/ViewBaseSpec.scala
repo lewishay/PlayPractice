@@ -1,5 +1,7 @@
 package views
 
+import config.AppConfig
+import mocks.MockAppConfig
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.scalatest.{Matchers, OptionValues, WordSpecLike}
@@ -14,6 +16,7 @@ trait ViewBaseSpec extends WordSpecLike with Matchers with OptionValues with I18
   lazy val injector: Injector = app.injector
   lazy val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
   implicit lazy val messages: Messages = MessagesImpl(Lang("en-GB"), messagesApi)
+  implicit val mockAppConfig: AppConfig = new MockAppConfig(app.configuration)
 
   def elementText(cssSelector: String)(implicit document: Document): String = {
     element(cssSelector).text()

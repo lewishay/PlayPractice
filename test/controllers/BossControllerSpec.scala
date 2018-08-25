@@ -26,7 +26,7 @@ class BossControllerSpec extends ControllerBaseSpec {
 
     def controller: BossController = {
       setup(serviceCall, serviceReturn)
-      new BossController(cc, service, ec)
+      new BossController(cc, service, ec, mockAppConfig)
     }
   }
 

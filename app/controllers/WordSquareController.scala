@@ -2,13 +2,14 @@ package controllers
 
 import javax.inject.Inject
 
+import config.AppConfig
 import forms.WordForm
-import play.api.i18n.I18nSupport
 import play.api.mvc._
 
-class WordSquareController @Inject()(cc: ControllerComponents) extends AbstractController(cc) with I18nSupport {
+class WordSquareController @Inject()(cc: ControllerComponents,
+                                     implicit val appConfig: AppConfig) extends FrontendController(cc) {
 
-  def exampleWordSquare: Action[AnyContent] = Action { implicit request =>
+def exampleWordSquare: Action[AnyContent] = Action { implicit request =>
     Ok(views.html.wordSquare("example"))
   }
 

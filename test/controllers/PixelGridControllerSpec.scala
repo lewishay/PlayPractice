@@ -8,7 +8,7 @@ import scala.concurrent.Future
 
 class PixelGridControllerSpec extends ControllerBaseSpec {
 
-  val controller: PixelGridController = new PixelGridController(cc)
+  val controller: PixelGridController = new PixelGridController(cc, mockAppConfig)
 
   "Calling the defaultGrid action" should {
     val result: Future[Result] = controller.defaultGrid(fakeRequest)

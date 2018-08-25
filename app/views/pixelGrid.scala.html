@@ -1,8 +1,9 @@
+@import config.AppConfig
 @import models.PixelGrid
 
-@(grids: Seq[PixelGrid], gridName: String)
+@(grids: Seq[PixelGrid], gridName: String)(implicit appConfig: AppConfig)
 
-@main("Pixel grid") {
+@main("Pixel grid", appConfig) {
   <section>
     <div class="container">
       <div class="row">
