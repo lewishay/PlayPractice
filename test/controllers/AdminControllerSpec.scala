@@ -11,7 +11,6 @@ class AdminControllerSpec extends ControllerBaseSpec {
   "Calling the admin action" when {
 
     "user is logged in as an admin" should {
-
       val adminRequest = fakeRequest.withSession(SessionKeys.adminStatus -> "true")
       val result = controller.admin(adminRequest)
 
@@ -26,7 +25,6 @@ class AdminControllerSpec extends ControllerBaseSpec {
     }
 
     "user is not logged in" should {
-
       val result = controller.admin(fakeRequest)
 
       "return 401" in {
@@ -40,7 +38,6 @@ class AdminControllerSpec extends ControllerBaseSpec {
   }
 
   "Calling the loginShow action" should {
-
     val result = controller.loginShow(fakeRequest)
 
     "return 200" in {
@@ -55,8 +52,7 @@ class AdminControllerSpec extends ControllerBaseSpec {
 
   "Calling the login action" when {
 
-    "there are no errors in the form" should {
-
+    "the user has entered valid credentials" should {
       val result = controller.login(fakeRequest.withFormUrlEncodedBody("username" -> "admin", "password" -> "cactus"))
 
       "return 200" in {
@@ -69,9 +65,21 @@ class AdminControllerSpec extends ControllerBaseSpec {
       }
     }
 
-    "there are errors in the form" should {
+    "the user has entered an invalid username" should {
+      val result = controller.login(fakeRequest.withFormUrlEncodedBody("username" -> "hey", "password" -> "cactus"))
 
-      val result = controller.login(fakeRequest.withFormUrlEncodedBody("username" -> "", "password" -> ""))
+      "return 400" in {
+        status(result) shouldBe Status.BAD_REQUEST
+      }
+
+      "return HTML" in {
+        contentType(result) shouldBe Some("text/html")
+        charset(result) shouldBe Some("utf-8")
+      }
+    }
+
+    "the user has entered an invalid password" should {
+      val result = controller.login(fakeRequest.withFormUrlEncodedBody("username" -> "admin", "password" -> "water"))
 
       "return 400" in {
         status(result) shouldBe Status.BAD_REQUEST

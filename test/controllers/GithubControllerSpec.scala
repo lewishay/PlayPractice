@@ -25,13 +25,13 @@ class GithubControllerSpec extends ControllerBaseSpec {
 
   "Calling the commitsPage action" should {
 
+    val result = controller.commitsPage(fakeRequest)
+
     "return 200" in {
-      val result = controller.commitsPage(fakeRequest)
       status(result) shouldBe Status.OK
     }
 
     "return HTML" in {
-      val result = controller.commitsPage(fakeRequest)
       contentType(result) shouldBe Some("text/html")
       charset(result) shouldBe Some("utf-8")
     }

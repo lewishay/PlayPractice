@@ -11,13 +11,13 @@ class HangmanControllerSpec extends ControllerBaseSpec {
 
   "Calling the hangman action" should {
 
+    val result = controller.hangman(fakeRequest)
+
     "return 200" in {
-      val result = controller.hangman(fakeRequest)
       status(result) shouldBe Status.OK
     }
 
     "return HTML" in {
-      val result = controller.hangman(fakeRequest)
       contentType(result) shouldBe Some("text/html")
       charset(result) shouldBe Some("utf-8")
     }
@@ -39,13 +39,13 @@ class HangmanControllerSpec extends ControllerBaseSpec {
 
     "there are no errors in the form" should {
 
+      val result = controller.makeGuess(exampleViewModel)(fakeRequest.withFormUrlEncodedBody("guess" -> "x"))
+
       "return 200" in {
-        val result = controller.makeGuess(exampleViewModel)(fakeRequest.withFormUrlEncodedBody("guess" -> "x"))
         status(result) shouldBe Status.OK
       }
 
       "return HTML" in {
-        val result = controller.makeGuess(exampleViewModel)(fakeRequest.withFormUrlEncodedBody("guess" -> "x"))
         contentType(result) shouldBe Some("text/html")
         charset(result) shouldBe Some("utf-8")
       }
@@ -53,13 +53,13 @@ class HangmanControllerSpec extends ControllerBaseSpec {
 
     "there are errors in the form" should {
 
+      val result = controller.makeGuess(exampleViewModel)(fakeRequest.withFormUrlEncodedBody("guess" -> "xxx"))
+
       "return 400" in {
-        val result = controller.makeGuess(exampleViewModel)(fakeRequest.withFormUrlEncodedBody("guess" -> "xxx"))
         status(result) shouldBe Status.BAD_REQUEST
       }
 
       "return HTML" in {
-        val result = controller.makeGuess(exampleViewModel)(fakeRequest.withFormUrlEncodedBody("guess" -> "xxx"))
         contentType(result) shouldBe Some("text/html")
         charset(result) shouldBe Some("utf-8")
       }

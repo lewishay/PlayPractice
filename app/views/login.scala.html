@@ -9,7 +9,7 @@
     <div class="row">
       @helper.form(routes.AdminController.login, 'class -> "big-form") {
         @helper.inputText(form("username"), '_label -> "Username")
-        @helper.inputText(form("password"), '_label -> "Password")
+        @helper.inputPassword(form("password"), '_label -> "Password")
         <button type="submit">Submit</button>
       }
     </div>
