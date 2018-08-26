@@ -5,7 +5,9 @@
  * object to insert into the body of the page.
  *@
 
-@(title: String)(content: Html)
+@import config.AppConfig
+
+@(title: String, appConfig: AppConfig)(content: Html)
 
 <!DOCTYPE html>
 <html lang="en">

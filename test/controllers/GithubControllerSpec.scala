@@ -19,7 +19,7 @@ class GithubControllerSpec extends ControllerBaseSpec {
 
   def controller: GithubController = {
     setup()
-    new GithubController(cc, service)
+    new GithubController(cc, service, mockAppConfig)
   }
 
 

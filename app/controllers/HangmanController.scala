@@ -2,13 +2,14 @@ package controllers
 
 import javax.inject.Inject
 
+import config.AppConfig
 import games.hangman.Hangman
 import forms.GuessForm
 import models.viewModels.HangmanViewModel
-import play.api.i18n.I18nSupport
-import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
 
-class HangmanController @Inject()(cc: ControllerComponents) extends AbstractController(cc) with I18nSupport {
+class HangmanController @Inject()(cc: ControllerComponents,
+                                  implicit val appConfig: AppConfig) extends FrontendController(cc) {
 
   def hangman: Action[AnyContent] = Action { implicit request =>
     val model = HangmanViewModel(Hangman.newGame, None)

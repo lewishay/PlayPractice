@@ -1,8 +1,9 @@
 @import forms.BossForm
 
-@(boss: Boss, bossForm: Form[BossForm] = BossForm.bossForm)(implicit messages: Messages)
+@import config.AppConfig
+@(boss: Boss, bossForm: Form[BossForm] = BossForm.bossForm)(implicit messages: Messages, appConfig: AppConfig)
 
-@main("Boss API call") {
+@main("Boss API call", appConfig) {
 <section>
   <div class="container">
     <div class="row">

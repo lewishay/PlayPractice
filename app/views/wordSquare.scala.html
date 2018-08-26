@@ -1,9 +1,10 @@
+@import config.AppConfig
 @import forms.WordForm
 @import games.WordSquare
 
-@(word: String, wordForm: Form[WordForm] = WordForm.wordForm)(implicit messages: Messages)
+@(word: String, wordForm: Form[WordForm] = WordForm.wordForm)(implicit messages: Messages, appConfig: AppConfig)
 
-@main("Word square") {
+@main("Word square", appConfig) {
   <section>
     <div class="container">
       <div class="row">

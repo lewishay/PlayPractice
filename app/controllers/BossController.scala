@@ -3,16 +3,18 @@ package controllers
 import javax.inject.Inject
 
 import common.Common
+import config.AppConfig
 import forms.BossForm
-import play.api.i18n.I18nSupport
 import play.api.mvc._
 import services.BattleNetService
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future}
 
-class BossController @Inject()(cc: ControllerComponents, battleNetService: BattleNetService, implicit val ec: ExecutionContext)
-  extends AbstractController(cc) with I18nSupport {
+class BossController @Inject()(cc: ControllerComponents,
+                               battleNetService: BattleNetService,
+                               implicit val ec: ExecutionContext,
+                               implicit val appConfig: AppConfig) extends FrontendController(cc) {
 
   def blankBoss: Action[AnyContent] = Action { implicit request =>
     Ok(views.html.boss(Common.exampleBoss))
