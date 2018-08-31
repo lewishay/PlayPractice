@@ -32,6 +32,12 @@
   color: #FFFFFF;
 }
 
+.big-form dd.error {
+  color: #e82609;
+  font-style: italic;
+  font-size: 1.1rem;
+}
+
 #guess {
   width: 50px;
 }

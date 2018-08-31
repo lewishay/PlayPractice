@@ -11,7 +11,7 @@ object LoginForm {
   val loginForm = Form(
     mapping(
       "username" -> text.verifying("Username not recognised", _ == "admin"),
-      "password" -> of[String].verifying("Invalid password", _ == "cactus")
+      "password" -> text.verifying("Invalid password", _ == "cactus")
     )(LoginForm.apply)(LoginForm.unapply)
   )
 }
