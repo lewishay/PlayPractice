@@ -69,3 +69,15 @@ table.fixed {
   letter-spacing: 8px;
   margin-bottom: 4px;
 }
+
+.info-banner {
+  background-color: #c69500;
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.big-check {
+  height: 22px;
+  width: 22px;
+  margin-right: 10px;
+}

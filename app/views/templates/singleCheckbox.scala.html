@@ -1,0 +1,8 @@
+@(field: Field, label: String)(implicit messages: Messages)
+
+@value = @{ field.value match { case Some(x) => x case None => "false" case x => x }}
+
+<div>
+  <input id="@{field.name}" class="big-check" name="@{field.name}" type="checkbox" value="true" @if(value == "true"){ checked }>
+  <label for="@{field.name}">@label</label>
+</div>

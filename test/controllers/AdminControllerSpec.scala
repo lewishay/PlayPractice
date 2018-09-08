@@ -27,7 +27,7 @@ class AdminControllerSpec extends ControllerBaseSpec {
     "user is not logged in" should {
       val result = controller.admin(fakeRequest)
 
-      "return 401" in {
+      "return 303" in {
         status(result) shouldBe Status.SEE_OTHER
       }
 
@@ -89,6 +89,19 @@ class AdminControllerSpec extends ControllerBaseSpec {
         contentType(result) shouldBe Some("text/html")
         charset(result) shouldBe Some("utf-8")
       }
+    }
+  }
+
+  "Calling the submitFeatures action" should {
+
+    val result = controller.submitFeatures(fakeRequest)
+
+    "return 303" in {
+      status(result) shouldBe Status.SEE_OTHER
+    }
+
+    "redirect the user to the feature switch page" in {
+      redirectLocation(result) shouldBe Some(routes.AdminController.admin().url)
     }
   }
 }

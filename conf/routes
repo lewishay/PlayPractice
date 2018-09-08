@@ -5,6 +5,7 @@
 
 GET     /                           controllers.HomeController.home
 GET     /admin                      controllers.AdminController.admin
+POST    /admin                      controllers.AdminController.submitFeatures
 GET     /login                      controllers.AdminController.loginShow
 POST    /login                      controllers.AdminController.login
 GET     /word-square                controllers.WordSquareController.exampleWordSquare

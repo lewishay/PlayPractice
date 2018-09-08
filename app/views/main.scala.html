@@ -13,7 +13,6 @@
 <html lang="en">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    @* Here's where we render the page title `String`. *@
     <title>@title</title>
     <link media="screen" href="@routes.Assets.versioned("stylesheets/main.css")" rel="stylesheet">
     <link media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap.css")" rel="stylesheet">
@@ -56,9 +55,15 @@
       </div>
     </header>
 
+    @if(appConfig.features.infoBannerEnabled()) {
+      <div class="container-fluid info-banner">
+        <div class="text-center">
+          <b>NOTICE: </b>
+          This website is currently undergoing development. There may be brief outages as new updates are applied.
+        </div>
+      </div>
+    }
 
-    @* And here's where we render the `Html` object containing
-     * the page content. *@
     @content
 
     <!-- Footer -->

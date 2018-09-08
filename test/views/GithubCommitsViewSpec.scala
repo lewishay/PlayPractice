@@ -9,12 +9,12 @@ class GithubCommitsViewSpec extends ViewBaseSpec {
 
   object Selectors {
     val title = "h1"
-    def repoTitle(column: Int) = s"body > section > div > div > div:nth-child($column) > h2"
-    def firstCommitInfo(column: Int) =
+    def repoTitle(column: Int): String = s"body > section > div > div > div:nth-child($column) > h2"
+    def firstCommitInfo(column: Int): String =
       s"body > section > div > div > div:nth-child($column) > ol > li:nth-child(1) > p:nth-child(1)"
-    def firstCommitMessage(column: Int) =
+    def firstCommitMessage(column: Int): String =
       s"body > section > div > div > div:nth-child($column) > ol > li:nth-child(1) > p:nth-child(2)"
-    def errorMessage(column: Int) = s"body > section > div > div > div:nth-child($column)"
+    def errorMessage(column: Int): String = s"body > section > div > div > div:nth-child($column)"
   }
 
   "The GithubCommits page" when {
