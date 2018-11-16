@@ -81,3 +81,10 @@ table.fixed {
   width: 22px;
   margin-right: 10px;
 }
+
+hr.dotted-line {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-top: 2px dashed #2C3E50;
+  width: 90%;
+}

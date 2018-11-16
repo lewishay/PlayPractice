@@ -2,11 +2,10 @@ package controllers
 
 import common.SessionKeys
 import forms.LoginForm
-import org.scalamock.scalatest.MockFactory
 import play.api.http.Status
 import play.api.test.Helpers._
 
-class AdminControllerSpec extends ControllerBaseSpec with MockFactory {
+class AdminControllerSpec extends ControllerBaseSpec {
 
   val loginForm = new LoginForm(mockAppConfig)
   val controller = new AdminController(cc, loginForm, mockAppConfig)
@@ -14,6 +13,7 @@ class AdminControllerSpec extends ControllerBaseSpec with MockFactory {
   "Calling the admin action" when {
 
     "user is logged in as an admin" should {
+
       val adminRequest = fakeRequest.withSession(SessionKeys.adminStatus -> "true")
       val result = controller.admin(adminRequest)
 
@@ -35,21 +35,39 @@ class AdminControllerSpec extends ControllerBaseSpec with MockFactory {
       }
 
       "redirect the user to the login page" in {
-        redirectLocation(result) shouldBe Some("/login")
+        redirectLocation(result) shouldBe Some(routes.AdminController.loginShow().url)
       }
     }
   }
 
-  "Calling the loginShow action" should {
-    val result = controller.loginShow(fakeRequest)
+  "Calling the loginShow action" when {
 
-    "return 200" in {
-      status(result) shouldBe Status.OK
+    "user is logged in as an admin" should {
+
+      val adminRequest = fakeRequest.withSession(SessionKeys.adminStatus -> "true")
+      val result = controller.loginShow(adminRequest)
+
+      "return 303" in {
+        status(result) shouldBe Status.SEE_OTHER
+      }
+
+      "redirect the user to the admin page" in {
+        redirectLocation(result) shouldBe Some(routes.AdminController.admin().url)
+      }
     }
 
-    "return HTML" in {
-      contentType(result) shouldBe Some("text/html")
-      charset(result) shouldBe Some("utf-8")
+    "user is not logged in" should {
+
+      val result = controller.loginShow(fakeRequest)
+
+      "return 200" in {
+        status(result) shouldBe Status.OK
+      }
+
+      "return HTML" in {
+        contentType(result) shouldBe Some("text/html")
+        charset(result) shouldBe Some("utf-8")
+      }
     }
   }
 
@@ -65,6 +83,10 @@ class AdminControllerSpec extends ControllerBaseSpec with MockFactory {
       "return HTML" in {
         contentType(result) shouldBe Some("text/html")
         charset(result) shouldBe Some("utf-8")
+      }
+
+      "add the admin status to session" in {
+        session(result).get(SessionKeys.adminStatus) shouldBe Some("true")
       }
     }
 
@@ -105,6 +127,23 @@ class AdminControllerSpec extends ControllerBaseSpec with MockFactory {
 
     "redirect the user to the feature switch page" in {
       redirectLocation(result) shouldBe Some(routes.AdminController.admin().url)
+    }
+  }
+
+  "Calling the clearSession action" should {
+
+    val result = controller.clearSession(fakeRequest.withSession(SessionKeys.adminStatus -> "true"))
+
+    "return 303" in {
+      status(result) shouldBe Status.SEE_OTHER
+    }
+
+    "redirect the user to the home page" in {
+      redirectLocation(result) shouldBe Some(routes.HomeController.home().url)
+    }
+
+    "create a new session" in {
+      session(result).data shouldBe Map.empty
     }
   }
 }

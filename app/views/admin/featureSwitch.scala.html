@@ -7,10 +7,18 @@
 @main("Features", appConfig) {
   <section>
     <div class="container">
-      <div class="row">
+      <div class="row pb-3">
         @helper.form(routes.AdminController.submitFeatures, 'class -> "big-form") {
           @views.html.templates.singleCheckbox(form(ConfigKeys.infoBanner), "Info banner enabled")
           <button class="mt-3" type="submit">Submit</button>
+        }
+      </div>
+
+      <hr class="dotted-line">
+
+      <div class="row justify-content-center">
+        @helper.form(routes.AdminController.clearSession, 'class -> "big-form") {
+          <button class="mt-3" type="submit">Clear user session</button>
         }
       </div>
     </div>

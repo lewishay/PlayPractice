@@ -27,7 +27,10 @@ class AdminController @Inject()(cc: ControllerComponents,
   }
 
   def loginShow: Action[AnyContent] = Action { implicit request =>
-    Ok(views.html.admin.login(loginForm.form)).removingFromSession(SessionKeys.adminStatus)
+    request.session.get(SessionKeys.adminStatus) match {
+      case Some("true") => Redirect(controllers.routes.AdminController.admin().url)
+      case _ => Ok(views.html.admin.login(loginForm.form))
+    }
   }
 
   def login: Action[AnyContent] = Action { implicit request =>
@@ -45,5 +48,9 @@ class AdminController @Inject()(cc: ControllerComponents,
         Redirect(routes.AdminController.admin())
       }
     )
+  }
+
+  def clearSession: Action[AnyContent] = Action { implicit request =>
+    Redirect(routes.HomeController.home()).withNewSession
   }
 }
