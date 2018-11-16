@@ -1,12 +1,15 @@
 package controllers
 
 import common.SessionKeys
+import forms.LoginForm
+import org.scalamock.scalatest.MockFactory
 import play.api.http.Status
 import play.api.test.Helpers._
 
-class AdminControllerSpec extends ControllerBaseSpec {
+class AdminControllerSpec extends ControllerBaseSpec with MockFactory {
 
-  val controller = new AdminController(cc, mockAppConfig)
+  val loginForm = new LoginForm(mockAppConfig)
+  val controller = new AdminController(cc, loginForm, mockAppConfig)
 
   "Calling the admin action" when {
 
@@ -53,7 +56,7 @@ class AdminControllerSpec extends ControllerBaseSpec {
   "Calling the login action" when {
 
     "the user has entered valid credentials" should {
-      val result = controller.login(fakeRequest.withFormUrlEncodedBody("username" -> "admin", "password" -> "cactus"))
+      val result = controller.login(fakeRequest.withFormUrlEncodedBody("username" -> "admin", "password" -> "testPass"))
 
       "return 200" in {
         status(result) shouldBe Status.OK
@@ -66,7 +69,7 @@ class AdminControllerSpec extends ControllerBaseSpec {
     }
 
     "the user has entered an invalid username" should {
-      val result = controller.login(fakeRequest.withFormUrlEncodedBody("username" -> "hey", "password" -> "cactus"))
+      val result = controller.login(fakeRequest.withFormUrlEncodedBody("username" -> "hey", "password" -> "testPass"))
 
       "return 400" in {
         status(result) shouldBe Status.BAD_REQUEST

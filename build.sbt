@@ -9,15 +9,16 @@ lazy val playSettings: Seq[Setting[_]] = Seq.empty
 val compile: Seq[ModuleID] = Seq(
   ws,
   ehcache,
-  guice
+  guice,
+  "io.github.nremond" %% "pbkdf2-scala" % "0.6.3"
 )
 
 def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
   "com.github.tomakehurst" % "wiremock" % "2.6.0" % scope,
   "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
   "org.jsoup" % "jsoup" % "1.10.3" % scope,
-  "org.scalatest" %% "scalatest" % "3.0.1" % scope,
-  "org.scalamock" %% "scalamock-scalatest-support" % "3.6.0" % scope,
+  "org.scalatest" %% "scalatest" % "3.0.4" % scope,
+  "org.scalamock" %% "scalamock" % "4.1.0" % scope,
   "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.0" % scope
 )
 
@@ -71,12 +72,18 @@ lazy val project: Project = Project(appName, file("."))
   .settings(playSettings: _*)
   .settings(coverageSettings: _*)
   .settings(
+    PlayKeys.playDefaultPort := 9000,
     scalaVersion := "2.11.11",
     libraryDependencies ++= appDependencies,
     dependencyOverrides ++= jettyDependencies,
     retrieveManaged := true,
     evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
-    routesGenerator := InjectedRoutesGenerator
+    routesGenerator := InjectedRoutesGenerator,
+    scalacOptions in ThisBuild ++= Seq("-feature"),
+    resolvers ++= Seq(
+      "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases",
+      "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/"
+    )
   )
   .configs(IntegrationTest)
   .settings(inConfig(IntegrationTest)(Defaults.itSettings): _*)
@@ -84,9 +91,5 @@ lazy val project: Project = Project(appName, file("."))
     Keys.fork in IntegrationTest := false,
     unmanagedSourceDirectories in IntegrationTest := (baseDirectory in IntegrationTest) (base => Seq(base / "it")).value,
     testGrouping in IntegrationTest := oneForkedJvmPerTest((definedTests in IntegrationTest).value),
-    parallelExecution in IntegrationTest := false)
-  .settings(resolvers ++= Seq(
-    "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases",
-    "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/"
-  ))
-  .settings(scalacOptions in ThisBuild ++= Seq("-feature"))
+    parallelExecution in IntegrationTest := false
+  )

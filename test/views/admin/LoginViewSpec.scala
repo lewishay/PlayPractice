@@ -18,8 +18,11 @@ class LoginViewSpec extends ViewBaseSpec {
 
   "The Login page" when {
 
+    val loginForm = new LoginForm(mockAppConfig)
+
     "there are no errors in the form" should {
-      lazy val view = views.html.admin.login()
+
+      lazy val view = views.html.admin.login(loginForm.form)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct title" in {
@@ -40,7 +43,7 @@ class LoginViewSpec extends ViewBaseSpec {
     }
 
     "there are errors in the form" should {
-      lazy val view = views.html.admin.login(LoginForm.loginForm.bind(Map(
+      lazy val view = views.html.admin.login(loginForm.form.bind(Map(
         "username" -> "no",
         "password" -> "no"
       )))

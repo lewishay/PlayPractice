@@ -1,16 +1,24 @@
 package forms
 
+import javax.inject.{Inject, Singleton}
+
+import config.AppConfig
+import io.github.nremond.SecureHash
 import play.api.data.Form
 import play.api.data.Forms._
 
-case class LoginForm(username: String, password: String)
+case class Login(username: String, password: String)
 
-object LoginForm {
+@Singleton
+class LoginForm @Inject()(appConfig: AppConfig) {
 
-  val loginForm = Form(
+  val passwordCheck: String => Boolean =
+    SecureHash.createHash(_, saltLength = 0) == appConfig.adminPasswordHash
+
+  val form = Form(
     mapping(
       "username" -> text.verifying("Username not recognised", _ == "admin"),
-      "password" -> text.verifying("Invalid password", _ == "cactus")
-    )(LoginForm.apply)(LoginForm.unapply)
+      "password" -> text.verifying("Invalid password", passwordCheck)
+    )(Login.apply)(Login.unapply)
   )
 }

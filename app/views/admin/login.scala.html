@@ -1,7 +1,7 @@
 @import config.AppConfig
-@import forms.LoginForm
+@import forms.Login
 
-@(form: Form[LoginForm] = LoginForm.loginForm)(implicit messages: Messages, appConfig: AppConfig)
+@(form: Form[Login])(implicit messages: Messages, appConfig: AppConfig)
 
 @main("Login", appConfig) {
 <section>

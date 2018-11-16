@@ -9,6 +9,7 @@ import models.FeatureSwitchModel
 import play.api.mvc._
 
 class AdminController @Inject()(cc: ControllerComponents,
+                                loginForm: LoginForm,
                                 implicit val appConfig: AppConfig) extends FrontendController(cc) {
 
   private def renderFeatureSwitchPage(implicit request: Request[_]): Result =
@@ -26,11 +27,11 @@ class AdminController @Inject()(cc: ControllerComponents,
   }
 
   def loginShow: Action[AnyContent] = Action { implicit request =>
-    Ok(views.html.admin.login()).removingFromSession(SessionKeys.adminStatus)
+    Ok(views.html.admin.login(loginForm.form)).removingFromSession(SessionKeys.adminStatus)
   }
 
   def login: Action[AnyContent] = Action { implicit request =>
-    LoginForm.loginForm.bindFromRequest().fold(
+    loginForm.form.bindFromRequest().fold(
       formWithErrors => BadRequest(views.html.admin.login(formWithErrors)),
       _ => renderFeatureSwitchPage.addingToSession(SessionKeys.adminStatus -> "true")
     )
