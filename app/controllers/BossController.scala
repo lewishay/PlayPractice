@@ -11,10 +11,10 @@ import services.BattleNetService
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future}
 
-class BossController @Inject()(cc: ControllerComponents,
-                               battleNetService: BattleNetService,
+class BossController @Inject()(battleNetService: BattleNetService)(
+                               implicit cc: ControllerComponents,
                                implicit val ec: ExecutionContext,
-                               implicit val appConfig: AppConfig) extends FrontendController(cc) {
+                               implicit val appConfig: AppConfig) extends FrontendController {
 
   def blankBoss: Action[AnyContent] = Action { implicit request =>
     Ok(views.html.boss(Common.exampleBoss))

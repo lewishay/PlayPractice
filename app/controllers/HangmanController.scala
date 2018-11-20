@@ -8,8 +8,8 @@ import forms.GuessForm
 import models.viewModels.HangmanViewModel
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 
-class HangmanController @Inject()(cc: ControllerComponents,
-                                  implicit val appConfig: AppConfig) extends FrontendController(cc) {
+class HangmanController @Inject()(implicit cc: ControllerComponents,
+                                  implicit val appConfig: AppConfig) extends FrontendController {
 
   def hangman: Action[AnyContent] = Action { implicit request =>
     val model = HangmanViewModel(Hangman.newGame, None)

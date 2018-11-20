@@ -11,7 +11,6 @@ import scala.concurrent.{ExecutionContext, Future}
 class BossControllerSpec extends ControllerBaseSpec {
 
   private trait Test {
-    val ec: ExecutionContext = ExecutionContext.global
     val service: BattleNetService = mock[BattleNetService]
     val serviceCall: Boolean = true
     val serviceReturn: Future[Boss] = Future.successful(Common.exampleBoss)
@@ -26,7 +25,7 @@ class BossControllerSpec extends ControllerBaseSpec {
 
     def controller: BossController = {
       setup(serviceCall, serviceReturn)
-      new BossController(cc, service, ec, mockAppConfig)
+      new BossController(service)
     }
   }
 

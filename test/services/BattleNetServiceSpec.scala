@@ -10,7 +10,6 @@ import scala.concurrent.{ExecutionContext, Future}
 class BattleNetServiceSpec extends ControllerBaseSpec {
 
   val mockConnector: BattleNetConnector = mock[BattleNetConnector]
-  implicit val ec: ExecutionContext = ExecutionContext.global
   val service: BattleNetService = new BattleNetService(mockConnector)
 
   "Calling getBoss()" when {

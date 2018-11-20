@@ -6,8 +6,8 @@ import config.AppConfig
 import forms.WordForm
 import play.api.mvc._
 
-class WordSquareController @Inject()(cc: ControllerComponents,
-                                     implicit val appConfig: AppConfig) extends FrontendController(cc) {
+class WordSquareController @Inject()(implicit cc: ControllerComponents,
+                                     implicit val appConfig: AppConfig) extends FrontendController {
 
 def exampleWordSquare: Action[AnyContent] = Action { implicit request =>
     Ok(views.html.wordSquare("example"))

@@ -10,7 +10,7 @@ class WordSquareControllerSpec extends ControllerBaseSpec {
 
   "Calling the exampleWordSquare action" should {
 
-    val result: Future[Result] = new WordSquareController(cc, mockAppConfig).exampleWordSquare(fakeRequest)
+    val result: Future[Result] = new WordSquareController().exampleWordSquare(fakeRequest)
 
     "return 200" in {
       status(result) shouldBe Status.OK
@@ -26,7 +26,7 @@ class WordSquareControllerSpec extends ControllerBaseSpec {
 
     "there are no errors in the form" should {
 
-      val result: Future[Result] = new WordSquareController(cc, mockAppConfig).wordSquare(
+      val result: Future[Result] = new WordSquareController().wordSquare(
         fakeRequest.withFormUrlEncodedBody(
           "word" -> "TEST"
         )
@@ -44,7 +44,7 @@ class WordSquareControllerSpec extends ControllerBaseSpec {
 
     "there are errors in the form" should {
 
-      val result: Future[Result] = new WordSquareController(cc, mockAppConfig).wordSquare(
+      val result: Future[Result] = new WordSquareController().wordSquare(
         fakeRequest.withFormUrlEncodedBody(
           "word" -> "££!££$$%^%$$"
         )

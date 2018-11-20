@@ -7,7 +7,7 @@ import play.api.test.Helpers._
 
 class HangmanControllerSpec extends ControllerBaseSpec {
 
-  val controller = new HangmanController(cc, mockAppConfig)
+  val controller = new HangmanController()
 
   "Calling the hangman action" should {
 

@@ -5,8 +5,8 @@ import javax.inject.Inject
 import config.AppConfig
 import play.api.mvc._
 
-class ErrorsController @Inject()(cc: ControllerComponents,
-                                 implicit val appConfig: AppConfig) extends FrontendController(cc) {
+class ErrorsController @Inject()(implicit cc: ControllerComponents,
+                                 implicit val appConfig: AppConfig) extends FrontendController {
 
   def unauthorised: Action[AnyContent] = Action {
     Ok(views.html.errors.unauthorised())

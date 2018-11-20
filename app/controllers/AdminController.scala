@@ -8,9 +8,9 @@ import forms.{FeatureSwitchForm, LoginForm}
 import models.FeatureSwitchModel
 import play.api.mvc._
 
-class AdminController @Inject()(cc: ControllerComponents,
-                                loginForm: LoginForm,
-                                implicit val appConfig: AppConfig) extends FrontendController(cc) {
+class AdminController @Inject()(loginForm: LoginForm)(
+                                implicit cc: ControllerComponents,
+                                implicit val appConfig: AppConfig) extends FrontendController {
 
   private def renderFeatureSwitchPage(implicit request: Request[_]): Result =
     Ok(views.html.admin.featureSwitch(

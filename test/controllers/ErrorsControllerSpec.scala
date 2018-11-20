@@ -10,7 +10,7 @@ class ErrorsControllerSpec extends ControllerBaseSpec {
 
   "Calling the unauthorised action" should {
 
-    val result: Future[Result] = new ErrorsController(cc, mockAppConfig).unauthorised(fakeRequest)
+    val result: Future[Result] = new ErrorsController().unauthorised(fakeRequest)
 
     "return 200" in {
       status(result) shouldBe Status.OK

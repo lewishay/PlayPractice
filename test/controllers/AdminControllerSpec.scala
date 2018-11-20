@@ -8,7 +8,7 @@ import play.api.test.Helpers._
 class AdminControllerSpec extends ControllerBaseSpec {
 
   val loginForm = new LoginForm(mockAppConfig)
-  val controller = new AdminController(cc, loginForm, mockAppConfig)
+  val controller = new AdminController(loginForm)
 
   "Calling the admin action" when {
 
