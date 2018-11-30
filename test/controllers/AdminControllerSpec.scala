@@ -30,12 +30,13 @@ class AdminControllerSpec extends ControllerBaseSpec {
     "user is not logged in" should {
       val result = controller.admin(fakeRequest)
 
-      "return 303" in {
-        status(result) shouldBe Status.SEE_OTHER
+      "return 401" in {
+        status(result) shouldBe Status.UNAUTHORIZED
       }
 
-      "redirect the user to the login page" in {
-        redirectLocation(result) shouldBe Some(routes.AdminController.loginShow().url)
+      "return HTML" in {
+        contentType(result) shouldBe Some("text/html")
+        charset(result) shouldBe Some("utf-8")
       }
     }
   }

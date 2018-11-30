@@ -22,7 +22,7 @@ class AdminController @Inject()(loginForm: LoginForm)(
   def admin: Action[AnyContent] = Action { implicit request =>
     request.session.get(SessionKeys.adminStatus) match {
       case Some("true") => renderFeatureSwitchPage
-      case _ => Redirect(controllers.routes.AdminController.loginShow().url)
+      case _ => Unauthorized(views.html.errors.unauthorised())
     }
   }
 
