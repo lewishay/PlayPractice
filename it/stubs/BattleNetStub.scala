@@ -19,10 +19,12 @@ object BattleNetStub extends WireMockMethods {
   }
 
   def failureBoss: StubMapping = {
-    when(method = GET, uri = bossUri).thenReturn(status = NOT_FOUND)
+    when(method = GET, uri = bossUri).thenReturn(status = NOT_FOUND, body = failureBody)
   }
 
   def failureZone: StubMapping = {
-    when(method = GET, uri = zoneUri).thenReturn(status = NOT_FOUND)
+    when(method = GET, uri = zoneUri).thenReturn(status = NOT_FOUND, body = failureBody)
   }
+
+  val failureBody = "The resource could not be found."
 }

@@ -8,8 +8,7 @@ import forms.BossForm
 import play.api.mvc._
 import services.BattleNetService
 
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.{ExecutionContext, Future}
 
 class BossController @Inject()(battleNetService: BattleNetService)(
                                implicit cc: ControllerComponents,
@@ -20,16 +19,16 @@ class BossController @Inject()(battleNetService: BattleNetService)(
     Ok(views.html.boss(Common.exampleBoss))
   }
 
-  def getBoss: Action[AnyContent] = Action { implicit request =>
+  def getBoss: Action[AnyContent] = Action.async { implicit request =>
     val formResult = BossForm.bossForm.bindFromRequest
     formResult.fold({ formWithErrors =>
-      BadRequest(views.html.boss(Common.exampleBoss, formWithErrors))
+      Future.successful(BadRequest(views.html.boss(Common.exampleBoss, formWithErrors)))
     }, { result =>
-      Await.result(battleNetService.getBoss(result.id).map { boss =>
+      battleNetService.getBoss(result.id).map { boss =>
         Ok(views.html.boss(boss))
       }.recoverWith {
         case _ => Future.successful(BadRequest(views.html.boss(Common.exampleBoss)))
-      }, Duration(10, "seconds"))
+      }
     })
   }
 }

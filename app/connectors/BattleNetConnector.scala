@@ -3,6 +3,7 @@ package connectors
 import javax.inject.Inject
 
 import config.AppConfig
+import models.ErrorModel
 import play.api.libs.ws._
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -16,23 +17,19 @@ class BattleNetConnector @Inject()(ws: WSClient, appConfig: AppConfig) {
   private[connectors] def zoneUrl(zoneID: String): String =
     s"${appConfig.protocol}://${appConfig.battleNetService}/wow/zone/$zoneID?locale=en_GB&apikey=$apiKey"
 
-  def getBoss(bossID: Int)(implicit ec: ExecutionContext): Future[String] = {
+  def getBoss(bossID: Int)(implicit ec: ExecutionContext): Future[Either[ErrorModel, String]] = {
     val request: WSRequest = ws.url(bossUrl(bossID.toString))
     request.get().map {
-      case response if response.status == 200 => response.body
-      case _ => "Request failed!"
-    }.recoverWith {
-      case _ => Future.failed(new Exception("Request failed!"))
+      case response if response.status == 200 => Right(response.body)
+      case response => Left(ErrorModel(response.status, response.body))
     }
   }
 
-  def getZone(zoneID: Int)(implicit ec: ExecutionContext): Future[String] = {
+  def getZone(zoneID: Int)(implicit ec: ExecutionContext): Future[Either[ErrorModel, String]] = {
     val request: WSRequest = ws.url(zoneUrl(zoneID.toString))
     request.get().map {
-      case response if response.status == 200 => response.body
-      case _ => "Request failed!"
-    }.recoverWith {
-      case _ => Future.failed(new Exception("Request failed!"))
+      case response if response.status == 200 => Right(response.body)
+      case response => Left(ErrorModel(response.status, response.body))
     }
   }
 }

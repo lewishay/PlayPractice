@@ -4,46 +4,46 @@ import javax.inject.Inject
 
 import common.Common
 import connectors.BattleNetConnector
-import models.{Boss, Zone}
+import models.{Boss, ErrorModel, Zone}
 import play.api.libs.json.{JsValue, Json}
 
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.{ExecutionContext, Future}
 
 class BattleNetService @Inject()(connector: BattleNetConnector) {
 
   def getBoss(bossID: Int)(implicit ec: ExecutionContext): Future[Boss] = {
-    connector.getBoss(bossID).map {
-      case result if result == "Request failed!" => Common.exampleBoss
-      case result =>
+    connector.getBoss(bossID).flatMap {
+      case Right(result) =>
         val rawBoss: JsValue = Json.parse(result)
         val description: String = (rawBoss \ "description").asOpt[String] match {
           case Some(x) => x
           case _ => "Not found!"
         }
-        Boss(
-          (rawBoss \ "name").as[String],
-          description,
-          (rawBoss \ "health").as[Int],
-          (rawBoss \ "level").as[Int],
-          Await.result(getZone((rawBoss \ "zoneId").as[Int]), Duration(5, "seconds"))
-        )
-    }.recoverWith {
-      case _ => Future.failed(new Exception("Request failed!"))
+        getZone((rawBoss \ "zoneId").as[Int]).map {
+          case Right(zone) =>
+            Boss(
+              (rawBoss \ "name").as[String],
+              description,
+              (rawBoss \ "health").as[Int],
+              (rawBoss \ "level").as[Int],
+              zone
+            )
+          case Left(_) => Common.exampleBoss // TODO - add proper error handling
+        }
+
+      case Left(_) => Future.successful(Common.exampleBoss) // TODO - add proper error handling
     }
   }
 
-  def getZone(zoneID: Int)(implicit ec: ExecutionContext): Future[Zone] = {
+  def getZone(zoneID: Int)(implicit ec: ExecutionContext): Future[Either[ErrorModel, Zone]] = {
     connector.getZone(zoneID).map {
-      case result if result == "Request failed!" => Common.exampleZone
-      case result =>
+      case Right(result) =>
         val rawZone = Json.parse(result)
-        Zone(
+        Right(Zone(
           (rawZone \ "name").as[String],
           (rawZone \ "location" \ "name").as[String]
-        )
-    }.recoverWith {
-      case _ => Future.failed(new Exception("Request failed!"))
+        ))
+      case Left(error) => Left(error)
     }
   }
 }

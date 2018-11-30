@@ -3,7 +3,8 @@ package services
 import common.Common
 import connectors.BattleNetConnector
 import controllers.ControllerBaseSpec
-import models.{Boss, Zone}
+import models.{Boss, ErrorModel, Zone}
+import play.api.http.Status
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -38,11 +39,11 @@ class BattleNetServiceSpec extends ControllerBaseSpec {
       "return a boss" in {
         (mockConnector.getBoss(_: Int)(_: ExecutionContext))
           .expects(*, *)
-          .returns(Future.successful(bossReturnString))
+          .returns(Future.successful(Right(bossReturnString)))
 
         (mockConnector.getZone(_: Int)(_: ExecutionContext))
           .expects(*, *)
-          .returns(Future.successful(zoneReturnString))
+          .returns(Future.successful(Right(zoneReturnString)))
 
         val result: Boss = await(service.getBoss(1234))
         result shouldBe successBoss
@@ -54,7 +55,7 @@ class BattleNetServiceSpec extends ControllerBaseSpec {
       "return the empty default boss" in {
         (mockConnector.getBoss(_: Int)(_: ExecutionContext))
           .expects(*, *)
-          .returns(Future.successful("Request failed!"))
+          .returns(Future.successful(Left(ErrorModel(Status.NOT_FOUND, "Request failed!"))))
 
         val result: Boss = await(service.getBoss(1234))
         result shouldBe Common.exampleBoss
