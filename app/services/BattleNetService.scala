@@ -11,7 +11,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class BattleNetService @Inject()(connector: BattleNetConnector) {
 
-  def getBoss(bossID: Int)(implicit ec: ExecutionContext): Future[Boss] = {
+  def getBoss(bossID: Int)(implicit ec: ExecutionContext): Future[Either[ErrorModel, Boss]] = {
     connector.getBoss(bossID).flatMap {
       case Right(result) =>
         val rawBoss: JsValue = Json.parse(result)
@@ -21,17 +21,17 @@ class BattleNetService @Inject()(connector: BattleNetConnector) {
         }
         getZone((rawBoss \ "zoneId").as[Int]).map {
           case Right(zone) =>
-            Boss(
+            Right(Boss(
               (rawBoss \ "name").as[String],
               description,
               (rawBoss \ "health").as[Int],
               (rawBoss \ "level").as[Int],
               zone
-            )
-          case Left(_) => Common.exampleBoss // TODO - add proper error handling
+            ))
+          case Left(error) => Left(error)
         }
 
-      case Left(_) => Future.successful(Common.exampleBoss) // TODO - add proper error handling
+      case Left(error) => Future.successful(Left(error))
     }
   }
 

@@ -5,6 +5,7 @@ import javax.inject.Inject
 import common.Common
 import config.AppConfig
 import forms.BossForm
+import models.ErrorModel
 import play.api.mvc._
 import services.BattleNetService
 
@@ -24,11 +25,10 @@ class BossController @Inject()(battleNetService: BattleNetService)(
     formResult.fold({ formWithErrors =>
       Future.successful(BadRequest(views.html.boss(Common.exampleBoss, formWithErrors)))
     }, { result =>
-      battleNetService.getBoss(result.id).map { boss =>
-        Ok(views.html.boss(boss))
-      }.recoverWith {
-        case _ => Future.successful(BadRequest(views.html.boss(Common.exampleBoss)))
-      }
-    })
+      battleNetService.getBoss(result.id).map {
+        case Right(boss) => Ok(views.html.boss(boss))
+        case Left(ErrorModel(NOT_FOUND, _)) => NotFound(views.html.boss(Common.exampleBoss, notFoundError = true))
+        case Left(_) => InternalServerError(views.html.errors.genericError())
+    }})
   }
 }

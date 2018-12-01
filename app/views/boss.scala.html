@@ -1,7 +1,8 @@
 @import forms.BossForm
 
 @import config.AppConfig
-@(boss: Boss, bossForm: Form[BossForm] = BossForm.bossForm)(implicit messages: Messages, appConfig: AppConfig)
+@(boss: Boss, bossForm: Form[BossForm] = BossForm.bossForm, notFoundError: Boolean = false)(
+  implicit messages: Messages, appConfig: AppConfig)
 
 @main("Boss API call") {
 <section>
@@ -11,6 +12,9 @@
         @helper.form(routes.BossController.getBoss, 'class -> "big-form") {
           @helper.select(bossForm("bossID"), Boss.validBosses, '_label -> "Select boss:", '_showConstraints -> false)
           <button type="submit">Get boss!</button>
+        }
+        @if(notFoundError) {
+          <p class="error-msg pt-5">The chosen Boss information could not be found</p>
         }
       </div>
       <div class="col-lg-6">

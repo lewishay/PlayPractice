@@ -1,7 +1,7 @@
 package controllers
 
 import common.Common
-import models.Boss
+import models.{Boss, ErrorModel}
 import play.api.http.Status
 import play.api.test.Helpers._
 import services.BattleNetService
@@ -13,13 +13,13 @@ class BossControllerSpec extends ControllerBaseSpec {
   private trait Test {
     val service: BattleNetService = mock[BattleNetService]
     val serviceCall: Boolean = true
-    val serviceReturn: Future[Boss] = Future.successful(Common.exampleBoss)
+    val serviceReturn: Either[ErrorModel, Boss] = Right(Common.exampleBoss)
 
-    def setup(serviceIsCalled: Boolean, futureReturn: Future[Boss]): Any = {
+    def setup(serviceIsCalled: Boolean, futureReturn: Either[ErrorModel, Boss]): Any = {
       if(serviceIsCalled) {
         (service.getBoss(_: Int)(_: ExecutionContext))
           .expects(*, *)
-          .returns(futureReturn)
+          .returns(Future.successful(futureReturn))
       }
     }
 
@@ -28,7 +28,6 @@ class BossControllerSpec extends ControllerBaseSpec {
       new BossController(service)
     }
   }
-
 
   "Calling the blankBoss action" should {
 
@@ -62,16 +61,32 @@ class BossControllerSpec extends ControllerBaseSpec {
       }
     }
 
-    "the service returns an exception" should {
+    "the service returns a response status of 404" should {
 
-      "return 400" in new Test {
-        override val serviceReturn: Future[Boss] = Future.failed(new Exception("Request failed!"))
+      "return 404" in new Test {
+        override val serviceReturn: Either[ErrorModel, Boss] = Left(ErrorModel(Status.NOT_FOUND, "Can't find it :("))
         val result = controller.getBoss(fakeRequest.withFormUrlEncodedBody("bossID" -> "77"))
-        status(result) shouldBe Status.BAD_REQUEST
+        status(result) shouldBe Status.NOT_FOUND
       }
 
       "return HTML" in new Test {
-        override val serviceReturn: Future[Boss] = Future.failed(new Exception("Request failed!"))
+        override val serviceReturn: Either[ErrorModel, Boss] = Left(ErrorModel(Status.NOT_FOUND, "Can't find it :("))
+        val result = controller.getBoss(fakeRequest.withFormUrlEncodedBody("bossID" -> "77"))
+        contentType(result) shouldBe Some("text/html")
+        charset(result) shouldBe Some("utf-8")
+      }
+    }
+
+    "the service returns an unexpected response status" should {
+
+      "return 500" in new Test {
+        override val serviceReturn: Either[ErrorModel, Boss] = Left(ErrorModel(Status.GATEWAY_TIMEOUT, "Erm..."))
+        val result = controller.getBoss(fakeRequest.withFormUrlEncodedBody("bossID" -> "77"))
+        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+      }
+
+      "return HTML" in new Test {
+        override val serviceReturn: Either[ErrorModel, Boss] = Left(ErrorModel(Status.GATEWAY_TIMEOUT, "Erm..."))
         val result = controller.getBoss(fakeRequest.withFormUrlEncodedBody("bossID" -> "77"))
         contentType(result) shouldBe Some("text/html")
         charset(result) shouldBe Some("utf-8")

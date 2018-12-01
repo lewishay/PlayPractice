@@ -4,6 +4,7 @@ import javax.inject.Inject
 
 import config.AppConfig
 import models.ErrorModel
+import play.api.Logger
 import play.api.libs.ws._
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -21,7 +22,10 @@ class BattleNetConnector @Inject()(ws: WSClient, appConfig: AppConfig) {
     val request: WSRequest = ws.url(bossUrl(bossID.toString))
     request.get().map {
       case response if response.status == 200 => Right(response.body)
-      case response => Left(ErrorModel(response.status, response.body))
+      case response =>
+        Logger.warn(s"[BattleNetConnector][getBoss] - API returned error. " +
+          s"Status: ${response.status}, Body: ${response.body}")
+        Left(ErrorModel(response.status, response.body))
     }
   }
 
@@ -29,7 +33,10 @@ class BattleNetConnector @Inject()(ws: WSClient, appConfig: AppConfig) {
     val request: WSRequest = ws.url(zoneUrl(zoneID.toString))
     request.get().map {
       case response if response.status == 200 => Right(response.body)
-      case response => Left(ErrorModel(response.status, response.body))
+      case response =>
+        Logger.warn(s"[BattleNetConnector][getZone] - API returned error. " +
+          s"Status: ${response.status}, Body: ${response.body}")
+        Left(ErrorModel(response.status, response.body))
     }
   }
 }

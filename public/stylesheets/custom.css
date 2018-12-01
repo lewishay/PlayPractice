@@ -38,6 +38,11 @@
   font-size: 1.1rem;
 }
 
+.error-msg {
+  color: #e82609;
+  font-size: 1.3rem;
+}
+
 #guess {
   width: 50px;
 }

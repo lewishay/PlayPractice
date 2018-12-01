@@ -1,6 +1,5 @@
 package services
 
-import common.Common
 import connectors.BattleNetConnector
 import controllers.ControllerBaseSpec
 import models.{Boss, ErrorModel, Zone}
@@ -45,33 +44,22 @@ class BattleNetServiceSpec extends ControllerBaseSpec {
           .expects(*, *)
           .returns(Future.successful(Right(zoneReturnString)))
 
-        val result: Boss = await(service.getBoss(1234))
-        result shouldBe successBoss
+        val result: Either[ErrorModel, Boss] = await(service.getBoss(1234))
+        result shouldBe Right(successBoss)
       }
     }
 
-    "the connector returns an unsuccessful response body" should {
+    "the connector returns an unsuccessful response" should {
 
-      "return the empty default boss" in {
+      val errorModel = ErrorModel(Status.NOT_FOUND, "Request failed!")
+
+      "return an error model" in {
         (mockConnector.getBoss(_: Int)(_: ExecutionContext))
           .expects(*, *)
-          .returns(Future.successful(Left(ErrorModel(Status.NOT_FOUND, "Request failed!"))))
+          .returns(Future.successful(Left(errorModel)))
 
-        val result: Boss = await(service.getBoss(1234))
-        result shouldBe Common.exampleBoss
-      }
-    }
-
-    "the connector fails to return a response" should {
-
-      "return an exception" in {
-        val requestFailed = new Exception("Request failed!")
-
-        (mockConnector.getBoss(_: Int)(_: ExecutionContext))
-          .expects(*, *)
-          .returns(Future.failed(requestFailed))
-
-        intercept[Exception](await(service.getBoss(1234)))
+        val result: Either[ErrorModel, Boss] = await(service.getBoss(1234))
+        result shouldBe Left(errorModel)
       }
     }
   }
