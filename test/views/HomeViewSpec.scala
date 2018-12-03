@@ -45,22 +45,24 @@ class HomeViewSpec extends ViewBaseSpec {
 
       "have the correct titles for the other pages on the website" in {
         val titles = Vector(
-          "Word square",
+          "Audio player",
+          "Hangman",
           "WoW boss API",
-          "Pixel grid",
           "Github commit log",
-          "Hangman"
+          "Pixel grid",
+          "Word square"
         )
         titles.indices.foreach(i => titles(i) shouldBe elementText(Selectors.elementGrab(i + 1, getTitles = true)))
       }
 
       "have the correct descriptions for the other pages on the website" in {
         val descriptions = Vector(
-          "Generate a custom word square",
+          "Upload and play an audio file",
+          "Play a game of hangman",
           "View boss data from the Battle.net API",
-          "Generate images from a HTML table",
           "View a list of recent Github commits",
-          "Play a game of hangman"
+          "Generate images from a HTML table",
+          "Generate a custom word square"
         )
         descriptions.indices.foreach(i => descriptions(i) shouldBe elementText(Selectors.elementGrab(i + 1, getTitles = false)))
       }

@@ -1,4 +1,5 @@
 @import config.AppConfig
+@import templates.homepageSection
 
 @()(implicit appConfig: AppConfig)
 
@@ -6,75 +7,46 @@
   <section>
     <div class="container">
       <div class="row">
-        <div class="col-lg-6 col-xl-6">
-          <a href="@routes.WordSquareController.wordSquare">
-            <div class="row box-below">
-              <div class="col-md-4">
-                <img src="@routes.Assets.versioned("images/wordSquare.png")" height="158px" width="158px">
-              </div>
-              <div class="col-md-8 side-text">
-                <strong>Word square</strong>
-                <p>Generate a custom word square</p>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-lg-6 col-xl-6">
-          <a href="@routes.BossController.blankBoss">
-            <div class="row box-below">
-              <div class="col-md-4">
-                <img src="@routes.Assets.versioned("images/wowLogo.png")" height="158px" width="158px">
-              </div>
-              <div class="col-md-8 side-text">
-                <strong>WoW boss API</strong>
-                <p>View boss data from the Battle.net API</p>
-              </div>
-            </div>
-          </a>
-        </div>
+        @homepageSection(
+          title = "Audio player",
+          subtext = "Upload and play an audio file",
+          imageName = "playButton.png",
+          link = routes.AudioPlayerController.show.url
+        )
+        @homepageSection(
+          title = "Hangman",
+          subtext = "Play a game of hangman",
+          imageName = "hangman.png",
+          link = routes.HangmanController.hangman.url
+        )
       </div>
       <div class="row">
-        <div class="col-lg-6 col-xl-6">
-          <a href="@routes.PixelGridController.defaultGrid">
-            <div class="row box-below">
-              <div class="col-md-4">
-                <img src="@routes.Assets.versioned("images/1up.png")" height="158px" width="158px">
-              </div>
-              <div class="col-md-8 side-text">
-                <strong>Pixel grid</strong>
-                <p>Generate images from a HTML table</p>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-lg-6 col-xl-6">
-          <a href="@routes.GithubController.commitsPage">
-            <div class="row box-below">
-              <div class="col-md-4">
-                <img src="@routes.Assets.versioned("images/github.svg")" height="158px" width="158px">
-              </div>
-              <div class="col-md-8 side-text">
-                <strong>Github commit log</strong>
-                <p>View a list of recent Github commits</p>
-              </div>
-            </div>
-          </a>
-        </div>
+        @homepageSection(
+          title = "WoW boss API",
+          subtext = "View boss data from the Battle.net API",
+          imageName = "wowLogo.png",
+          link = routes.BossController.blankBoss.url
+        )
+        @homepageSection(
+          title = "Github commit log",
+          subtext = "View a list of recent Github commits",
+          imageName = "github.svg",
+          link = routes.GithubController.commitsPage.url
+        )
       </div>
       <div class="row">
-        <div class="col-lg-6 col-xl-6">
-          <a href="@routes.HangmanController.hangman">
-            <div class="row box-below">
-              <div class="col-md-4">
-                <img src="@routes.Assets.versioned("images/hangman.png")" height="158px" width="158px">
-              </div>
-              <div class="col-md-8 side-text">
-                <strong>Hangman</strong>
-                <p>Play a game of hangman</p>
-              </div>
-            </div>
-          </a>
-        </div>
+        @homepageSection(
+          title = "Pixel grid",
+          subtext = "Generate images from a HTML table",
+          imageName = "1up.png",
+          link = routes.PixelGridController.defaultGrid.url
+        )
+        @homepageSection(
+          title = "Word square",
+          subtext = "Generate a custom word square",
+          imageName = "wordSquare.png",
+          link = routes.WordSquareController.wordSquare.url
+        )
       </div>
     </div>
   </section>

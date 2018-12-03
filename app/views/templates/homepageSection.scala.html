@@ -1,0 +1,15 @@
+@(title: String, subtext: String, imageName: String, link: String)
+
+<div class="col-lg-6 col-xl-6">
+  <a href="@link">
+    <div class="row box-below">
+      <div class="col-md-4">
+        <img src="@routes.Assets.versioned(s"images/${imageName}")" height="158px" width="158px">
+      </div>
+      <div class="col-md-8 side-text">
+        <strong>@title</strong>
+        <p>@subtext</p>
+      </div>
+    </div>
+  </a>
+</div>
