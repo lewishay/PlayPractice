@@ -20,9 +20,5 @@ trait ControllerBaseSpec extends WordSpecLike with Matchers with MockFactory wit
 
   def await[A](future: Future[A])(implicit timeout: Duration): A = Await.result(future, timeout)
 
-  def status(of: Result): Int = of.header.status
-
-  def status(of: Future[Result])(implicit timeout: Duration): Int = status(Await.result(of, timeout))
-
   val fakeRequest = FakeRequest()
 }

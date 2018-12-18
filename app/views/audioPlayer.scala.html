@@ -1,0 +1,35 @@
+@import config.AppConfig
+
+@(filePath: Option[String] = None, formError: Boolean = false)(implicit messages: Messages, appConfig: AppConfig)
+
+@main("Audio player") {
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12" align="center">
+        <h2>Upload an MP3 file to enable audio controls</h2>
+      </div>
+      <div class="col-lg-6" align="center">
+          @helper.form(routes.AudioPlayerController.upload, 'class -> "big-form", 'enctype -> "multipart/form-data") {
+            <dd>
+              <input id="file-upload" type="file" name="audio">
+            </dd>
+            @if(formError) {
+              <dd class="error">The file must be of type .mp3</dd>
+            }
+            <div class="pt-2">
+              <button type="submit">Upload</button>
+            </div>
+          }
+      </div>
+      <div class="col-lg-6" align="center">
+        <audio controls>
+          @filePath.map { path =>
+            <source src="@routes.Assets.versioned(s"temp/${path}")" type="audio/mpeg">
+          }
+        </audio>
+      </div>
+    </div>
+  </div>
+</section>
+}
