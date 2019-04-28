@@ -3,8 +3,11 @@ package views
 import common.Common
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.BossView
 
 class BossViewSpec extends ViewBaseSpec {
+
+  val injectedView: BossView = injector.instanceOf[BossView]
 
   object Selectors {
     val title = "h1"
@@ -18,10 +21,11 @@ class BossViewSpec extends ViewBaseSpec {
     val zoneLocation = "p:nth-child(6) > b:nth-child(1)"
   }
 
-  lazy val view = views.html.boss(Common.exampleBoss)
-  lazy implicit val document: Document = Jsoup.parse(view.body)
 
   "The Boss page" should {
+
+    lazy val view = injectedView(Common.exampleBoss)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct title" in {
       elementText(Selectors.title) shouldBe "Boss API call"

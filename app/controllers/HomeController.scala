@@ -2,13 +2,12 @@ package controllers
 
 import javax.inject._
 
-import config.AppConfig
 import play.api.mvc._
+import views.html.HomeView
 
-class HomeController @Inject()(implicit cc: ControllerComponents,
-                               implicit val appConfig: AppConfig) extends FrontendController {
+class HomeController @Inject()(homeView: HomeView)(implicit cc: ControllerComponents) extends FrontendController {
 
   def home: Action[AnyContent] = Action {
-    Ok(views.html.home())
+    Ok(homeView())
   }
 }

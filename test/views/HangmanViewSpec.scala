@@ -4,8 +4,11 @@ import games.hangman.HangmanGameState
 import models.viewModels.HangmanViewModel
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.HangmanView
 
 class HangmanViewSpec extends ViewBaseSpec {
+
+  val injectedView: HangmanView = injector.instanceOf[HangmanView]
 
   object Selectors {
     val title = "h1"
@@ -27,7 +30,7 @@ class HangmanViewSpec extends ViewBaseSpec {
         Vector[String]()
       )
 
-      lazy val view = views.html.hangman(HangmanViewModel(newGameState, None))
+      lazy val view = injectedView(HangmanViewModel(newGameState, None))
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct title" in {
@@ -58,7 +61,7 @@ class HangmanViewSpec extends ViewBaseSpec {
         Vector("  _______ ", "  |     | ")
       )
 
-      lazy val view = views.html.hangman(HangmanViewModel(inProgressGameState, None))
+      lazy val view = injectedView(HangmanViewModel(inProgressGameState, None))
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct title" in {
@@ -101,7 +104,7 @@ class HangmanViewSpec extends ViewBaseSpec {
         Vector[String]()
       )
 
-      lazy val view = views.html.hangman(HangmanViewModel(winGameState, Some(true)))
+      lazy val view = injectedView(HangmanViewModel(winGameState, Some(true)))
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct title" in {
@@ -141,7 +144,7 @@ class HangmanViewSpec extends ViewBaseSpec {
         )
       )
 
-      lazy val view = views.html.hangman(HangmanViewModel(loseGameState, Some(false)))
+      lazy val view = injectedView(HangmanViewModel(loseGameState, Some(false)))
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct title" in {

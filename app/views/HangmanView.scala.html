@@ -1,9 +1,10 @@
-@import config.AppConfig
 @import forms.GuessForm
 @import games.hangman.Hangman
 @import models.viewModels.HangmanViewModel
 
-@(model: HangmanViewModel, form: Form[GuessForm] = GuessForm.makeGuessForm)(implicit messages: Messages, appConfig: AppConfig)
+@this(main: MainTemplate)
+
+@(model: HangmanViewModel, form: Form[GuessForm] = GuessForm.makeGuessForm)(implicit messages: Messages)
 
 @main("Hangman") {
 <section>

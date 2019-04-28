@@ -3,8 +3,11 @@ package views
 import common.{Common, Grids}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.PixelGridView
 
 class PixelGridViewSpec extends ViewBaseSpec {
+
+  val injectedView: PixelGridView = injector.instanceOf[PixelGridView]
 
   object Selectors {
     val title = "h1"
@@ -15,10 +18,11 @@ class PixelGridViewSpec extends ViewBaseSpec {
     val exampleGridPixel = ".fixed > tbody:nth-child(1) > tr:nth-child(4) > th:nth-child(8)"
   }
 
-  lazy val view = views.html.pixelGrid(Common.gridList, Grids.scalaClass.name)
-  lazy implicit val document: Document = Jsoup.parse(view.body)
 
   "The Pixel Grid page" should {
+
+    lazy val view = injectedView(Grids.scalaClass.name)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct title" in {
       elementText(Selectors.title) shouldBe "Pixel grid"

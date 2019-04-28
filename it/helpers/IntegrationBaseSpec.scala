@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document
 import org.scalatest._
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application
+import play.api.inject.Injector
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.ws.{WSClient, WSRequest, WSResponse}
 
@@ -16,7 +17,8 @@ trait IntegrationBaseSpec extends WordSpecLike with Matchers with OptionValues w
 
   val mockUrl: String = WireMockHelper.wireMockUrl
 
-  lazy val client: WSClient = app.injector.instanceOf[WSClient]
+  lazy val injector: Injector = app.injector
+  lazy val client: WSClient = injector.instanceOf[WSClient]
 
   def servicesConfig: Map[String, String] = Map(
     "services.protocol" -> "http",

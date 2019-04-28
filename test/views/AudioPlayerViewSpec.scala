@@ -18,10 +18,13 @@ package views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.AudioPlayerView
 
 import scala.util.Try
 
 class AudioPlayerViewSpec extends ViewBaseSpec {
+
+  val injectedView: AudioPlayerView = injector.instanceOf[AudioPlayerView]
 
   object Selectors {
     val title = "h1"
@@ -37,8 +40,7 @@ class AudioPlayerViewSpec extends ViewBaseSpec {
 
     "there is no file uploaded and no errors in the form" should {
 
-      lazy val view = views.html.audioPlayer()
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+      lazy implicit val document: Document = Jsoup.parse(injectedView().body)
 
       "have the correct title" in {
         elementText(Selectors.title) shouldBe "Audio player"
@@ -68,7 +70,7 @@ class AudioPlayerViewSpec extends ViewBaseSpec {
 
   "there is a file uploaded and no errors in the form" should {
 
-    lazy val view = views.html.audioPlayer(filePath = Some("myFile.mp3"))
+    lazy val view = injectedView(filePath = Some("myFile.mp3"))
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have an audio source" in {
@@ -78,7 +80,7 @@ class AudioPlayerViewSpec extends ViewBaseSpec {
 
   "there are errors in the form" should {
 
-    lazy val view = views.html.audioPlayer(formError = true)
+    lazy val view = injectedView(formError = true)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "show an error message" in {

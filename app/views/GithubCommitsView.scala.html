@@ -1,0 +1,18 @@
+@import templates.CommitLog
+
+@this(main: MainTemplate, commitLog: CommitLog)
+
+@(model: models.viewModels.GithubViewModel)
+
+@main("Github Commits") {
+<section>
+  <div class="container-fluid">
+    <div class="row">
+      @commitLog(model.commitLog1)
+      @commitLog(model.commitLog2)
+      @commitLog(model.commitLog3)
+      @commitLog(model.commitLog4)
+    </div>
+  </div>
+</section>
+}

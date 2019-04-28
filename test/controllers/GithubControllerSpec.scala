@@ -4,6 +4,7 @@ import models.CommitLog
 import play.api.http.Status
 import play.api.test.Helpers._
 import services.GithubService
+import views.html.GithubCommitsView
 
 class GithubControllerSpec extends ControllerBaseSpec {
 
@@ -19,7 +20,7 @@ class GithubControllerSpec extends ControllerBaseSpec {
 
   def controller: GithubController = {
     setup()
-    new GithubController(service)
+    new GithubController(service, injector.instanceOf[GithubCommitsView])
   }
 
 

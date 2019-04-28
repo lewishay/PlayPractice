@@ -2,14 +2,14 @@ package controllers
 
 import javax.inject.Inject
 
-import config.AppConfig
 import models.viewModels.GithubViewModel
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import services.GithubService
+import views.html.GithubCommitsView
 
-class GithubController @Inject()(githubService: GithubService)(
-                                 implicit cc: ControllerComponents,
-                                 implicit val appConfig: AppConfig) extends FrontendController {
+class GithubController @Inject()(githubService: GithubService,
+                                 githubCommitsView: GithubCommitsView)(
+                                 implicit cc: ControllerComponents) extends FrontendController {
 
   def commitsPage: Action[AnyContent] = Action { implicit request =>
     val commitLog1 = githubService.getCommits("hmrc", "manage-vat-subscription-frontend", "master")
@@ -19,6 +19,6 @@ class GithubController @Inject()(githubService: GithubService)(
 
     val viewModel = GithubViewModel(commitLog1, commitLog2, commitLog3, commitLog4)
 
-    Ok(views.html.githubCommits(viewModel))
+    Ok(githubCommitsView(viewModel))
   }
 }

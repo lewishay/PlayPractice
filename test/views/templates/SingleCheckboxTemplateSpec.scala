@@ -5,8 +5,11 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Field
 import views.ViewBaseSpec
+import views.html.templates.SingleCheckbox
 
 class SingleCheckboxTemplateSpec extends ViewBaseSpec {
+
+  val injectedView: SingleCheckbox = injector.instanceOf[SingleCheckbox]
 
   object Selectors {
     val input = "input"
@@ -18,7 +21,7 @@ class SingleCheckboxTemplateSpec extends ViewBaseSpec {
     "the field value is true" should {
 
       val field = Field(FeatureSwitchForm.form, "MyFeature", Seq(), None, Seq(), Some("true"))
-      lazy val view = views.html.templates.singleCheckbox(field, "My cool feature")
+      lazy val view = injectedView(field, "My cool feature")
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "display a checkbox input" in {
@@ -39,7 +42,7 @@ class SingleCheckboxTemplateSpec extends ViewBaseSpec {
     "field value is false" should {
 
       val field = Field(FeatureSwitchForm.form, "MyFeature", Seq(), None, Seq(), Some("false"))
-      lazy val view = views.html.templates.singleCheckbox(field, "My cool feature")
+      lazy val view = injectedView(field, "My cool feature")
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "display a checkbox input" in {
@@ -60,7 +63,7 @@ class SingleCheckboxTemplateSpec extends ViewBaseSpec {
     "field value is not supplied" should {
 
       val field = Field(FeatureSwitchForm.form, "MyFeature", Seq(), None, Seq(), None)
-      lazy val view = views.html.templates.singleCheckbox(field, "My cool feature")
+      lazy val view = injectedView(field, "My cool feature")
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "display a checkbox input" in {

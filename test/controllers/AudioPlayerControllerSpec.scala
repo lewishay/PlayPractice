@@ -22,10 +22,13 @@ import play.api.mvc.MultipartFormData.FilePart
 import play.api.mvc._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import views.html.AudioPlayerView
+import views.html.errors.GenericErrorView
 
 class AudioPlayerControllerSpec extends ControllerBaseSpec {
 
-  val controller = new AudioPlayerController()
+  val controller =
+    new AudioPlayerController(injector.instanceOf[AudioPlayerView], injector.instanceOf[GenericErrorView])
 
   "Calling the show action" should {
 

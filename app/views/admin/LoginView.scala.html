@@ -1,7 +1,8 @@
-@import config.AppConfig
-@import forms.Login
+@import forms.LoginForm
 
-@(form: Form[Login])(implicit messages: Messages, appConfig: AppConfig)
+@this(main: MainTemplate)
+
+@(form: Form[LoginForm])(implicit messages: Messages)
 
 @main("Login") {
 <section>

@@ -2,8 +2,11 @@ package views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.HomeView
 
 class HomeViewSpec extends ViewBaseSpec {
+
+  val injectedView: HomeView = injector.instanceOf[HomeView]
 
   object Selectors {
     val title = "h1"
@@ -28,8 +31,7 @@ class HomeViewSpec extends ViewBaseSpec {
     "no features are enabled" should {
 
       mockAppConfig.features.infoBannerEnabled(false)
-      lazy val view = views.html.home()
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+      lazy implicit val document: Document = Jsoup.parse(injectedView().body)
 
       "have the correct title" in {
         elementText(Selectors.title) shouldBe "Home"
@@ -88,8 +90,7 @@ class HomeViewSpec extends ViewBaseSpec {
   "the info banner feature is enabled" should {
 
     mockAppConfig.features.infoBannerEnabled(true)
-    lazy val view = views.html.home()
-    lazy implicit val document: Document = Jsoup.parse(view.body)
+    lazy implicit val document: Document = Jsoup.parse(injectedView().body)
 
     "have the info banner" in {
       elementText(Selectors.infoBanner) shouldBe

@@ -4,8 +4,11 @@ import forms.FeatureSwitchForm
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
+import views.html.admin.FeatureSwitchView
 
 class FeatureSwitchViewSpec extends ViewBaseSpec {
+
+  val injectedView: FeatureSwitchView = injector.instanceOf[FeatureSwitchView]
 
   object Selectors {
     val title = "h1"
@@ -15,7 +18,7 @@ class FeatureSwitchViewSpec extends ViewBaseSpec {
     val submitButton = ".big-form > button"
   }
 
-  lazy val view = views.html.admin.featureSwitch(FeatureSwitchForm.form)
+  lazy val view = injectedView(FeatureSwitchForm.form)
   lazy implicit val document: Document = Jsoup.parse(view.body)
 
   "The Feature Switch page" should {

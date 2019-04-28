@@ -14,7 +14,7 @@ val compile: Seq[ModuleID] = Seq(
 )
 
 def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
-  "com.github.tomakehurst" % "wiremock" % "2.6.0" % scope,
+  "com.github.tomakehurst" % "wiremock-jre8" % "2.23.2" % scope,
   "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
   "org.jsoup" % "jsoup" % "1.10.3" % scope,
   "org.scalatest" %% "scalatest" % "3.0.4" % scope,
@@ -36,9 +36,10 @@ lazy val coverageSettings: Seq[Setting[_]] = {
 
   val excludedPackages = Seq(
     "<empty>",
-    "Reverse.*",
     "app.*",
-    "router.*"
+    "Reverse.*",
+    "router.*",
+    "views.html.*"
   )
 
   Seq(
@@ -49,24 +50,6 @@ lazy val coverageSettings: Seq[Setting[_]] = {
   )
 }
 
-val jettyVersion = "9.2.13.v20150730"
-val jettyDependencies = Set(
-  "org.eclipse.jetty" % "jetty-server" % jettyVersion,
-  "org.eclipse.jetty" % "jetty-servlet" % jettyVersion,
-  "org.eclipse.jetty" % "jetty-security" % jettyVersion,
-  "org.eclipse.jetty" % "jetty-servlets" % jettyVersion,
-  "org.eclipse.jetty" % "jetty-continuation" % jettyVersion,
-  "org.eclipse.jetty" % "jetty-webapp" % jettyVersion,
-  "org.eclipse.jetty" % "jetty-xml" % jettyVersion,
-  "org.eclipse.jetty" % "jetty-client" % jettyVersion,
-  "org.eclipse.jetty" % "jetty-http" % jettyVersion,
-  "org.eclipse.jetty" % "jetty-io" % jettyVersion,
-  "org.eclipse.jetty" % "jetty-util" % jettyVersion,
-  "org.eclipse.jetty.websocket" % "websocket-api" % jettyVersion,
-  "org.eclipse.jetty.websocket" % "websocket-common" % jettyVersion,
-  "org.eclipse.jetty.websocket" % "websocket-client" % jettyVersion
-)
-
 lazy val project: Project = Project(appName, file("."))
   .enablePlugins(Seq(PlayScala) ++ plugins: _*)
   .settings(playSettings: _*)
@@ -75,7 +58,6 @@ lazy val project: Project = Project(appName, file("."))
     PlayKeys.playDefaultPort := 9000,
     scalaVersion := "2.11.11",
     libraryDependencies ++= appDependencies,
-    dependencyOverrides ++= jettyDependencies,
     retrieveManaged := true,
     evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
     routesGenerator := InjectedRoutesGenerator,

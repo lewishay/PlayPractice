@@ -3,14 +3,18 @@ package controllers
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
+import views.html.WordSquareView
 
 import scala.concurrent.Future
 
 class WordSquareControllerSpec extends ControllerBaseSpec {
 
+  val wordSquareView: WordSquareView = injector.instanceOf[WordSquareView]
+
   "Calling the exampleWordSquare action" should {
 
-    val result: Future[Result] = new WordSquareController().exampleWordSquare(fakeRequest)
+    val result: Future[Result] =
+      new WordSquareController(wordSquareView).exampleWordSquare(fakeRequest)
 
     "return 200" in {
       status(result) shouldBe Status.OK
@@ -26,7 +30,7 @@ class WordSquareControllerSpec extends ControllerBaseSpec {
 
     "there are no errors in the form" should {
 
-      val result: Future[Result] = new WordSquareController().wordSquare(
+      val result: Future[Result] = new WordSquareController(wordSquareView).wordSquare(
         fakeRequest.withFormUrlEncodedBody(
           "word" -> "TEST"
         )
@@ -44,7 +48,7 @@ class WordSquareControllerSpec extends ControllerBaseSpec {
 
     "there are errors in the form" should {
 
-      val result: Future[Result] = new WordSquareController().wordSquare(
+      val result: Future[Result] = new WordSquareController(wordSquareView).wordSquare(
         fakeRequest.withFormUrlEncodedBody(
           "word" -> "££!££$$%^%$$"
         )

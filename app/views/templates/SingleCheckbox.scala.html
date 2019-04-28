@@ -1,4 +1,6 @@
-@(field: Field, label: String)(implicit messages: Messages)
+@this()
+
+@(field: Field, label: String)
 
 @value = @{ field.value match { case Some(x) => x case None => "false" case x => x }}
 

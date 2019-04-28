@@ -4,8 +4,11 @@ import models.CommitLog
 import models.viewModels.GithubViewModel
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.GithubCommitsView
 
 class GithubCommitsViewSpec extends ViewBaseSpec {
+
+  val injectedView: GithubCommitsView = injector.instanceOf[GithubCommitsView]
 
   object Selectors {
     val title = "h1"
@@ -31,7 +34,7 @@ class GithubCommitsViewSpec extends ViewBaseSpec {
         CommitLog("repo-four", "master", List(("image.png", "noIdea", "2018-04-04, 15:00", "Pushed straight to master LOL")))
 
       val viewModel = GithubViewModel(Some(commitLog1), Some(commitLog2), Some(commitLog3), Some(commitLog4))
-      lazy val view = views.html.githubCommits(viewModel)
+      lazy val view = injectedView(viewModel)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct title" in {
@@ -69,7 +72,7 @@ class GithubCommitsViewSpec extends ViewBaseSpec {
     "no valid commit logs are retrieved" should {
 
       val viewModel = GithubViewModel(None, None, None, None)
-      lazy val view = views.html.githubCommits(viewModel)
+      lazy val view = injectedView(viewModel)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct title" in {

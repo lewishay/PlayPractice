@@ -1,14 +1,21 @@
 package controllers
 
 import common.SessionKeys
-import forms.LoginForm
+import forms.LoginFormImpl
 import play.api.http.Status
 import play.api.test.Helpers._
+import views.html.admin.{FeatureSwitchView, LoginView}
+import views.html.errors.UnauthorisedView
 
 class AdminControllerSpec extends ControllerBaseSpec {
 
-  val loginForm = new LoginForm(mockAppConfig)
-  val controller = new AdminController(loginForm)
+  val loginForm = new LoginFormImpl(mockAppConfig)
+  val controller = new AdminController(
+    loginForm,
+    injector.instanceOf[LoginView],
+    injector.instanceOf[FeatureSwitchView],
+    injector.instanceOf[UnauthorisedView]
+  )
 
   "Calling the admin action" when {
 

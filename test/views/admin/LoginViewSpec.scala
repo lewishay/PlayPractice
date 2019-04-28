@@ -1,11 +1,14 @@
 package views.admin
 
-import forms.LoginForm
+import forms.LoginFormImpl
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
+import views.html.admin.LoginView
 
 class LoginViewSpec extends ViewBaseSpec {
+
+  val injectedView: LoginView = injector.instanceOf[LoginView]
 
   object Selectors {
     val title = "h1"
@@ -18,11 +21,11 @@ class LoginViewSpec extends ViewBaseSpec {
 
   "The Login page" when {
 
-    val loginForm = new LoginForm(mockAppConfig)
+    val loginForm = new LoginFormImpl(mockAppConfig)
 
     "there are no errors in the form" should {
 
-      lazy val view = views.html.admin.login(loginForm.form)
+      lazy val view = injectedView(loginForm.form)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct title" in {
@@ -43,7 +46,7 @@ class LoginViewSpec extends ViewBaseSpec {
     }
 
     "there are errors in the form" should {
-      lazy val view = views.html.admin.login(loginForm.form.bind(Map(
+      lazy val view = injectedView(loginForm.form.bind(Map(
         "username" -> "no",
         "password" -> "no"
       )))

@@ -1,7 +1,8 @@
-@import config.AppConfig
-@import templates.homepageSection
+@import templates.HomepageSection
 
-@()(implicit appConfig: AppConfig)
+@this(main: MainTemplate, homepageSection: HomepageSection)
+
+@()
 
 @main("Home") {
   <section>

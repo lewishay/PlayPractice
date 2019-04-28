@@ -1,8 +1,9 @@
 @import forms.BossForm
+@import models.Boss
 
-@import config.AppConfig
-@(boss: Boss, bossForm: Form[BossForm] = BossForm.bossForm, notFoundError: Boolean = false)(
-  implicit messages: Messages, appConfig: AppConfig)
+@this(main: MainTemplate)
+
+@(boss: Boss, bossForm: Form[BossForm] = BossForm.bossForm, notFoundError: Boolean = false)(implicit messages: Messages)
 
 @main("Boss API call") {
 <section>
@@ -14,7 +15,7 @@
           <button type="submit">Get boss!</button>
         }
         @if(notFoundError) {
-          <p class="error-msg pt-5">The chosen Boss information could not be found</p>
+          <p class="error-msg pt-5">The chosen boss information could not be found</p>
         }
       </div>
       <div class="col-lg-6">

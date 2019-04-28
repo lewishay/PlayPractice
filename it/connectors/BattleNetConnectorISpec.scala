@@ -12,7 +12,7 @@ import scala.concurrent.ExecutionContext
 class BattleNetConnectorISpec extends IntegrationBaseSpec {
 
   implicit val ec: ExecutionContext = ExecutionContext.global
-  val connector: BattleNetConnector = app.injector.instanceOf[BattleNetConnector]
+  val connector: BattleNetConnector = injector.instanceOf[BattleNetConnector]
 
   "Calling getBoss with a valid Boss ID" should {
 

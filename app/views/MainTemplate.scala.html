@@ -7,7 +7,9 @@
 
 @import config.AppConfig
 
-@(title: String)(content: Html)(implicit appConfig: AppConfig)
+@this(appConfig: AppConfig)
+
+@(title: String)(content: Html)
 
 <!DOCTYPE html>
 <html lang="en">

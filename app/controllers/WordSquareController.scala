@@ -2,23 +2,23 @@ package controllers
 
 import javax.inject.Inject
 
-import config.AppConfig
 import forms.WordForm
 import play.api.mvc._
+import views.html.WordSquareView
 
-class WordSquareController @Inject()(implicit cc: ControllerComponents,
-                                     implicit val appConfig: AppConfig) extends FrontendController {
+class WordSquareController @Inject()(wordSquareView: WordSquareView)(
+                                     implicit cc: ControllerComponents) extends FrontendController {
 
-def exampleWordSquare: Action[AnyContent] = Action { implicit request =>
-    Ok(views.html.wordSquare("example"))
+  def exampleWordSquare: Action[AnyContent] = Action { implicit request =>
+    Ok(wordSquareView("example"))
   }
 
   def wordSquare: Action[AnyContent] = Action { implicit request =>
     val formResult = WordForm.wordForm.bindFromRequest
     formResult.fold({ formWithErrors =>
-      BadRequest(views.html.wordSquare("error", formWithErrors))
+      BadRequest(wordSquareView("error", formWithErrors))
     }, { result =>
-      Ok(views.html.wordSquare(result.word))
+      Ok(wordSquareView(result.word))
     })
   }
 }

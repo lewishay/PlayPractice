@@ -4,10 +4,11 @@ import games.hangman.HangmanGameState
 import models.viewModels.HangmanViewModel
 import play.api.http.Status
 import play.api.test.Helpers._
+import views.html.HangmanView
 
 class HangmanControllerSpec extends ControllerBaseSpec {
 
-  val controller = new HangmanController()
+  val controller = new HangmanController(injector.instanceOf[HangmanView])
 
   "Calling the hangman action" should {
 

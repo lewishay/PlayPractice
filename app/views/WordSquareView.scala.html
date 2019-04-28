@@ -1,8 +1,9 @@
-@import config.AppConfig
 @import forms.WordForm
 @import games.WordSquare
 
-@(word: String, wordForm: Form[WordForm] = WordForm.wordForm)(implicit messages: Messages, appConfig: AppConfig)
+@this(main: MainTemplate)
+
+@(word: String, wordForm: Form[WordForm] = WordForm.wordForm)(implicit messages: Messages)
 
 @main("Word square") {
   <section>

@@ -19,8 +19,11 @@ package views.errors
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
+import views.html.errors.NotFoundView
 
 class NotFoundViewSpec extends ViewBaseSpec {
+
+  val injectedView: NotFoundView = injector.instanceOf[NotFoundView]
 
   object Selectors {
     val title = "h1"
@@ -28,8 +31,7 @@ class NotFoundViewSpec extends ViewBaseSpec {
     val paragraph = "p"
   }
 
-  lazy val view = views.html.errors.notFound()
-  lazy implicit val document: Document = Jsoup.parse(view.body)
+  lazy implicit val document: Document = Jsoup.parse(injectedView().body)
 
   "The Not Found page" should {
 

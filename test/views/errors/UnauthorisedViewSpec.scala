@@ -3,8 +3,11 @@ package views.errors
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
+import views.html.errors.UnauthorisedView
 
 class UnauthorisedViewSpec extends ViewBaseSpec {
+
+  val injectedView: UnauthorisedView = injector.instanceOf[UnauthorisedView]
 
   object Selectors {
     val title = "h1"
@@ -15,8 +18,7 @@ class UnauthorisedViewSpec extends ViewBaseSpec {
     val homepageLink = "p > a"
   }
 
-  lazy val view = views.html.errors.unauthorised()
-  lazy implicit val document: Document = Jsoup.parse(view.body)
+  lazy implicit val document: Document = Jsoup.parse(injectedView().body)
 
   "The Unauthorised page" should {
 

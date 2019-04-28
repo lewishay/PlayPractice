@@ -5,6 +5,8 @@ import models.{Boss, ErrorModel}
 import play.api.http.Status
 import play.api.test.Helpers._
 import services.BattleNetService
+import views.html.BossView
+import views.html.errors.GenericErrorView
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -25,7 +27,7 @@ class BossControllerSpec extends ControllerBaseSpec {
 
     def controller: BossController = {
       setup(serviceCall, serviceReturn)
-      new BossController(service)
+      new BossController(service, injector.instanceOf[BossView], injector.instanceOf[GenericErrorView])
     }
   }
 

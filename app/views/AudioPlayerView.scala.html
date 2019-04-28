@@ -1,6 +1,6 @@
-@import config.AppConfig
+@this(main: MainTemplate)
 
-@(filePath: Option[String] = None, formError: Boolean = false)(implicit messages: Messages, appConfig: AppConfig)
+@(filePath: Option[String] = None, formError: Boolean = false)(implicit messages: Messages)
 
 @main("Audio player") {
 <section>

@@ -1,15 +1,17 @@
-@import config.AppConfig
 @import config.ConfigKeys
 @import models.FeatureSwitchModel
+@import templates.SingleCheckbox
 
-@(form: Form[FeatureSwitchModel])(implicit appConfig: AppConfig, messages: Messages)
+@this(main: MainTemplate, singleCheckbox: SingleCheckbox)
+
+@(form: Form[FeatureSwitchModel])(implicit messages: Messages)
 
 @main("Features") {
   <section>
     <div class="container">
       <div class="row pb-3">
         @helper.form(routes.AdminController.submitFeatures, 'class -> "big-form") {
-          @views.html.templates.singleCheckbox(form(ConfigKeys.infoBanner), "Info banner enabled")
+          @singleCheckbox(form(ConfigKeys.infoBanner), "Info banner enabled")
           <button class="mt-3" type="submit">Submit</button>
         }
       </div>
