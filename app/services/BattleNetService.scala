@@ -2,7 +2,6 @@ package services
 
 import javax.inject.Inject
 
-import common.Common
 import connectors.BattleNetConnector
 import models.{Boss, ErrorModel, Zone}
 import play.api.libs.json.{JsValue, Json}

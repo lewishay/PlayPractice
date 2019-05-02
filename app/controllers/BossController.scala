@@ -1,7 +1,6 @@
 package controllers
 
 import javax.inject.Inject
-
 import common.Common
 import forms.BossForm
 import models.ErrorModel
@@ -28,9 +27,12 @@ class BossController @Inject()(battleNetService: BattleNetService,
       Future.successful(BadRequest(bossView(Common.exampleBoss, formWithErrors)))
     }, { result =>
       battleNetService.getBoss(result.id).map {
-        case Right(boss) => Ok(bossView(boss))
-        case Left(ErrorModel(NOT_FOUND, _)) => NotFound(bossView(Common.exampleBoss, notFoundError = true))
-        case Left(_) => InternalServerError(genericErrorView())
-    }})
+        case Right(boss) =>
+          Ok(bossView(boss))
+        case Left(ErrorModel(NOT_FOUND, _)) =>
+          NotFound(bossView(Common.exampleBoss, notFoundError = true))
+        case Left(_) =>
+          InternalServerError(genericErrorView())
+      }})
   }
 }

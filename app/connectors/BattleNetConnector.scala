@@ -11,15 +11,14 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class BattleNetConnector @Inject()(ws: WSClient, appConfig: AppConfig) {
 
-  val apiKey: String = "9f88h2qzeu82vxxscpr54wuyy89cdzsa"
-
   private[connectors] def bossUrl(bossID: String): String =
-    s"${appConfig.protocol}://${appConfig.battleNetService}/wow/boss/$bossID?locale=en_GBS&apikey=$apiKey"
+    s"${appConfig.protocol}://${appConfig.battleNetService}/wow/boss/$bossID?locale=en_GBS&access_token=${appConfig.battleNetAccessToken}"
   private[connectors] def zoneUrl(zoneID: String): String =
-    s"${appConfig.protocol}://${appConfig.battleNetService}/wow/zone/$zoneID?locale=en_GB&apikey=$apiKey"
+    s"${appConfig.protocol}://${appConfig.battleNetService}/wow/zone/$zoneID?locale=en_GB&access_token=${appConfig.battleNetAccessToken}"
 
   def getBoss(bossID: Int)(implicit ec: ExecutionContext): Future[Either[ErrorModel, String]] = {
     val request: WSRequest = ws.url(bossUrl(bossID.toString))
+      .withHttpHeaders("Accept" -> "application/json")
     request.get().map {
       case response if response.status == 200 => Right(response.body)
       case response =>
@@ -31,6 +30,7 @@ class BattleNetConnector @Inject()(ws: WSClient, appConfig: AppConfig) {
 
   def getZone(zoneID: Int)(implicit ec: ExecutionContext): Future[Either[ErrorModel, String]] = {
     val request: WSRequest = ws.url(zoneUrl(zoneID.toString))
+      .withHttpHeaders("Accept" -> "application/json")
     request.get().map {
       case response if response.status == 200 => Right(response.body)
       case response =>
