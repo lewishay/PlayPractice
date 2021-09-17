@@ -2,7 +2,9 @@ package helpers
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.scalatest._
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, OptionValues}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application
 import play.api.inject.Injector
@@ -12,7 +14,7 @@ import play.api.libs.ws.{WSClient, WSRequest, WSResponse}
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration.Duration
 
-trait IntegrationBaseSpec extends WordSpecLike with Matchers with OptionValues with WireMockHelper
+trait IntegrationBaseSpec extends AnyWordSpecLike with Matchers with OptionValues with WireMockHelper
   with GuiceOneServerPerSuite with BeforeAndAfterEach with BeforeAndAfterAll {
 
   val mockUrl: String = WireMockHelper.wireMockUrl

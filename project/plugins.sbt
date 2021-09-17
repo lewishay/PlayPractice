@@ -1,7 +1,5 @@
-logLevel := Level.Warn
+resolvers += "Typesafe repository" at "https://repo.typesafe.com/typesafe/releases/"
 
-resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
-
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.6.21")
-addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1")
-addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.9.0")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.8.8")
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.9.0")
+addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "1.0.0")

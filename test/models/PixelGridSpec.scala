@@ -1,10 +1,11 @@
 package models
 
 import common.Grids
-import org.scalatest.{Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 import play.twirl.api.Html
 
-class PixelGridSpec extends WordSpecLike with Matchers {
+class PixelGridSpec extends AnyWordSpecLike with Matchers {
 
   "A PixelGrid" should {
 

@@ -1,15 +1,14 @@
 package connectors
 
 import javax.inject.Inject
-
 import config.AppConfig
 import models.ErrorModel
-import play.api.Logger
+import play.api.Logging
 import play.api.libs.ws._
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class BattleNetConnector @Inject()(ws: WSClient, appConfig: AppConfig) {
+class BattleNetConnector @Inject()(ws: WSClient, appConfig: AppConfig) extends Logging {
 
   val apiKey: String = "9f88h2qzeu82vxxscpr54wuyy89cdzsa"
 
@@ -23,7 +22,7 @@ class BattleNetConnector @Inject()(ws: WSClient, appConfig: AppConfig) {
     request.get().map {
       case response if response.status == 200 => Right(response.body)
       case response =>
-        Logger.warn(s"[BattleNetConnector][getBoss] - API returned error. " +
+        logger.warn(s"[BattleNetConnector][getBoss] - API returned error. " +
           s"Status: ${response.status}, Body: ${response.body}")
         Left(ErrorModel(response.status, response.body))
     }
@@ -34,7 +33,7 @@ class BattleNetConnector @Inject()(ws: WSClient, appConfig: AppConfig) {
     request.get().map {
       case response if response.status == 200 => Right(response.body)
       case response =>
-        Logger.warn(s"[BattleNetConnector][getZone] - API returned error. " +
+        logger.warn(s"[BattleNetConnector][getZone] - API returned error. " +
           s"Status: ${response.status}, Body: ${response.body}")
         Left(ErrorModel(response.status, response.body))
     }

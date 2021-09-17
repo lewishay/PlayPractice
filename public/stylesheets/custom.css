@@ -98,3 +98,7 @@ hr.dotted-line {
   border-top: 2px dashed #2C3E50;
   width: 90%;
 }
+
+button:hover {
+  cursor: pointer;
+}

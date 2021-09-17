@@ -15,7 +15,7 @@ class AdminController @Inject()(loginForm: LoginFormImpl,
                                 featureSwitchView: FeatureSwitchView,
                                 unauthorisedView: UnauthorisedView)(
                                 implicit cc: ControllerComponents,
-                                implicit val appConfig: AppConfig) extends FrontendController {
+                                appConfig: AppConfig) extends FrontendController {
 
   private def renderFeatureSwitchPage(implicit request: Request[_]): Result =
     Ok(featureSwitchView(
@@ -33,29 +33,29 @@ class AdminController @Inject()(loginForm: LoginFormImpl,
 
   def loginShow: Action[AnyContent] = Action { implicit request =>
     request.session.get(SessionKeys.adminStatus) match {
-      case Some("true") => Redirect(controllers.routes.AdminController.admin().url)
+      case Some("true") => Redirect(controllers.routes.AdminController.admin.url)
       case _ => Ok(loginView(loginForm.form))
     }
   }
 
   def login: Action[AnyContent] = Action { implicit request =>
-    loginForm.form.bindFromRequest().fold(
+    loginForm.form.bindFromRequest.fold(
       formWithErrors => BadRequest(loginView(formWithErrors)),
       _ => renderFeatureSwitchPage.addingToSession(SessionKeys.adminStatus -> "true")
     )
   }
 
   def submitFeatures: Action[AnyContent] = Action { implicit request =>
-    FeatureSwitchForm.form.bindFromRequest().fold(
-      _ => Redirect(routes.AdminController.admin()),
+    FeatureSwitchForm.form.bindFromRequest.fold(
+      _ => Redirect(routes.AdminController.admin),
       successModel => {
         appConfig.features.infoBannerEnabled(successModel.infoBanner)
-        Redirect(routes.AdminController.admin())
+        Redirect(routes.AdminController.admin)
       }
     )
   }
 
   def clearSession: Action[AnyContent] = Action { implicit request =>
-    Redirect(routes.HomeController.home()).withNewSession
+    Redirect(routes.HomeController.home).withNewSession
   }
 }

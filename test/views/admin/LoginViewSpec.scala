@@ -53,7 +53,7 @@ class LoginViewSpec extends ViewBaseSpec {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "contain the correct username form validation message" in {
-        elementText(Selectors.usernameError) shouldBe "Username not recognised"
+        elementText(Selectors.usernameError) shouldBe "Invalid username"
       }
 
       "contain the correct password form validation message" in {
