@@ -60,7 +60,7 @@ class AdminControllerSpec extends ControllerBaseSpec {
       }
 
       "redirect the user to the admin page" in {
-        redirectLocation(result) shouldBe Some(routes.AdminController.admin().url)
+        redirectLocation(result) shouldBe Some(routes.AdminController.admin.url)
       }
     }
 
@@ -123,6 +123,19 @@ class AdminControllerSpec extends ControllerBaseSpec {
         charset(result) shouldBe Some("utf-8")
       }
     }
+
+    "the user has entered nothing" should {
+      val result = controller.login(fakeRequest.withFormUrlEncodedBody("username" -> "", "password" -> ""))
+
+      "return 400" in {
+        status(result) shouldBe Status.BAD_REQUEST
+      }
+
+      "return HTML" in {
+        contentType(result) shouldBe Some("text/html")
+        charset(result) shouldBe Some("utf-8")
+      }
+    }
   }
 
   "Calling the submitFeatures action" should {
@@ -134,7 +147,7 @@ class AdminControllerSpec extends ControllerBaseSpec {
     }
 
     "redirect the user to the feature switch page" in {
-      redirectLocation(result) shouldBe Some(routes.AdminController.admin().url)
+      redirectLocation(result) shouldBe Some(routes.AdminController.admin.url)
     }
   }
 
@@ -147,7 +160,7 @@ class AdminControllerSpec extends ControllerBaseSpec {
     }
 
     "redirect the user to the home page" in {
-      redirectLocation(result) shouldBe Some(routes.HomeController.home().url)
+      redirectLocation(result) shouldBe Some(routes.HomeController.home.url)
     }
 
     "create a new session" in {

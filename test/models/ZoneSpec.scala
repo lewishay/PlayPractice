@@ -1,10 +1,11 @@
 package models
 
 import common.Common
-import org.scalatest.{Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 import play.api.libs.json.Json
 
-class ZoneSpec extends WordSpecLike with Matchers {
+class ZoneSpec extends AnyWordSpecLike with Matchers {
 
   val exampleString: String = """{"name":"Example","location":"Example"}"""
 

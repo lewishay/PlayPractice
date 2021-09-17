@@ -45,7 +45,7 @@ class UnauthorisedViewSpec extends ViewBaseSpec {
     }
 
     "have a link back to the homepage" in {
-      element(Selectors.homepageLink).attr("href") shouldBe controllers.routes.HomeController.home().url
+      element(Selectors.homepageLink).attr("href") shouldBe controllers.routes.HomeController.home.url
     }
   }
 }

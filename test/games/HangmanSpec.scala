@@ -1,14 +1,15 @@
 package games
 
 import games.hangman.{Hangman, HangmanGameState}
-import org.scalatest.{Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
-class HangmanSpec extends WordSpecLike with Matchers {
+class HangmanSpec extends AnyWordSpecLike with Matchers {
 
   "Calling the generateWord function" should {
 
     "generate a random word of length greater than 0" in {
-      assert(Hangman.generateWord.length > 0)
+      assert(Hangman.generateWord.nonEmpty)
     }
   }
 

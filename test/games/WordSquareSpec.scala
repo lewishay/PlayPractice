@@ -1,8 +1,9 @@
 package games
 
-import org.scalatest.{Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
-class WordSquareSpec extends WordSpecLike with Matchers {
+class WordSquareSpec extends AnyWordSpecLike with Matchers {
 
   "Calling the generateSquare function" should {
 

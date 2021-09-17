@@ -16,7 +16,7 @@ class BossController @Inject()(battleNetService: BattleNetService,
                                bossView: BossView,
                                genericErrorView: GenericErrorView)(
                                implicit cc: ControllerComponents,
-                               implicit val ec: ExecutionContext) extends FrontendController {
+                               ec: ExecutionContext) extends FrontendController {
 
   def blankBoss: Action[AnyContent] = Action { implicit request =>
     Ok(bossView(Common.exampleBoss))

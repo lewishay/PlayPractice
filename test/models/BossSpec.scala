@@ -1,10 +1,11 @@
 package models
 
 import common.Common
-import org.scalatest.{Matchers, WordSpecLike}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 import play.api.libs.json.Json
 
-class BossSpec extends WordSpecLike with Matchers {
+class BossSpec extends AnyWordSpecLike with Matchers {
 
   val exampleString: String =
     """{

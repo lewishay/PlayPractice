@@ -4,14 +4,16 @@ import config.AppConfig
 import mocks.MockAppConfig
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
-import org.scalatest.{Matchers, OptionValues, WordSpecLike}
+import org.scalatest.wordspec.AnyWordSpecLike
+import org.scalatest.OptionValues
+import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n._
 import play.api.inject.Injector
 
 import scala.collection.JavaConverters._
 
-trait ViewBaseSpec extends WordSpecLike with Matchers with OptionValues with I18nSupport with GuiceOneAppPerSuite {
+trait ViewBaseSpec extends AnyWordSpecLike with Matchers with OptionValues with I18nSupport with GuiceOneAppPerSuite {
 
   lazy val injector: Injector = app.injector
   lazy val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]

@@ -24,6 +24,7 @@ class HomeViewSpec extends ViewBaseSpec {
     def footerInfo(col: Int): String = s"footer > div.footer-above > div > div > div:nth-child($col) > p"
     val copyright = "body > footer > div.footer-below > div > div > div"
     val infoBanner = ".info-banner"
+    def footerLink(num: Int): String = s"li.list-inline-item:nth-child($num) > a"
   }
 
   "The Home page" when {
@@ -76,7 +77,10 @@ class HomeViewSpec extends ViewBaseSpec {
 
       "have the correct 'around the web' information in the footer" in {
         elementText(Selectors.footerTitle(2)) shouldBe "Around the web"
-        elementText(Selectors.copyright) shouldBe "Copyright © 2017-2018 don't steal pls"
+        element(Selectors.footerLink(1)).attr("href") shouldBe "https://www.github.com/lewishay"
+        element(Selectors.footerLink(2)).attr("href") shouldBe "https://www.youtube.com/lewishay"
+        element(Selectors.footerLink(3)).attr("href") shouldBe "https://www.linkedin.com/in/lewis-hay"
+        elementText(Selectors.copyright) shouldBe "Copyright © 2017-2021 don't steal pls"
       }
 
       "have the correct 'about' information in the footer" in {
